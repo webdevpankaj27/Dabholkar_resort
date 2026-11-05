@@ -13,7 +13,7 @@ const DESTINATIONS = [
     name:     'Kondura Beach',
     category: 'beach',
     dist:     '~12 km from resort',
-    image:    'nearby/kondura_beach.webp',
+    image:    './nearby/kondura_beach.webp',
     desc:     'A crescent of golden sand framed by coconut groves, largely untouched by commercial tourism. The beach faces west, making it one of the finest sunset spots in the region. Arrive early to watch local fishermen cast their nets as the morning mist lifts off the Arabian Sea.',
     facts: [
       { label: 'Distance',    value: '~12 km' },
@@ -26,7 +26,7 @@ const DESTINATIONS = [
     name:     'Sindhudurg Fort',
     category: 'heritage',
     dist:     '~35 km from resort',
-    image:    'nearby/sindudurg_fort.jpg',
+    image:    './nearby/sindudurg_fort.jpg',
     desc:     'Built by Chhatrapati Shivaji Maharaj between 1664 and 1667 on a rocky island, Sindhudurg Fort is one of the most remarkable achievements of Maratha naval architecture. The fort\'s walls stretch over 3 km and enclose freshwater wells, temples, and royal quarters. A boat ride from Malvan brings you to its gates.',
     facts: [
       { label: 'Distance',    value: '~35 km' },
@@ -39,7 +39,7 @@ const DESTINATIONS = [
     name:     'Tarkarli',
     category: 'beach',
     dist:     '~38 km from resort',
-    image:    'nearby/tarkarli.jpg',
+    image:    './nearby/tarkarli.jpg',
     desc:     'Tarkarli is famed for its gin-clear waters, coral reefs and the dramatic confluence of the Karli River with the Arabian Sea. It is one of the best spots for snorkelling and scuba diving on the Konkan coast, with visibility often exceeding 15 metres. The beach itself is a long, palm-fringed expanse of white sand.',
     facts: [
       { label: 'Distance',    value: '~38 km' },
@@ -52,7 +52,7 @@ const DESTINATIONS = [
     name:     'Nivti Rocks',
     category: 'nature',
     dist:     '~8 km from resort',
-    image:    'nearby/nivti_rocks.jpg',
+    image:    './nearby/nivti_rocks.jpg',
     desc:     'Just a short drive from the resort, Nivti Rocks is a dramatic outcrop of ancient volcanic basalt that juts into the sea. The formation creates a series of natural platforms and tide pools teeming with marine life. At sunset, the rocks glow a deep amber-gold — a scene that photographers and painters return to repeatedly.',
     facts: [
       { label: 'Distance',    value: '~8 km' },
@@ -65,7 +65,7 @@ const DESTINATIONS = [
     name:     'Yashwantgad Fort',
     category: 'heritage',
     dist:     '~18 km from resort',
-    image:    'nearby/yashwant_gad.jpg',
+    image:    './nearby/yashwant_gad.jpg',
     desc:     'Perched on a cliff 60 metres above sea level, Yashwantgad is a lesser-known coastal fort that rewards those who seek it with sweeping 180-degree views of the Konkan coastline. Built in the 17th century, much of its original stonework remains intact. The approach through a casuarina forest adds to its sense of discovery.',
     facts: [
       { label: 'Distance',    value: '~18 km' },
@@ -78,7 +78,7 @@ const DESTINATIONS = [
     name:     'Vengurla Beach',
     category: 'beach',
     dist:     '~22 km from resort',
-    image:    'nearby/vengurla_beach.jpg',
+    image:    './nearby/vengurla_beach.jpg',
     desc:     'One of the widest beaches in Sindhudurg district, Vengurla Beach stretches for nearly 3 km with shallow, calm waters ideal for wading and swimming. The beach faces a cluster of small uninhabited islands, and at low tide, sandbars emerge that local children use as natural playgrounds. Evenings bring food vendors and a warm, unhurried community atmosphere.',
     facts: [
       { label: 'Distance',    value: '~22 km' },
@@ -91,7 +91,7 @@ const DESTINATIONS = [
     name:     'Turtle Point',
     category: 'nature',
     dist:     '~28 km from resort',
-    image:    'nearby/turtle_point.webp',
+    image:    './nearby/turtle_point.webp',
     desc:     'A protected nesting site for Olive Ridley sea turtles, Turtle Point is one of Konkan\'s most quietly remarkable natural experiences. Between November and February, turtles come ashore to nest on the beach. Conservation volunteers guide visitors respectfully — you can observe the process without disturbing the animals. Hatchling releases, when they occur, are unforgettable.',
     facts: [
       { label: 'Distance',    value: '~28 km' },
@@ -104,7 +104,7 @@ const DESTINATIONS = [
     name:     'Vengurla Lighthouse',
     category: 'heritage',
     dist:     '~24 km from resort',
-    image:    'nearby/light_house.png',
+    image:    './nearby/light_house.png',
     desc:     'One of the oldest operational lighthouses on the western coast of India, the Vengurla Lighthouse has guided mariners since the colonial era. The lighthouse stands 20 metres tall and still sweeps the sea every night. Visitors can climb to the top on select days for panoramic views of the coast, the town, and the open sea.',
     facts: [
       { label: 'Distance',    value: '~24 km' },
@@ -117,7 +117,7 @@ const DESTINATIONS = [
     name:     'Sagreshwar Beach',
     category: 'beach',
     dist:     '~6 km from resort',
-    image:    'nearby/sagreshwer_beach.jpg',
+    image:    './nearby/sagreshwer_beach.jpg',
     desc:     'The closest beach to Dabholkar Resort and the perfect spot for an unhurried evening walk. Sagreshwar is a working fishing beach — in the late afternoon, wooden boats return laden with the day\'s catch, and the shore comes alive briefly before settling into a deep, peaceful silence as the sun dips below the horizon.',
     facts: [
       { label: 'Distance',    value: '~6 km' },
@@ -130,7 +130,7 @@ const DESTINATIONS = [
     name:     'Shiroda Velaghar',
     category: 'beach',
     dist:     '~14 km from resort',
-    image:    'nearby/shiroda_velaghar.jpg',
+    image:    './nearby/shiroda_velaghar.jpg',
     desc:     'A long, gently curved beach that sits at the mouth of the Vagad River, Shiroda Velaghar is beloved by locals for its tranquillity and clean sands. The confluence of fresh and salt water creates a unique ecosystem, and the beach is fringed by casuarina and palm trees that provide natural shade throughout the day.',
     facts: [
       { label: 'Distance',    value: '~14 km' },
@@ -143,7 +143,7 @@ const DESTINATIONS = [
     name:     'Khavne Village',
     category: 'nature',
     dist:     '~20 km from resort',
-    image:    'nearby/khavne.jpg',
+    image:    './nearby/khavne.jpg',
     desc:     'An unhurried Konkan village surrounded by paddy fields, cashew orchards and mango groves, Khavne offers a genuinely immersive glimpse into the rhythms of coastal rural life. Walk through narrow red-laterite lanes, visit a traditional Konkan-style wada house, or simply sit at the edge of a paddy field and listen to the quiet.',
     facts: [
       { label: 'Distance',    value: '~20 km' },
@@ -156,7 +156,7 @@ const DESTINATIONS = [
     name:     'Waigani Beach',
     category: 'beach',
     dist:     '~10 km from resort',
-    image:    'nearby/waigani_beach.webp',
+    image:    './nearby/waigani_beach.webp',
     desc:     'Hidden behind a dense belt of casuarina trees, Waigani Beach is the kind of place that rewards those willing to seek it. The approach through the forest adds to the anticipation, and the beach itself delivers: fine white sand, calm waters and an almost complete absence of other visitors — even on weekends.',
     facts: [
       { label: 'Distance',    value: '~10 km' },
@@ -169,7 +169,7 @@ const DESTINATIONS = [
     name:     'Vengurla Bandar',
     category: 'heritage',
     dist:     '~25 km from resort',
-    image:    'nearby/vengurla_bandar.jpg',
+    image:    './nearby/vengurla_bandar.jpg',
     desc:     'Vengurla was one of the most significant ports on the Konkan coast during the Portuguese and Dutch colonial period, and its old harbour — the Bandar — still carries that history in its bones. Weathered warehouses, a daily fish auction, and fishing trawlers loading ice and fuel make this one of the most atmospheric spots in the region.',
     facts: [
       { label: 'Distance',    value: '~25 km' },
@@ -182,7 +182,7 @@ const DESTINATIONS = [
     name:     'Tarkarli Backwaters',
     category: 'beach',
     dist:     '~40 km from resort',
-    image:    'nearby/tarkarlil.jpg',
+    image:    './nearby/tarkarlil.jpg',
     desc:     'The backwaters behind Tarkarli Beach offer a completely different face of the Konkan landscape — serene, mirror-still channels fringed with mangroves, coconut palms and paddy fields. Explore by kayak, canoe or traditional dugout boat. The silence here is punctuated only by kingfishers and the dip of paddles in still water.',
     facts: [
       { label: 'Distance',    value: '~40 km' },
