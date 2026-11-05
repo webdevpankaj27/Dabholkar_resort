@@ -459,7 +459,7 @@ function launchRazorpay(data) {
     currency:    'INR',
     name:        'Dabholkar Resort',
     description: `Advance booking — ${data.home || 'Home'} · ${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : 'Stay'}`,
-    image:       '3ac06309-a2d3-4dd7-90bf-9e1803de3efb.png',
+    image: 'assets/logo.png',
     prefill: {
       name:    fullName,
       email:   data.email  || '',
