@@ -58,22 +58,22 @@ const api = {
 const CREDENTIALS = { username: 'admin', password: 'dabholkar2026' };
 
 const HOMES_CONFIG = {
-  ekaant:  { name:'Ekaant',  type:'Private Home',  guests:2, bed:'King Bed',          size:'480 sq ft', img:'roominterior.jpeg',  price:12000 },
-  sushant: { name:'Sushant', type:'VIP Home',       guests:2, bed:'King Bed + Daybed', size:'680 sq ft', img:'roominterior1.jpeg', price:18000 },
-  nishant: { name:'Nishant', type:'Couple Home',    guests:5, bed:'2 Queen Beds',      size:'760 sq ft', img:'roominterior2.jpeg', price:22000 },
-  niwaant: { name:'Niwaant', type:'Serenity Home',  guests:2, bed:'King Bed',          size:'520 sq ft', img:'property1.jpeg',     price:12000 },
-  savali:  { name:'Savali',  type:'Nature Home',    guests:2, bed:'Queen Bed',         size:'440 sq ft', img:'property2.jpeg',     price:12000 }
+  ekaant:  { name:'Ekaant',  type:'Private Home',  guests:2, bed:'King Bed',          size:'480 sq ft', img:'assets/roominterior.jpeg',  price:12000 },
+  sushant: { name:'Sushant', type:'VIP Home',       guests:2, bed:'King Bed + Daybed', size:'680 sq ft', img:'assets/roominterior1.jpeg', price:18000 },
+  nishant: { name:'Nishant', type:'Couple Home',    guests:5, bed:'2 Queen Beds',      size:'760 sq ft', img:'assets/roominterior2.jpeg', price:22000 },
+  niwaant: { name:'Niwaant', type:'Serenity Home',  guests:2, bed:'King Bed',          size:'520 sq ft', img:'assets/property1.jpeg',     price:12000 },
+  savali:  { name:'Savali',  type:'Nature Home',    guests:2, bed:'Queen Bed',         size:'440 sq ft', img:'assets/property2.jpeg',     price:12000 }
 };
 
 const GALLERY_IMAGES = [
-  { src:'property1.jpeg',    label:'Property View 1' },
-  { src:'property2.jpeg',    label:'Property View 2' },
-  { src:'property3.jpeg',    label:'Property Aerial' },
-  { src:'propertynight.jpeg',label:'Resort at Night' },
-  { src:'roominterior.jpeg', label:'Room Interior — Ekaant' },
-  { src:'roominterior1.jpeg',label:'Room Interior — Sushant' },
-  { src:'roominterior2.jpeg',label:'Room Interior — Nishant' },
-  { src:'rooms.jpeg',        label:'Dining Area' }
+  { src:'assets/property1.jpeg',    label:'Property View 1' },
+  { src:'assets/property2.jpeg',    label:'Property View 2' },
+  { src:'assets/property3.jpeg',    label:'Property Aerial' },
+  { src:'assets/propertynight.jpeg',label:'Resort at Night' },
+  { src:'assets/roominterior.jpeg', label:'Room Interior — Ekaant' },
+  { src:'assets/roominterior1.jpeg',label:'Room Interior — Sushant' },
+  { src:'assets/roominterior2.jpeg',label:'Room Interior — Nishant' },
+  { src:'assets/rooms.jpeg',        label:'Dining Area' }
 ];
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
