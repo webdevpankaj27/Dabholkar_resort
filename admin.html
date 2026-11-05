@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Dabholkar Resort</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-brand">
+      <img src="3ac06309-a2d3-4dd7-90bf-9e1803de3efb.png" alt="Dabholkar Resort" />
+      <span>DABHOLKAR</span>
+    </div>
+    <h1 class="login-title">Admin Portal</h1>
+    <p class="login-sub">Sign in to manage your resort</p>
+    <form class="login-form" id="loginForm" novalidate>
+      <div class="lf-field">
+        <label for="lf-username">Username</label>
+        <input type="text" id="lf-username" placeholder="admin" autocomplete="username" />
+      </div>
+      <div class="lf-field">
+        <label for="lf-password">Password</label>
+        <div class="lf-pw-wrap">
+          <input type="password" id="lf-password" placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="lf-eye" id="togglePw" aria-label="Show password">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="lf-error" id="loginError" hidden>Incorrect username or password.</p>
+      <button type="submit" class="btn-login">Sign In</button>
+    </form>
+    <p class="login-hint">Default: <code>admin</code> / <code>dabholkar2026</code></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════════ -->
+<div class="dashboard" id="dashboard" hidden>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <img src="3ac06309-a2d3-4dd7-90bf-9e1803de3efb.png" alt="Dabholkar Resort" />
+      <div>
+        <span class="sb-name">DABHOLKAR</span>
+        <span class="sb-role">Resort Admin</span>
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <button class="sb-item active" data-tab="overview">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </button>
+      <button class="sb-item" data-tab="reservations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Reservations
+        <span class="sb-badge" id="pendingBadge">0</span>
+      </button>
+      <button class="sb-item" data-tab="rooms">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Rooms
+      </button>
+      <button class="sb-item" data-tab="gallery">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Gallery
+      </button>
+      <button class="sb-item" data-tab="settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </nav>
+
+    <div class="sb-footer">
+      <a href="index.html" target="_blank" class="sb-view-site">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Live Site
+      </a>
+      <button class="sb-logout" id="logoutBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="topbar-hamburger" id="sidebarToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Overview</div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbarDate"></div>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <!-- ── TAB: OVERVIEW ────────────────────── -->
+    <section class="tab-panel active" id="tab-overview">
+
+      <!-- Stat cards -->
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-card-icon sc-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div class="stat-card-value" id="sc-total">0</div>
+            <div class="stat-card-label">Total Enquiries</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon sc-amber">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="stat-card-value" id="sc-pending">0</div>
+            <div class="stat-card-label">Pending Review</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon sc-green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <div class="stat-card-value" id="sc-confirmed">0</div>
+            <div class="stat-card-label">Confirmed</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon sc-red">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div>
+            <div class="stat-card-value" id="sc-cancelled">0</div>
+            <div class="stat-card-label">Cancelled</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+
+        <!-- Occupancy chart -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Home Popularity</h3>
+            <span class="card-sub">Bookings by home</span>
+          </div>
+          <div class="chart-wrap" id="occupancyChart">
+            <!-- Bars rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Recent enquiries -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Enquiries</h3>
+            <button class="card-link" data-tab="reservations">View all →</button>
+          </div>
+          <div class="recent-list" id="recentList">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Monthly summary -->
+      <div class="card mt">
+        <div class="card-header">
+          <h3>Monthly Activity</h3>
+          <span class="card-sub">Enquiries received per month</span>
+        </div>
+        <div class="monthly-chart" id="monthlyChart">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── TAB: RESERVATIONS ─────────────────── -->
+    <section class="tab-panel" id="tab-reservations">
+
+      <div class="panel-header">
+        <h2>Reservations</h2>
+        <div class="panel-actions">
+          <div class="search-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="resSearch" placeholder="Search name, home, email…" />
+          </div>
+          <select id="resFilter" class="filter-select">
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button class="btn-primary" id="addReservationBtn">+ Add Enquiry</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="reservationsTable">
+          <thead>
+            <tr>
+              <th>Guest</th>
+              <th>Home</th>
+              <th>Check-in</th>
+              <th>Check-out</th>
+              <th>Guests</th>
+              <th>Status</th>
+              <th>Received</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reservationsTbody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+        <div class="table-empty" id="resEmpty" hidden>No reservations found.</div>
+      </div>
+
+    </section>
+
+    <!-- ── TAB: ROOMS ────────────────────────── -->
+    <section class="tab-panel" id="tab-rooms">
+
+      <div class="panel-header">
+        <h2>Rooms &amp; Homes</h2>
+        <span class="panel-sub">Manage availability and details for each home</span>
+      </div>
+
+      <div class="rooms-admin-grid" id="roomsAdminGrid">
+        <!-- Rendered by JS -->
+      </div>
+
+    </section>
+
+    <!-- ── TAB: GALLERY ──────────────────────── -->
+    <section class="tab-panel" id="tab-gallery">
+
+      <div class="panel-header">
+        <h2>Gallery</h2>
+        <div class="panel-actions">
+          <label class="btn-primary upload-label" for="galleryUpload">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Photo
+            <input type="file" id="galleryUpload" accept="image/*" multiple hidden />
+          </label>
+        </div>
+      </div>
+      <p class="gallery-note">Photos currently used on the resort website. Click × to remove a photo from the gallery view.</p>
+      <div class="gallery-admin-grid" id="galleryAdminGrid">
+        <!-- Rendered by JS -->
+      </div>
+
+    </section>
+
+    <!-- ── TAB: SETTINGS ─────────────────────── -->
+    <section class="tab-panel" id="tab-settings">
+
+      <div class="panel-header">
+        <h2>Settings</h2>
+      </div>
+
+      <div class="settings-grid">
+
+        <!-- Contact -->
+        <div class="card settings-card">
+          <div class="card-header"><h3>Contact Information</h3></div>
+          <form class="settings-form" id="contactForm">
+            <div class="sf-field">
+              <label>Resort Name</label>
+              <input type="text" name="name" value="Dabholkar Resort" />
+            </div>
+            <div class="sf-field">
+              <label>Email Address</label>
+              <input type="email" name="email" value="hello@dabholkarresort.com" />
+            </div>
+            <div class="sf-field">
+              <label>Reservations Email</label>
+              <input type="email" name="resemail" value="reservations@dabholkarresort.com" />
+            </div>
+            <div class="sf-field">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" value="+91 235 678 9012" />
+            </div>
+            <div class="sf-field">
+              <label>Address</label>
+              <textarea name="address" rows="2">Ratnagiri, Maharashtra, India — 415 612</textarea>
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </form>
+        </div>
+
+        <!-- Social -->
+        <div class="card settings-card">
+          <div class="card-header"><h3>Social &amp; Links</h3></div>
+          <form class="settings-form" id="socialForm">
+            <div class="sf-field">
+              <label>Instagram URL</label>
+              <input type="url" name="instagram" placeholder="https://instagram.com/…" />
+            </div>
+            <div class="sf-field">
+              <label>Facebook URL</label>
+              <input type="url" name="facebook" placeholder="https://facebook.com/…" />
+            </div>
+            <div class="sf-field">
+              <label>TripAdvisor URL</label>
+              <input type="url" name="tripadvisor" placeholder="https://tripadvisor.com/…" />
+            </div>
+            <div class="sf-field">
+              <label>Google Maps URL</label>
+              <input type="url" name="maps" placeholder="https://maps.google.com/…" />
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </form>
+        </div>
+
+        <!-- Password -->
+        <div class="card settings-card">
+          <div class="card-header"><h3>Change Password</h3></div>
+          <form class="settings-form" id="passwordForm">
+            <div class="sf-field">
+              <label>Current Password</label>
+              <input type="password" name="current" placeholder="••••••••" />
+            </div>
+            <div class="sf-field">
+              <label>New Password</label>
+              <input type="password" name="new" placeholder="••••••••" />
+            </div>
+            <div class="sf-field">
+              <label>Confirm New Password</label>
+              <input type="password" name="confirm" placeholder="••••••••" />
+            </div>
+            <p class="sf-error" id="pwChangeError" hidden></p>
+            <button type="submit" class="btn-primary">Update Password</button>
+          </form>
+        </div>
+
+        <!-- About text -->
+        <div class="card settings-card settings-card--wide">
+          <div class="card-header"><h3>About / Hero Text</h3></div>
+          <form class="settings-form" id="heroForm">
+            <div class="sf-field">
+              <label>Hero Headline</label>
+              <input type="text" name="headline" value="Somewhere between the palms & the sea." />
+            </div>
+            <div class="sf-field">
+              <label>Hero Subtext</label>
+              <textarea name="subtext" rows="2">A private sanctuary where the jungle meets the ocean. Slow down. Breathe in. Stay a while.</textarea>
+            </div>
+            <div class="sf-field">
+              <label>About Description</label>
+              <textarea name="about" rows="4">Born from a love of the Konkan coast and a dream of sharing its magic, Dabholkar Resort was built by hand — stone by stone, palm by palm — over three years on a family-owned land that has known the sea for generations.</textarea>
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </form>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div><!-- /main -->
+</div><!-- /dashboard -->
+
+<!-- ═══════════════════════════════════════════
+     RESERVATION DETAIL / EDIT MODAL
+═══════════════════════════════════════════ -->
+<div class="adm-modal-overlay" id="resModal" hidden>
+  <div class="adm-modal">
+    <div class="adm-modal-header">
+      <h3 id="resModalTitle">Reservation Details</h3>
+      <button class="adm-modal-close" id="resModalClose" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <form class="adm-modal-form" id="resModalForm">
+      <input type="hidden" id="rm-id" />
+      <div class="rm-grid">
+        <div class="rm-field">
+          <label>First Name</label>
+          <input type="text" id="rm-fname" required />
+        </div>
+        <div class="rm-field">
+          <label>Last Name</label>
+          <input type="text" id="rm-lname" required />
+        </div>
+        <div class="rm-field">
+          <label>Email</label>
+          <input type="email" id="rm-email" required />
+        </div>
+        <div class="rm-field">
+          <label>Phone</label>
+          <input type="tel" id="rm-phone" />
+        </div>
+        <div class="rm-field">
+          <label>Home</label>
+          <select id="rm-home">
+            <option>Ekaant</option>
+            <option>Sushant</option>
+            <option>Nishant</option>
+            <option>Niwaant</option>
+            <option>Savali</option>
+          </select>
+        </div>
+        <div class="rm-field">
+          <label>Guests</label>
+          <select id="rm-guests">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          </select>
+        </div>
+        <div class="rm-field">
+          <label>Check-in</label>
+          <input type="date" id="rm-checkin" />
+        </div>
+        <div class="rm-field">
+          <label>Check-out</label>
+          <input type="date" id="rm-checkout" />
+        </div>
+        <div class="rm-field rm-field--wide">
+          <label>Special Requests</label>
+          <textarea id="rm-requests" rows="2"></textarea>
+        </div>
+        <div class="rm-field">
+          <label>Status</label>
+          <select id="rm-status">
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div class="rm-field">
+          <label>Notes (internal)</label>
+          <input type="text" id="rm-notes" placeholder="Internal note…" />
+        </div>
+      </div>
+      <div class="adm-modal-actions">
+        <button type="button" class="btn-danger" id="resDeleteBtn">Delete</button>
+        <div class="adm-modal-actions-right">
+          <button type="button" class="btn-ghost-dark" id="resModalCancel">Cancel</button>
+          <button type="submit" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast" hidden></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

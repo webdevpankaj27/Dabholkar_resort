@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dabholkar Resort — Somewhere between the palms & the sea</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="3ac06309-a2d3-4dd7-90bf-9e1803de3efb.png" alt="Dabholkar Resort" class="logo-img" />
+        <span class="logo-text">DABHOLKAR</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#rooms">Rooms</a></li>
+        <li><a href="#dining">Dining</a></li>
+        <li><a href="#cuisine">Cuisine</a></li>
+        <li><a href="#nearby">Explore</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#book" class="btn btn-outline-light">Book Now</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#dining">Dining</a></li>
+      <li><a href="#cuisine">Cuisine</a></li>
+      <li><a href="#nearby">Explore</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#book" class="btn btn-solid">Book Now</a></li>
+    </ul>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       HERO — full-screen video
+  ═══════════════════════════════════════════ -->
+  <section class="hero" id="home">
+    <div class="hero-video-wrap">
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="hero.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Ratnagiri, Konkan Coast</p>
+      <h1 class="hero-headline">Somewhere between<br />the palms <em>&amp;</em> the sea.</h1>
+      <p class="hero-sub">A private sanctuary where the jungle meets the ocean.<br />Slow down. Breathe in. Stay a while.</p>
+      <div class="hero-actions">
+        <a href="#rooms" class="btn btn-solid">Explore Stays</a>
+        <a href="#experience" class="btn btn-ghost">Discover More</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       INTRO — tagline split
+  ═══════════════════════════════════════════ -->
+  <section class="intro" id="intro">
+    <div class="intro-image reveal">
+      <img src="property1.jpeg" alt="Resort property" />
+    </div>
+    <div class="intro-text reveal">
+      <p class="section-label">Our Philosophy</p>
+      <h2 class="intro-headline">Far from the rush.<br />Close to what<br />matters.</h2>
+      <p class="intro-body">Tucked away on the Konkan coast, Dabholkar Resort is a place where time slows and every detail speaks of care — from the hand-picked furnishings to the forest that breathes outside your window.</p>
+      <a href="#about" class="link-arrow">Learn our story →</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       HOMES — 5 properties
+  ═══════════════════════════════════════════ -->
+  <section class="rooms" id="rooms">
+    <div class="rooms-header reveal">
+      <p class="section-label">Your Home in Konkan</p>
+      <h2>Five Homes. One Heritage.<br />Endless Memories.</h2>
+      <p class="rooms-subhead">Discover a different experience of traditional Konkani living, surrounded by nature and enhanced with modern luxury.</p>
+    </div>
+    <div class="rooms-grid rooms-grid--5">
+
+      <!-- EKAANT -->
+      <article class="room-card reveal" data-home="ekaant">
+        <div class="room-card-img">
+          <img src="roominterior.jpeg" alt="Ekaant — Private Home" />
+          <div class="room-card-badge">Private Home</div>
+          <button class="room-card-gallery-btn" data-home="ekaant" aria-label="View gallery">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Photos
+          </button>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-meta">
+            <span class="room-type">Private Home</span>
+            <span class="room-guests">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              2 Guests
+            </span>
+          </div>
+          <h3>Ekaant</h3>
+          <p class="room-card-desc">A sanctuary of solitude. Ekaant wraps you in stillness — private, unhurried, and entirely your own.</p>
+          <div class="room-card-price">
+            <span class="rcp-amount">₹12,000</span>
+            <span class="rcp-per">/ night</span>
+          </div>
+          <div class="room-card-specs">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4v16M22 4v16M2 8h20M2 16h20M6 8v8M10 8v8M14 8v8M18 8v8"/></svg> King Bed</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> 480 sq ft</span>
+          </div>
+          <div class="room-card-actions">
+            <button class="btn btn-details" data-home="ekaant">View Details</button>
+            <button class="btn btn-solid btn-book" data-home="ekaant">Book Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- SUSHANT -->
+      <article class="room-card room-card--featured reveal" data-home="sushant">
+        <div class="room-card-img">
+          <img src="roominterior1.jpeg" alt="Sushant — VIP Home" />
+          <div class="room-card-badge room-card-badge--vip">VIP Home</div>
+          <button class="room-card-gallery-btn" data-home="sushant" aria-label="View gallery">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Photos
+          </button>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-meta">
+            <span class="room-type">VIP Home</span>
+            <span class="room-guests">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              2 Guests
+            </span>
+          </div>
+          <h3>Sushant</h3>
+          <p class="room-card-desc">Our finest offering. Sushant blends heritage architecture with curated luxury for the most discerning guest.</p>
+          <div class="room-card-price">
+            <span class="rcp-amount">₹18,000</span>
+            <span class="rcp-per">/ night</span>
+            <span class="rcp-tag">VIP</span>
+          </div>
+          <div class="room-card-specs">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4v16M22 4v16M2 8h20M2 16h20M6 8v8M10 8v8M14 8v8M18 8v8"/></svg> King Bed + Daybed</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> 680 sq ft</span>
+          </div>
+          <div class="room-card-actions">
+            <button class="btn btn-details" data-home="sushant">View Details</button>
+            <button class="btn btn-solid btn-book" data-home="sushant">Book Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- NISHANT -->
+      <article class="room-card reveal" data-home="nishant">
+        <div class="room-card-img">
+          <img src="roominterior2.jpeg" alt="Nishant — Couple Home" />
+          <div class="room-card-badge">Couple Home</div>
+          <button class="room-card-gallery-btn" data-home="nishant" aria-label="View gallery">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Photos
+          </button>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-meta">
+            <span class="room-type">Couple Home</span>
+            <span class="room-guests">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              5 Guests
+            </span>
+          </div>
+          <h3>Nishant</h3>
+          <p class="room-card-desc">Designed for togetherness. Nishant's generous spaces invite families and loved ones to breathe and reconnect.</p>
+          <div class="room-card-price">
+            <span class="rcp-amount">₹22,000</span>
+            <span class="rcp-per">/ night</span>
+          </div>
+          <div class="room-card-specs">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4v16M22 4v16M2 8h20M2 16h20M6 8v8M10 8v8M14 8v8M18 8v8"/></svg> 2 Queen Beds</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> 760 sq ft</span>
+          </div>
+          <div class="room-card-actions">
+            <button class="btn btn-details" data-home="nishant">View Details</button>
+            <button class="btn btn-solid btn-book" data-home="nishant">Book Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- NIWAANT -->
+      <article class="room-card reveal" data-home="niwaant">
+        <div class="room-card-img">
+          <img src="property1.jpeg" alt="Niwaant — Serenity Home" />
+          <div class="room-card-badge">Serenity Home</div>
+          <button class="room-card-gallery-btn" data-home="niwaant" aria-label="View gallery">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Photos
+          </button>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-meta">
+            <span class="room-type">Serenity Home</span>
+            <span class="room-guests">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              2 Guests
+            </span>
+          </div>
+          <h3>Niwaant</h3>
+          <p class="room-card-desc">Where serenity is not just a promise but an address. Wake to birdsong, retire to absolute peace.</p>
+          <div class="room-card-price">
+            <span class="rcp-amount">₹12,000</span>
+            <span class="rcp-per">/ night</span>
+          </div>
+          <div class="room-card-specs">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4v16M22 4v16M2 8h20M2 16h20M6 8v8M10 8v8M14 8v8M18 8v8"/></svg> King Bed</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> 520 sq ft</span>
+          </div>
+          <div class="room-card-actions">
+            <button class="btn btn-details" data-home="niwaant">View Details</button>
+            <button class="btn btn-solid btn-book" data-home="niwaant">Book Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- SAVALI -->
+      <article class="room-card reveal" data-home="savali">
+        <div class="room-card-img">
+          <img src="property2.jpeg" alt="Savali — Nature Home" />
+          <div class="room-card-badge">Nature Home</div>
+          <button class="room-card-gallery-btn" data-home="savali" aria-label="View gallery">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Photos
+          </button>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-meta">
+            <span class="room-type">Nature Home</span>
+            <span class="room-guests">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              2 Guests
+            </span>
+          </div>
+          <h3>Savali</h3>
+          <p class="room-card-desc">For those who find peace in the forest. Savali puts you deep within the Konkan's lush green canopy.</p>
+          <div class="room-card-price">
+            <span class="rcp-amount">₹12,000</span>
+            <span class="rcp-per">/ night</span>
+          </div>
+          <div class="room-card-specs">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4v16M22 4v16M2 8h20M2 16h20M6 8v8M10 8v8M14 8v8M18 8v8"/></svg> Queen Bed</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> 440 sq ft</span>
+          </div>
+          <div class="room-card-actions">
+            <button class="btn btn-details" data-home="savali">View Details</button>
+            <button class="btn btn-solid btn-book" data-home="savali">Book Now</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ROOM DETAILS MODAL
+  ═══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="detailsModal" role="dialog" aria-modal="true" aria-label="Room details" hidden>
+    <div class="modal modal--details">
+      <button class="modal-close" id="detailsModalClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <!-- Gallery strip -->
+      <div class="md-gallery">
+        <div class="md-gallery-track" id="mdGalleryTrack">
+          <!-- images injected by JS -->
+        </div>
+        <button class="md-gallery-nav md-gallery-nav--prev" id="mdPrev" aria-label="Previous photo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="md-gallery-nav md-gallery-nav--next" id="mdNext" aria-label="Next photo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="md-gallery-dots" id="mdDots"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="md-content">
+        <div class="md-header">
+          <div>
+            <span class="md-type" id="mdType"></span>
+            <h2 class="md-name" id="mdName"></h2>
+          </div>
+          <button class="btn btn-solid md-book-btn" id="mdBookBtn">Book This Home</button>
+        </div>
+
+        <div class="md-body">
+          <div class="md-left">
+            <p class="md-desc" id="mdDesc"></p>
+            <div class="md-specs" id="mdSpecs">
+              <!-- injected -->
+            </div>
+            <div class="md-facilities">
+              <h4>Room Facilities</h4>
+              <ul id="mdFacilities"><!-- injected --></ul>
+            </div>
+          </div>
+          <div class="md-right">
+            <div class="md-amenities">
+              <h4>Services &amp; Amenities</h4>
+              <div class="md-amenities-grid" id="mdAmenities"><!-- injected --></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       BOOKING MODAL
+  ═══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-label="Make a reservation" hidden>
+    <div class="modal modal--booking">
+      <button class="modal-close" id="bookingModalClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <!-- Booking form -->
+      <div class="bm-form-wrap" id="bmFormWrap">
+        <div class="bm-header">
+          <p class="section-label">Reserve Your Stay</p>
+          <h2>Plan Your Visit</h2>
+        </div>
+        <form class="bm-form" id="bookingForm" novalidate>
+          <div class="bm-section-title">Stay Details</div>
+          <div class="bm-row bm-row--3">
+            <div class="bm-field">
+              <label for="bm-checkin">Check-in</label>
+              <input type="date" id="bm-checkin" name="checkin" required />
+            </div>
+            <div class="bm-field">
+              <label for="bm-checkout">Check-out</label>
+              <input type="date" id="bm-checkout" name="checkout" required />
+            </div>
+            <div class="bm-field">
+              <label for="bm-guests">Guests</label>
+              <select id="bm-guests" name="guests" required>
+                <option value="">Select</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+              </select>
+            </div>
+          </div>
+          <div class="bm-field">
+            <label for="bm-home">Select Home</label>
+            <select id="bm-home" name="home" required>
+              <option value="">Choose your home</option>
+              <option value="Ekaant">Ekaant — Private Home (2 Guests)</option>
+              <option value="Sushant">Sushant — VIP Home (2 Guests)</option>
+              <option value="Nishant">Nishant — Couple Home (5 Guests)</option>
+              <option value="Niwaant">Niwaant — Serenity Home (2 Guests)</option>
+              <option value="Savali">Savali — Nature Home (2 Guests)</option>
+            </select>
+          </div>
+
+          <div class="bm-section-title">Guest Details</div>
+          <div class="bm-row bm-row--2">
+            <div class="bm-field">
+              <label for="bm-fname">First Name</label>
+              <input type="text" id="bm-fname" name="fname" placeholder="Ananya" required />
+            </div>
+            <div class="bm-field">
+              <label for="bm-lname">Last Name</label>
+              <input type="text" id="bm-lname" name="lname" placeholder="Dabholkar" required />
+            </div>
+          </div>
+          <div class="bm-row bm-row--2">
+            <div class="bm-field">
+              <label for="bm-email">Email Address</label>
+              <input type="email" id="bm-email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div class="bm-field">
+              <label for="bm-phone">Phone Number</label>
+              <input type="tel" id="bm-phone" name="phone" placeholder="+91 98765 43210" required />
+            </div>
+          </div>
+          <div class="bm-field">
+            <label for="bm-requests">Special Requests <span class="bm-optional">(optional)</span></label>
+            <textarea id="bm-requests" name="requests" rows="3" placeholder="Early check-in, dietary preferences, celebrations…"></textarea>
+          </div>
+          <div class="bm-lunch-info">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            <span>Dinner &amp; breakfast are included in the stay. <strong>Lunch is available at ₹2,000 per person</strong> extra — let us know if you'd like to arrange it.</span>
+          </div>
+          <div class="bm-actions">
+            <p class="bm-note">A refundable advance of <strong>₹2,000</strong> is collected to confirm your booking. Balance is payable at arrival.</p>
+            <button type="submit" class="btn btn-solid bm-submit">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Review &amp; Pay ₹2,000
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Confirmation screen -->
+      <div class="bm-confirm" id="bmConfirm" hidden>
+        <div class="bm-confirm-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <p class="section-label">Booking Confirmed</p>
+        <h2>Thank you,<br /><span id="bcName"></span>!</h2>
+        <p class="bm-confirm-msg">Your advance payment was successful. We've reserved your home and will reach you at <strong id="bcEmail"></strong> with full details.</p>
+        <div class="bm-confirm-summary" id="bcSummary">
+          <!-- Injected by JS -->
+        </div>
+        <div class="bm-payment-badge" id="bcPaymentBadge" hidden>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>Advance paid: <strong id="bcPaymentAmt"></strong> · ID: <code id="bcPaymentId"></code></span>
+        </div>
+        <button class="btn btn-solid bm-done-btn" id="bmDoneBtn">Close</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       EXPERIENCE — dark green split
+  ═══════════════════════════════════════════ -->
+  <section class="experience" id="experience">
+    <div class="experience-text reveal">
+      <p class="section-label light">Experiences</p>
+      <h2>Less itinerary.<br />More discovery.</h2>
+      <ul class="experience-list">
+        <li>Sunrise kayaking through mangrove channels</li>
+        <li>Guided forest walks with local naturalists</li>
+        <li>Beachside sunset sessions with live music</li>
+        <li>Traditional Konkani cooking classes</li>
+        <li>Private boat trips to secluded coves</li>
+      </ul>
+      <a href="#gallery" class="btn btn-outline-light mt">See the Resort</a>
+    </div>
+    <div class="experience-image reveal">
+      <img src="property2.jpeg" alt="Resort experience" />
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       DINING & CUISINE
+  ═══════════════════════════════════════════ -->
+  <section class="dining" id="dining">
+    <!-- Hero split -->
+    <div class="dining-image reveal">
+      <img src="rooms.jpeg" alt="Dining at Dabholkar Resort" />
+    </div>
+    <div class="dining-text reveal">
+      <p class="section-label">Culinary</p>
+      <h2>The coast,<br />served with<br />a little soul.</h2>
+      <p>Our kitchen draws from the sea and the soil — fresh catch from local fishermen, herbs from our garden, and recipes passed down through Konkan families for generations.</p>
+      <p>Dine under the stars, beside the pool, or in the intimate candlelit pavilion. Every meal is an occasion.</p>
+      <a href="#book" class="link-arrow">Reserve a Table →</a>
+    </div>
+  </section>
+
+  <!-- Cuisine showcase -->
+  <section class="cuisine" id="cuisine">
+    <div class="cuisine-inner">
+
+      <div class="cuisine-header reveal">
+        <p class="section-label">Malvani Kitchen</p>
+        <h2>Tastes of the Konkan</h2>
+        <p class="cuisine-subhead">Every dish tells a story of the coast — coconut, kokum, fresh catch and age-old spice blends passed down through generations of Konkan households.</p>
+      </div>
+
+      <div class="cuisine-grid">
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/malvani_prawns.png" alt="Malvani Prawns Curry" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Seafood</span>
+            <h3>Malvani Prawns Curry</h3>
+            <p>Plump tiger prawns slow-cooked in a fiery coconut-based Malvani masala, best savoured with steaming rice or bhakri.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/Sol-Kadhi-2.jpg" alt="Sol Kadhi" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Beverage</span>
+            <h3>Sol Kadhi</h3>
+            <p>The Konkan coast's signature pink drink — kokum extract blended with fresh coconut milk. Cooling, tangy, unforgettable.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/Ghavan_-_Malvani_Dish.jpg" alt="Ghavan" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Breakfast</span>
+            <h3>Ghavan</h3>
+            <p>Thin, lace-like rice crepes made from fermented rice batter — a light and delicate Konkani breakfast staple.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/kombadi vade.jpg" alt="Kombdi Vade" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Main Course</span>
+            <h3>Kombdi Vade</h3>
+            <p>The crown jewel of Malvani cuisine — spiced chicken curry served alongside crispy, fluffy deep-fried rice-flour vade.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/Tandalachi-Bhakari-1-1.jpg" alt="Tandalachi Bhakari" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Bread</span>
+            <h3>Tandalachi Bhakari</h3>
+            <p>Hand-patted rice flatbread, smoky from the griddle and soft within — the everyday bread of every Konkan home.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/malvani_kaji masala.jpeg" alt="Malvani Kaji Masala" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Seafood</span>
+            <h3>Kaji Masala</h3>
+            <p>A bold dry preparation of crab in whole Malvani spices — fragrant, spicy and deeply satisfying with a coastal warmth.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/Phanasachi-Bhaji-03.png" alt="Phanasachi Bhaji" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Vegetarian</span>
+            <h3>Phanasachi Bhaji</h3>
+            <p>Raw jackfruit stir-fried with fresh coconut, mustard seeds and Konkani spices — a beloved monsoon-season vegetable dish.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/shirvale.jpg" alt="Shirvale" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Breakfast</span>
+            <h3>Shirvale</h3>
+            <p>Steamed rice noodles served with coconut milk and jaggery — a gentle, nourishing way to begin a Konkan morning.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/Ukdiche Modak.jpg" alt="Ukdiche Modak" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Dessert</span>
+            <h3>Ukdiche Modak</h3>
+            <p>Steamed rice-flour dumplings filled with sweet coconut and jaggery — a sacred and indulgent Konkan sweet treat.</p>
+          </div>
+        </article>
+
+        <article class="cuisine-card reveal">
+          <div class="cuisine-card-img">
+            <img src="cuisine/images.jpg" alt="Malvani Thali" loading="lazy" />
+          </div>
+          <div class="cuisine-card-body">
+            <span class="cuisine-tag">Signature</span>
+            <h3>Malvani Thali</h3>
+            <p>Our complete tasting experience — a curated spread of fish curry, rice, bhakri, solkadhi, bhaji and seasonal sides on a single plate.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       STATS BAR
+  ═══════════════════════════════════════════ -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="5">0</span>
+        <span class="stat-label">Heritage Homes</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="1">0</span>
+        <span class="stat-label">Konkan Heritage</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="200">0</span>
+        <span class="stat-label">Metres to the Beach</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-target="98">0</span>
+        <span class="stat-label">% Guest Satisfaction</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       GALLERY — photo grid
+  ═══════════════════════════════════════════ -->
+  <section class="gallery" id="gallery">
+    <div class="gallery-header reveal">
+      <p class="section-label">Gallery</p>
+      <h2>A feeling in a few frames.</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item gallery-item--tall reveal">
+        <img src="property3.jpeg" alt="Resort aerial" />
+      </div>
+      <div class="gallery-item reveal">
+        <img src="propertynight.jpeg" alt="Resort at night" />
+      </div>
+      <div class="gallery-item reveal">
+        <img src="property1.jpeg" alt="Garden path" />
+      </div>
+      <div class="gallery-item gallery-item--wide reveal">
+        <img src="property2.jpeg" alt="Beachside" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       NEARBY DESTINATIONS
+  ═══════════════════════════════════════════ -->
+  <section class="nearby" id="nearby">
+    <div class="nearby-header reveal">
+      <div class="nearby-header-text">
+        <p class="section-label">Beyond the Resort</p>
+        <h2>Explore the Konkan</h2>
+        <p class="nearby-subhead">Step outside and discover a coastline rich with ancient forts, hidden beaches, rock formations and marine wonders — all within easy reach.</p>
+      </div>
+      <div class="nearby-filter" role="group" aria-label="Filter destinations">
+        <button class="nf-btn active" data-filter="all">All</button>
+        <button class="nf-btn" data-filter="beach">Beaches</button>
+        <button class="nf-btn" data-filter="heritage">Heritage</button>
+        <button class="nf-btn" data-filter="nature">Nature</button>
+      </div>
+    </div>
+
+    <div class="nearby-grid" id="nearbyGrid">
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/kondura_beach.webp" alt="Kondura Beach" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~12 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Kondura Beach</h3>
+          <p>A crescent of golden sand framed by coconut groves, largely untouched and perfect for early-morning solitude.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="heritage">
+        <div class="nd-card-img">
+          <img src="nearby/sindudurg_fort.jpg" alt="Sindhudurg Fort" loading="lazy" />
+          <span class="nd-tag">Heritage</span>
+          <span class="nd-dist">~35 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Sindhudurg Fort</h3>
+          <p>Chhatrapati Shivaji Maharaj's magnificent sea fort built on a rocky island — a testament to Maratha naval power.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/tarkarli.jpg" alt="Tarkarli Beach" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~38 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Tarkarli</h3>
+          <p>Crystal-clear waters ideal for snorkelling and scuba diving, where the Karli river meets the sea in spectacular fashion.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="nature">
+        <div class="nd-card-img">
+          <img src="nearby/nivti_rocks.jpg" alt="Nivti Rocks" loading="lazy" />
+          <span class="nd-tag">Nature</span>
+          <span class="nd-dist">~8 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Nivti Rocks</h3>
+          <p>Dramatic volcanic rock formations jutting into the sea, lit gold at sunset — a photographer's favourite vantage point.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="heritage">
+        <div class="nd-card-img">
+          <img src="nearby/yashwant_gad.jpg" alt="Yashwantgad Fort" loading="lazy" />
+          <span class="nd-tag">Heritage</span>
+          <span class="nd-dist">~18 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Yashwantgad Fort</h3>
+          <p>A lesser-visited coastal fort perched above the sea, offering sweeping views of the Konkan shoreline and surrounding forests.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/vengurla_beach.jpg" alt="Vengurla Beach" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~22 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Vengurla Beach</h3>
+          <p>A wide, tranquil beach at the southern tip of Maharashtra with shallow waters and magnificent views of nearby islands.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="nature">
+        <div class="nd-card-img">
+          <img src="nearby/turtle_point.webp" alt="Turtle Point" loading="lazy" />
+          <span class="nd-tag">Nature</span>
+          <span class="nd-dist">~28 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Turtle Point</h3>
+          <p>A protected nesting ground for Olive Ridley sea turtles — witness the remarkable spectacle of hatchlings heading to the sea.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="heritage">
+        <div class="nd-card-img">
+          <img src="nearby/light_house.png" alt="Vengurla Lighthouse" loading="lazy" />
+          <span class="nd-tag">Heritage</span>
+          <span class="nd-dist">~24 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Vengurla Lighthouse</h3>
+          <p>One of the oldest lighthouses on the Konkan coast, standing guard since the colonial era with views stretching to the horizon.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/sagreshwer_beach.jpg" alt="Sagreshwar Beach" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~6 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Sagreshwar Beach</h3>
+          <p>The closest beach to the resort — quiet, clean and ideal for an evening stroll as fishing boats return with their catch.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/shiroda_velaghar.jpg" alt="Shiroda Velaghar Beach" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~14 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Shiroda Velaghar</h3>
+          <p>A long, secluded stretch of sand beloved by locals, where the pace of life slows to the rhythm of the tides.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="nature">
+        <div class="nd-card-img">
+          <img src="nearby/khavne.jpg" alt="Khavne" loading="lazy" />
+          <span class="nd-tag">Nature</span>
+          <span class="nd-dist">~20 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Khavne Village</h3>
+          <p>An untouched Konkan village surrounded by paddy fields and cashew orchards — a living window into coastal rural life.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/waigani_beach.webp" alt="Waigani Beach" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~10 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Waigani Beach</h3>
+          <p>Hidden behind a canopy of casuarina trees, Waigani rewards those who seek it with pristine sands and complete seclusion.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="heritage">
+        <div class="nd-card-img">
+          <img src="nearby/vengurla_bandar.jpg" alt="Vengurla Bandar" loading="lazy" />
+          <span class="nd-tag">Heritage</span>
+          <span class="nd-dist">~25 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Vengurla Bandar</h3>
+          <p>The old Portuguese trading port, with weathered warehouses and a bustling fish market that comes alive at dawn.</p>
+        </div>
+      </article>
+
+      <article class="nd-card reveal" data-category="beach">
+        <div class="nd-card-img">
+          <img src="nearby/tarkarlil.jpg" alt="Tarkarli Backwaters" loading="lazy" />
+          <span class="nd-tag">Beach</span>
+          <span class="nd-dist">~40 km</span>
+        </div>
+        <div class="nd-card-body">
+          <h3>Tarkarli Backwaters</h3>
+          <p>Glide through serene backwaters by kayak or traditional dugout — an entirely different perspective on the Konkan landscape.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ABOUT — text block
+  ═══════════════════════════════════════════ -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div class="about-left reveal">
+        <p class="section-label">Our Story</p>
+        <h2>An idea arrived.<br />An easier escape.</h2>
+        <p>Born from a love of the Konkan coast and a dream of sharing its magic, Dabholkar Resort was built by hand — stone by stone, palm by palm — over three years on a family-owned land that has known the sea for generations.</p>
+        <p>We believe the best hospitality feels invisible. That luxury isn't about opulence but about ease, warmth, and the rare gift of truly switching off.</p>
+        <a href="#book" class="btn btn-solid mt">Plan Your Stay</a>
+      </div>
+      <div class="about-right reveal">
+        <img src="propertynight.jpeg" alt="Resort at dusk" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CTA / NEWSLETTER — dark green
+  ═══════════════════════════════════════════ -->
+  <section class="cta-section" id="book">
+    <div class="cta-inner">
+      <div class="cta-text reveal">
+        <p class="section-label light">Stay in Touch</p>
+        <h2>Plan &amp; discover<br />your stay.</h2>
+        <p>Be the first to hear about seasonal offers, curated experiences, and the quieter moments that make Dabholkar worth returning to.</p>
+      </div>
+      <div class="cta-form reveal">
+        <form class="newsletter-form" onsubmit="handleSubscribe(event)">
+          <input type="text" placeholder="Your name" required />
+          <input type="email" placeholder="Your email address" required />
+          <button type="submit" class="btn btn-cream">Subscribe</button>
+        </form>
+        <p class="form-note">No spam. Just the coast.</p>
+        <div class="cta-book-block">
+          <p>Ready to arrive?</p>
+          <a href="mailto:reservations@dabholkarresort.com" class="btn btn-outline-light mt-sm">Make a Reservation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="3ac06309-a2d3-4dd7-90bf-9e1803de3efb.png" alt="Dabholkar Resort" />
+          <span>DABHOLKAR</span>
+        </div>
+        <p class="footer-tagline">Your best<br />getaway awaits<br />by the coast.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Stay</h4>
+          <ul>
+            <li><a href="#rooms">Ekaant — Private Home</a></li>
+            <li><a href="#rooms">Sushant — VIP Home</a></li>
+            <li><a href="#rooms">Nishant — Couple Home</a></li>
+            <li><a href="#rooms">Niwaant — Serenity Home</a></li>
+            <li><a href="#rooms">Savali — Nature Home</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#experience">Experiences</a></li>
+            <li><a href="#dining">Dining</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="nearby.html">Nearby Destinations</a></li>
+            <li><a href="#about">Our Story</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@dabholkarresort.com">hello@dabholkarresort.com</a></li>
+            <li><a href="tel:+912356789012">+91 235 678 9012</a></li>
+            <li>Ratnagiri, Maharashtra</li>
+            <li>India — 415 612</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dabholkar Resort. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Pinterest">PT</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
