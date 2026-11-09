@@ -420,7 +420,7 @@ function buildSummaryHTML(data) {
     ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
     ${total ? `<div class="bc-row"><span class="bc-key">Est. Stay Total</span><span class="bc-val" style="font-weight:600;">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
     <div class="bc-row bc-row--advance"><span class="bc-key">Advance Paid</span><span class="bc-val bc-advance">₹2,000 ✓</span></div>
-    <div class="bc-row bc-row--note"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch &amp; Dinner at ₹2,000 per person extra.</span></div>
+    <div class="bc-row bc-row--note"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch ₹1,000 · Dinner ₹1,000 per person extra.</span></div>
     ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}`;
 }
 
