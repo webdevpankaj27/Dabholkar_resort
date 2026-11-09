@@ -48,7 +48,7 @@ const HOMES = {
     name:'Sushant', type:'VIP Home', guests:'2 Guests',
     bed:'King Bed + Daybed', size:'680 sq ft', price:18000,
     desc:'Our most distinguished residence. Sushant is appointed with hand-carved Konkan furniture, heirloom textiles, and a private plunge pool that looks out over the Arabian Sea. Heritage architecture meets contemporary comfort in a space designed for those who understand that true luxury is space, light, and the freedom to do nothing beautifully.',
-    images:['./assets/roominterior1.jpeg','./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg','./assets/rooms.jpeg','./assets/property2.jpeg','./assets/propertynight.jpeg'],
+    images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Private plunge pool','Sea-view veranda','Separate living room','Walk-in wardrobe','Espresso machine','Personal safe','Outdoor shower garden','Bluetooth speaker'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
@@ -56,7 +56,7 @@ const HOMES = {
     name:'Nishant', type:'Couple Home', guests:'5 Guests',
     bed:'2 Queen Beds', size:'760 sq ft', price:22000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
-    images:['./assets/roominterior2.jpeg','./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg','./assets/property1.jpeg','./assets/rooms.jpeg','./assets/property3.jpeg'],
+    images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Two separate bedrooms','Shared living room','Large wraparound veranda','Outdoor dining area','Mini kitchen pantry','Personal safe','Two full bathrooms','Ceiling fans & AC'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request (up to age 2)','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
