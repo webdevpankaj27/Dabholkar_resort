@@ -399,144 +399,64 @@ function calcNights(ci, co) {
 }
 
 /* ─────────────────────────────────────────
-   RAZORPAY PAYMENT
+/* ─────────────────────────────────────────
+   BOOKING FORM — DIRECT SUBMIT (no payment)
 ───────────────────────────────────────────*/
-const RZP_KEY        = 'rzp_test_TwSanwRRGeMKB2';
-const ADVANCE_AMOUNT = 200000; // ₹2,000 in paise (Razorpay uses paise)
-
-function buildSummaryHTML(data) {
-  const nights  = calcNights(data.checkin, data.checkout);
-  const homeObj = Object.values(HOMES).find(h => h.name === data.home);
-  const rate    = homeObj ? homeObj.price : null;
-  const total   = rate && nights > 0 ? rate * nights : null;
-
-  return `
-    <h4>Reservation Summary</h4>
-    <div class="bc-row"><span class="bc-key">Home</span><span class="bc-val">${data.home || '—'}</span></div>
-    <div class="bc-row"><span class="bc-key">Check-in</span><span class="bc-val">${fmtDate(data.checkin)}</span></div>
-    <div class="bc-row"><span class="bc-key">Check-out</span><span class="bc-val">${fmtDate(data.checkout)}</span></div>
-    <div class="bc-row"><span class="bc-key">Duration</span><span class="bc-val">${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : '—'}</span></div>
-    <div class="bc-row"><span class="bc-key">Guests</span><span class="bc-val">${data.guests ? data.guests + ' Guest' + (data.guests !== '1' ? 's' : '') : '—'}</span></div>
-    ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
-    ${total ? `<div class="bc-row"><span class="bc-key">Est. Stay Total</span><span class="bc-val" style="font-weight:600;">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
-    <div class="bc-row bc-row--advance"><span class="bc-key">Advance Paid</span><span class="bc-val bc-advance">₹2,000 ✓</span></div>
-    <div class="bc-row bc-row--note"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch ₹1,000 · Dinner ₹1,000 per person extra.</span></div>
-    ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}`;
-}
-
-function showConfirmation(data, paymentId) {
-  document.getElementById('bcName').textContent  = `${data.fname || ''} ${data.lname || ''}`.trim();
-  document.getElementById('bcEmail').textContent = data.email || '';
-  document.getElementById('bcSummary').innerHTML = buildSummaryHTML(data);
-
-  // Payment badge
-  const badge = document.getElementById('bcPaymentBadge');
-  if (badge && paymentId) {
-    document.getElementById('bcPaymentAmt').textContent = '₹2,000';
-    document.getElementById('bcPaymentId').textContent  = paymentId;
-    badge.hidden = false;
-  }
-
-  // ── Save to Supabase ────────────────────
-  const nights  = calcNights(data.checkin, data.checkout);
-  const nameParts = (data.fname || '').trim().split(' ');
-  const row = {
-    fname:       data.fname    || '',
-    lname:       data.lname    || '',
-    email:       data.email    || '',
-    phone:       data.phone    || '',
-    home:        data.home     || '',
-    guests:      data.guests   || '',
-    checkin:     data.checkin  || null,
-    checkout:    data.checkout || null,
-    requests:    data.requests || '',
-    status:      'pending',
-    notes:       '',
-    payment_id:  paymentId || '',
-    amount_paid: paymentId ? 2000 : 0
-  };
-
-  db.insert('bookings', row).then(({ error }) => {
-    if (error) {
-      console.warn('Could not save to Supabase:', error);
-    }
-  });
-
-  bmFormWrap.hidden = true;
-  bmConfirm.hidden  = false;
-  bookingModal.querySelector('.modal').scrollTop = 0;
-}
-
-function launchRazorpay(data) {
-  const fullName = `${data.fname || ''} ${data.lname || ''}`.trim();
-  const nights   = calcNights(data.checkin, data.checkout);
-  const homeObj  = Object.values(HOMES).find(h => h.name === data.home);
-
-  const options = {
-    key:         RZP_KEY,
-    amount:      ADVANCE_AMOUNT,              // paise
-    currency:    'INR',
-    name:        'Dabholkar Resort',
-    description: `Advance booking — ${data.home || 'Home'} · ${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : 'Stay'}`,
-    image: './assets/logo.png',
-    prefill: {
-      name:    fullName,
-      email:   data.email  || '',
-      contact: data.phone  || ''
-    },
-    notes: {
-      home:     data.home    || '',
-      checkin:  data.checkin || '',
-      checkout: data.checkout || '',
-      guests:   data.guests  || ''
-    },
-    theme: { color: '#2d4a3e' },
-
-    handler: function (response) {
-      // Payment successful — response.razorpay_payment_id is the payment ID
-      showConfirmation(data, response.razorpay_payment_id);
-    },
-
-    modal: {
-      ondismiss: function () {
-        // User closed Razorpay without paying — re-enable button
-        const submitBtn = bookingForm.querySelector('.bm-submit');
-        if (submitBtn) {
-          submitBtn.disabled    = false;
-          submitBtn.innerHTML   = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Review &amp; Pay ₹2,000`;
-        }
-      }
-    }
-  };
-
-  const rzp = new Razorpay(options);
-  rzp.on('payment.failed', function (response) {
-    alert(`Payment failed: ${response.error.description}. Please try again.`);
-    const submitBtn = bookingForm.querySelector('.bm-submit');
-    if (submitBtn) {
-      submitBtn.disabled  = false;
-      submitBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Review &amp; Pay ₹2,000`;
-    }
-  });
-
-  rzp.open();
-}
-
 if (bookingForm) {
-  bookingForm.addEventListener('submit', e => {
+  bookingForm.addEventListener('submit', async e => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const data      = Object.fromEntries(new FormData(bookingForm));
     const submitBtn = bookingForm.querySelector('.bm-submit');
+    const nights    = calcNights(data.checkin, data.checkout);
+    const homeObj   = Object.values(HOMES).find(h => h.name === data.home);
+    const rate      = homeObj ? homeObj.price : null;
+    const total     = rate && nights > 0 ? rate * nights : null;
 
-    // Show loading state
-    if (submitBtn) {
-      submitBtn.disabled   = true;
-      submitBtn.textContent = 'Opening payment…';
-    }
+    // Loading state
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
 
-    launchRazorpay(data);
+    // Save to Supabase
+    const row = {
+      fname:    data.fname    || '',
+      lname:    data.lname    || '',
+      email:    data.email    || '',
+      phone:    data.phone    || '',
+      home:     data.home     || '',
+      guests:   data.guests   || '',
+      checkin:  data.checkin  || null,
+      checkout: data.checkout || null,
+      requests: data.requests || '',
+      status:   'pending',
+      notes:    '',
+      payment_id:  '',
+      amount_paid: 0
+    };
+    db.insert('bookings', row).then(({ error }) => {
+      if (error) console.warn('Supabase save error:', error);
+    });
+
+    // Show confirmation
+    document.getElementById('bcName').textContent  = `${data.fname || ''} ${data.lname || ''}`.trim();
+    document.getElementById('bcEmail').textContent = data.email || '';
+    document.getElementById('bcSummary').innerHTML = `
+      <h4>Reservation Summary</h4>
+      <div class="bc-row"><span class="bc-key">Home</span><span class="bc-val">${data.home || '—'}</span></div>
+      <div class="bc-row"><span class="bc-key">Check-in</span><span class="bc-val">${fmtDate(data.checkin)}</span></div>
+      <div class="bc-row"><span class="bc-key">Check-out</span><span class="bc-val">${fmtDate(data.checkout)}</span></div>
+      <div class="bc-row"><span class="bc-key">Duration</span><span class="bc-val">${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : '—'}</span></div>
+      <div class="bc-row"><span class="bc-key">Guests</span><span class="bc-val">${data.guests ? data.guests + ' Guest' + (data.guests !== '1' ? 's' : '') : '—'}</span></div>
+      ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
+      ${total ? `<div class="bc-row" style="border-top:1px solid rgba(45,74,62,.12);margin-top:.3rem;padding-top:.3rem;"><span class="bc-key" style="font-weight:600;color:var(--green)">Est. Total</span><span class="bc-val" style="font-weight:600;color:var(--green)">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
+      ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}
+      <div class="bc-row"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch ₹1,000 · Dinner ₹1,000 per person extra.</span></div>`;
+
+    bmFormWrap.hidden = true;
+    bmConfirm.hidden  = false;
+    bookingModal.querySelector('.modal').scrollTop = 0;
+
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Enquiry'; }
   });
 }
 
