@@ -77,8 +77,8 @@ const CREDENTIALS = { username: 'admin', password: 'dabholkar2026' };
 
 const HOMES_CONFIG = {
   ekaant:  { name:'Ekaant',  type:'Private Home',  guests:2, bed:'King Bed',          size:'480 sq ft', img:'./assets/roominterior.jpeg',  price:12000 },
-  sushant: { name:'Sushant', type:'VIP Home',       guests:2, bed:'King Bed + Daybed', size:'680 sq ft', img:'./assets/roominterior1.jpeg', price:18000 },
-  nishant: { name:'Nishant', type:'Couple Home',    guests:5, bed:'2 Queen Beds',      size:'760 sq ft', img:'./assets/roominterior2.jpeg', price:22000 },
+  sushant: { name:'Sushant', type:'VIP Home',       guests:2, bed:'King Bed + Daybed', size:'680 sq ft', img:'./assets/room_inter3.jpeg', price:18000 },
+  nishant: { name:'Nishant', type:'Couple Home',    guests:5, bed:'2 Queen Beds',      size:'760 sq ft', img:'./assets/room_inter5.jpeg', price:22000 },
   niwaant: { name:'Niwaant', type:'Serenity Home',  guests:2, bed:'King Bed',          size:'520 sq ft', img:'./assets/property1.jpeg',     price:12000 },
   savali:  { name:'Savali',  type:'Nature Home',    guests:2, bed:'Queen Bed',         size:'440 sq ft', img:'./assets/property2.jpeg',     price:12000 }
 };

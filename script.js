@@ -54,7 +54,7 @@ const HOMES = {
   },
   nishant: {
     name:'Nishant', type:'Couple Home', guests:'5 Guests',
-    bed:'2 Queen Beds', size:'760 sq ft', price:22000,
+    bed:'2 Queen Beds', size:'760 sq ft', price:20000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Two separate bedrooms','Shared living room','Large wraparound veranda','Outdoor dining area','Mini kitchen pantry','Personal safe','Two full bathrooms','Ceiling fans & AC'],
