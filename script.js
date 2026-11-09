@@ -457,7 +457,7 @@ if (bookingForm) {
     bookingModal.querySelector('.modal').scrollTop = 0;
 
     // ── WhatsApp notification ───────────────
-    const waNumber  = '919421135693';
+    const waNumber  = '919764350333';
     const nights    = calcNights(data.checkin, data.checkout);
     const waMessage = encodeURIComponent(
       `Hello Dabholkar Resort! 🌿\n\n` +
