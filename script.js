@@ -54,7 +54,7 @@ const HOMES = {
   },
   nishant: {
     name:'Nishant', type:'Couple Home', guests:'5 Guests',
-    bed:'2 Queen Beds', size:'760 sq ft', price:20000,
+    bed:'2 king Beds', size:'760 sq ft', price:20000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Two separate bedrooms','Shared living room','Large wraparound veranda','Outdoor dining area','Mini kitchen pantry','Personal safe','Two full bathrooms','Ceiling fans & AC'],
@@ -402,6 +402,7 @@ function buildSummaryHTML(data) {
     ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
     ${total ? `<div class="bc-row"><span class="bc-key">Est. Stay Total</span><span class="bc-val" style="font-weight:600;">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
     <div class="bc-row bc-row--advance"><span class="bc-key">Advance Paid</span><span class="bc-val bc-advance">₹2,000 ✓</span></div>
+    <div class="bc-row bc-row--note"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch &amp; Dinner at ₹2,000 per person extra.</span></div>
     ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}`;
 }
 
