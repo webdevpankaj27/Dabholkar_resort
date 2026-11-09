@@ -184,6 +184,24 @@ if (heroContent) {
   }, { passive: true });
 }
 
+/* ─────────────────────────────────────────
+   HERO VIDEO — UNMUTE TOGGLE
+───────────────────────────────────────────*/
+const heroVideo     = document.getElementById('heroVideo');
+const heroUnmuteBtn = document.getElementById('heroUnmuteBtn');
+
+if (heroVideo && heroUnmuteBtn) {
+  const iconMuted   = heroUnmuteBtn.querySelector('.icon-muted');
+  const iconUnmuted = heroUnmuteBtn.querySelector('.icon-unmuted');
+
+  heroUnmuteBtn.addEventListener('click', () => {
+    heroVideo.muted = !heroVideo.muted;
+    iconMuted.style.display   = heroVideo.muted ? '' : 'none';
+    iconUnmuted.style.display = heroVideo.muted ? 'none' : '';
+    heroUnmuteBtn.setAttribute('aria-label', heroVideo.muted ? 'Unmute video' : 'Mute video');
+  });
+}
+
 
 /* ─────────────────────────────────────────
    MODAL HELPERS

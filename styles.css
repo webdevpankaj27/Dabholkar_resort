@@ -3053,3 +3053,28 @@ ul { list-style: none; }
 @media (max-width: 520px) {
   .bm-stay-info-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Hero unmute button ─────────────────── */
+.hero-unmute-btn {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2rem;
+  z-index: 3;
+  background: rgba(26,46,38,0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(245,240,232,0.3);
+  color: var(--cream);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), transform 0.2s;
+}
+.hero-unmute-btn:hover {
+  background: rgba(45,74,62,0.95);
+  border-color: var(--gold);
+  transform: scale(1.08);
+}
