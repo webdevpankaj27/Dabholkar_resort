@@ -38,7 +38,7 @@ const db = {
 const HOMES = {
   ekaant: {
     name:'Ekaant', type:'Private Home', guests:'2 Guests',
-    bed:'King Bed', size:'480 sq ft', price:12000,
+    bed:'King Bed', size:'1200 sq ft', price:12000,
     desc:'A sanctuary of solitude. Ekaant wraps you in the kind of stillness that is increasingly rare — where birdsong replaces notification chimes and time bends to your rhythm. The home opens onto a private garden where mango and coconut trees filter the morning light, and evenings are spent on your veranda watching fireflies emerge over the paddy fields.',
     images:['./assets/roominterior.jpeg','./assets/property1.jpeg','./assets/propertynight.jpeg','./assets/property3.jpeg'],
     facilities:['Private garden terrace','Outdoor rain shower','Living area with daybed','Personal safe','In-room wardrobe','Ceiling fan & AC','Writing desk','Bluetooth speaker'],
@@ -46,7 +46,7 @@ const HOMES = {
   },
   sushant: {
     name:'Sushant', type:'VIP Home', guests:'2 Guests',
-    bed:'King Bed + Daybed', size:'680 sq ft', price:18000,
+    bed:'King Bed + Daybed', size:'1600 sq ft', price:18000,
     desc:'Our most distinguished residence. Sushant is appointed with hand-carved Konkan furniture, heirloom textiles, and a private plunge pool that looks out over the Arabian Sea. Heritage architecture meets contemporary comfort in a space designed for those who understand that true luxury is space, light, and the freedom to do nothing beautifully.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Private plunge pool','Sea-view veranda','Separate living room','Walk-in wardrobe','Espresso machine','Personal safe','Outdoor shower garden','Bluetooth speaker'],
@@ -54,7 +54,7 @@ const HOMES = {
   },
   nishant: {
     name:'Nishant', type:'Couple Home', guests:'5 Guests',
-    bed:'2 king Beds', size:'760 sq ft', price:20000,
+    bed:'2 king Beds', size:'1800 sq ft', price:20000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Two separate bedrooms','Shared living room','Large wraparound veranda','Outdoor dining area','Mini kitchen pantry','Personal safe','Two full bathrooms','Ceiling fans & AC'],
@@ -62,7 +62,7 @@ const HOMES = {
   },
   niwaant: {
     name:'Niwaant', type:'Serenity Home', guests:'2 Guests',
-    bed:'King Bed', size:'520 sq ft', price:12000,
+    bed:'King Bed', size:'1200 sq ft', price:12000,
     desc:'Niwaant is an ode to quietude. Positioned at the quietest corner of the estate, facing a grove of arecanut palms. There is nothing here designed to demand your attention — only things designed to earn it gently. An ideal retreat for couples or solo travellers seeking genuine stillness.',
     images:['./assets/property1.jpeg','./assets/roominterior.jpeg','./assets/propertynight.jpeg','./assets/property2.jpeg'],
     facilities:['Private garden view','Hammock terrace','Reading nook with bookshelves','Personal safe','Ceiling fan & AC','In-room wardrobe','Outdoor soaking tub','Writing desk'],
@@ -70,7 +70,7 @@ const HOMES = {
   },
   savali: {
     name:'Savali', type:'Nature Home', guests:'2 Guests',
-    bed:'Queen Bed', size:'440 sq ft', price:12000,
+    bed:'Queen Bed', size:'1200 sq ft', price:12000,
     desc:'Savali means "shade" in Marathi — and shade is precisely what this home delivers. Nestled under a dense canopy of jackfruit and cashew trees. Wake to the sounds of the forest, step outside onto a raised wooden deck, and feel the boundary between indoors and outdoors dissolve.',
     images:['./assets/property2.jpeg','./assets/property3.jpeg','./assets/roominterior2.jpeg','./assets/property1.jpeg'],
     facilities:['Raised forest-view deck','Outdoor shower','Hammock under canopy','Personal safe','Ceiling fan & AC','Nature trail access','Bird-watching kit','Writing desk'],
