@@ -49,6 +49,24 @@ const api = {
       headers: this.headers()
     });
     return res.ok;
+  },
+  // Upsert by primary key (used for settings)
+  async upsert(table, rows) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: { ...this.headers(), 'Prefer': 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(Array.isArray(rows) ? rows : [rows])
+    });
+    return res.ok;
+  },
+  // Select all settings as a key→value map
+  async getSettings() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/settings?select=key,value`, {
+      headers: this.headers()
+    });
+    if (!res.ok) return {};
+    const rows = await res.json();
+    return Object.fromEntries(rows.map(r => [r.key, r.value]));
   }
 };
 
@@ -184,6 +202,7 @@ async function boot() {
   dashboard.hidden = false;
   setTopbarDate();
   await loadBookings();
+  await loadSettings();
   renderOverview();
   renderReservationsTable();
   renderRooms();
@@ -681,11 +700,87 @@ document.getElementById('galleryUpload').addEventListener('change', function () 
 });
 
 /* ─────────────────────────────────────────
-   SETTINGS
+   SETTINGS — Supabase connected
 ───────────────────────────────────────────*/
-document.getElementById('contactForm').addEventListener('submit', e => { e.preventDefault(); showToast('Contact info saved.'); });
-document.getElementById('socialForm').addEventListener('submit', e => { e.preventDefault(); showToast('Social links saved.'); });
-document.getElementById('heroForm').addEventListener('submit', e => { e.preventDefault(); showToast('Website content saved.'); });
+let siteSettings = {};
+
+async function loadSettings() {
+  siteSettings = await api.getSettings();
+  populateSettingsForms(siteSettings);
+}
+
+function populateSettingsForms(s) {
+  // Contact form
+  const cf = document.getElementById('contactForm');
+  if (cf) {
+    cf.querySelector('[name="name"]').value    = s.resort_name || '';
+    cf.querySelector('[name="email"]').value   = s.email       || '';
+    cf.querySelector('[name="resemail"]').value= s.res_email   || '';
+    cf.querySelector('[name="phone"]').value   = s.phone       || '';
+    cf.querySelector('[name="address"]').value = s.address     || '';
+  }
+  // Social form
+  const sf = document.getElementById('socialForm');
+  if (sf) {
+    sf.querySelector('[name="instagram"]').value   = s.instagram   || '';
+    sf.querySelector('[name="facebook"]').value    = s.facebook    || '';
+    sf.querySelector('[name="tripadvisor"]').value = s.tripadvisor || '';
+    sf.querySelector('[name="maps"]').value        = s.maps        || '';
+  }
+  // Hero/About form
+  const hf = document.getElementById('heroForm');
+  if (hf) {
+    hf.querySelector('[name="headline"]').value = s.hero_headline || '';
+    hf.querySelector('[name="subtext"]').value  = s.hero_subtext  || '';
+    hf.querySelector('[name="about"]').value    = s.about_text    || '';
+  }
+}
+
+async function saveSettings(pairs) {
+  // pairs = array of { key, value }
+  const rows = pairs.map(p => ({ key: p.key, value: p.value, updated_at: new Date().toISOString() }));
+  const ok = await api.upsert('settings', rows);
+  if (ok) {
+    showToast('✓ Saved — site will reflect changes immediately.');
+    // Update local cache
+    pairs.forEach(p => { siteSettings[p.key] = p.value; });
+  } else {
+    showToast('Save failed. Check connection.', true);
+  }
+}
+
+document.getElementById('contactForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target;
+  await saveSettings([
+    { key: 'resort_name', value: f.querySelector('[name="name"]').value.trim() },
+    { key: 'email',       value: f.querySelector('[name="email"]').value.trim() },
+    { key: 'res_email',   value: f.querySelector('[name="resemail"]').value.trim() },
+    { key: 'phone',       value: f.querySelector('[name="phone"]').value.trim() },
+    { key: 'address',     value: f.querySelector('[name="address"]').value.trim() }
+  ]);
+});
+
+document.getElementById('socialForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target;
+  await saveSettings([
+    { key: 'instagram',   value: f.querySelector('[name="instagram"]').value.trim() },
+    { key: 'facebook',    value: f.querySelector('[name="facebook"]').value.trim() },
+    { key: 'tripadvisor', value: f.querySelector('[name="tripadvisor"]').value.trim() },
+    { key: 'maps',        value: f.querySelector('[name="maps"]').value.trim() }
+  ]);
+});
+
+document.getElementById('heroForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target;
+  await saveSettings([
+    { key: 'hero_headline', value: f.querySelector('[name="headline"]').value.trim() },
+    { key: 'hero_subtext',  value: f.querySelector('[name="subtext"]').value.trim() },
+    { key: 'about_text',    value: f.querySelector('[name="about"]').value.trim() }
+  ]);
+});
 
 document.getElementById('passwordForm').addEventListener('submit', e => {
   e.preventDefault();

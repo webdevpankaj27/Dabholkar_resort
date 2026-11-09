@@ -682,3 +682,66 @@ function handleSubscribe(e) {
   e.target.reset();
   setTimeout(() => { btn.textContent = orig; btn.style.cssText = ''; btn.disabled = false; }, 3500);
 }
+
+
+/* ─────────────────────────────────────────
+   SITE SETTINGS — load from Supabase
+   Updates contact info, hero text, about
+   text dynamically from admin settings
+───────────────────────────────────────────*/
+async function loadSiteSettings() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/settings?select=key,value`,
+      {
+        headers: {
+          'apikey':        SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+    if (!res.ok) return;
+
+    const rows = await res.json();
+    const s    = Object.fromEntries(rows.map(r => [r.key, r.value]));
+
+    // ── Hero section ─────────────────────
+    const headline = document.getElementById('site-headline');
+    const subtext  = document.getElementById('site-subtext');
+    if (headline && s.hero_headline) headline.innerHTML = s.hero_headline;
+    if (subtext  && s.hero_subtext)  subtext.innerHTML  = s.hero_subtext;
+
+    // ── About section ────────────────────
+    const about = document.getElementById('site-about');
+    if (about && s.about_text) about.textContent = s.about_text;
+
+    // ── Footer contact ───────────────────
+    const emailLink = document.getElementById('site-email-link');
+    const phoneLink = document.getElementById('site-phone-link');
+    const address   = document.getElementById('site-address');
+
+    if (emailLink && s.email) {
+      emailLink.textContent = s.email;
+      emailLink.href        = `mailto:${s.email}`;
+    }
+    if (phoneLink && s.phone) {
+      phoneLink.textContent = s.phone;
+      phoneLink.href        = `tel:${s.phone.replace(/\s/g, '')}`;
+    }
+    if (address && s.address) {
+      address.textContent = s.address;
+    }
+
+    // ── Page title ────────────────────────
+    if (s.resort_name) {
+      document.title = `${s.resort_name} — Luxury Heritage Stay in Ratnagiri, Konkan`;
+    }
+
+  } catch (err) {
+    // Silently fail — page shows default values
+    console.warn('Could not load site settings:', err);
+  }
+}
+
+// Run on page load
+loadSiteSettings();
