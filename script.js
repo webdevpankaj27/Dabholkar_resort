@@ -399,9 +399,9 @@ function calcNights(ci, co) {
 }
 
 /* ─────────────────────────────────────────
-   BOOKING FORM — SUBMIT + WHATSAPP
+   BOOKING FORM — RAZORPAY LIVE PAYMENT
 ───────────────────────────────────────────*/
-const WA_NUMBER = '919764350333'; // WhatsApp business number
+const RZP_KEY = 'rzp_live_TyV9XDkXJf4RPb';
 
 if (bookingForm) {
   bookingForm.addEventListener('submit', async e => {
@@ -416,75 +416,103 @@ if (bookingForm) {
     const total     = rate && nights > 0 ? rate * nights : null;
 
     // Loading state
-    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+    if (submitBtn) {
+      submitBtn.disabled  = true;
+      submitBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Opening payment…`;
+    }
 
-    // ── Save to Supabase ────────────────
-    const row = {
-      fname:    data.fname    || '',
-      lname:    data.lname    || '',
-      email:    data.email    || '',
-      phone:    data.phone    || '',
-      home:     data.home     || '',
-      guests:   data.guests   || '',
-      checkin:  data.checkin  || null,
-      checkout: data.checkout || null,
-      requests: data.requests || '',
-      status:   'pending',
-      notes:    '',
-      payment_id:  '',
-      amount_paid: 0
+    // ── Razorpay options ────────────────
+    const fullName = `${data.fname || ''} ${data.lname || ''}`.trim();
+    const description = `${data.home || 'Home'} · ${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : 'Stay'} · ${fmtDate(data.checkin)} – ${fmtDate(data.checkout)}`;
+
+    const options = {
+      key:         RZP_KEY,
+      amount:      total ? total * 100 : (rate ? rate * 100 : 100000), // paise
+      currency:    'INR',
+      name:        'Dabholkar Resort',
+      description: description,
+      image:       './assets/favicon.png',
+      prefill: {
+        name:    fullName,
+        email:   data.email || '',
+        contact: data.phone || ''
+      },
+      notes: {
+        home:     data.home     || '',
+        checkin:  data.checkin  || '',
+        checkout: data.checkout || '',
+        guests:   data.guests   || '',
+        requests: data.requests || ''
+      },
+      theme: { color: '#2d4a3e' },
+
+      handler: function (response) {
+        // Payment successful — save to Supabase and show confirmation
+        const row = {
+          fname:       data.fname    || '',
+          lname:       data.lname    || '',
+          email:       data.email    || '',
+          phone:       data.phone    || '',
+          home:        data.home     || '',
+          guests:      data.guests   || '',
+          checkin:     data.checkin  || null,
+          checkout:    data.checkout || null,
+          requests:    data.requests || '',
+          status:      'confirmed',
+          notes:       '',
+          payment_id:  response.razorpay_payment_id || '',
+          amount_paid: total || 0
+        };
+        db.insert('bookings', row).then(({ error }) => {
+          if (error) console.warn('Supabase save error:', error);
+        });
+
+        // Show confirmation
+        document.getElementById('bcName').textContent  = fullName;
+        document.getElementById('bcEmail').textContent = data.email || '';
+        document.getElementById('bcSummary').innerHTML = `
+          <h4>Booking Confirmed</h4>
+          <div class="bc-row"><span class="bc-key">Home</span><span class="bc-val">${data.home || '—'}</span></div>
+          <div class="bc-row"><span class="bc-key">Check-in</span><span class="bc-val">${fmtDate(data.checkin)}</span></div>
+          <div class="bc-row"><span class="bc-key">Check-out</span><span class="bc-val">${fmtDate(data.checkout)}</span></div>
+          <div class="bc-row"><span class="bc-key">Duration</span><span class="bc-val">${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : '—'}</span></div>
+          <div class="bc-row"><span class="bc-key">Guests</span><span class="bc-val">${data.guests ? data.guests + ' Guest' + (data.guests !== '1' ? 's' : '') : '—'}</span></div>
+          ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
+          ${total ? `<div class="bc-row" style="border-top:1px solid rgba(45,74,62,.12);margin-top:.3rem;padding-top:.3rem;"><span class="bc-key" style="font-weight:600;color:var(--green)">Amount Paid</span><span class="bc-val" style="font-weight:600;color:var(--green)">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
+          ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}
+          <div class="bc-row"><span class="bc-key">Payment ID</span><span class="bc-val" style="font-size:.72rem;word-break:break-all">${response.razorpay_payment_id || '—'}</span></div>
+          <div class="bc-row"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch &amp; Dinner available as extras — ₹1,000 per person each.</span></div>`;
+
+        bmFormWrap.hidden = true;
+        bmConfirm.hidden  = false;
+        bookingModal.querySelector('.modal').scrollTop = 0;
+
+        if (submitBtn) {
+          submitBtn.disabled  = false;
+          submitBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay Now`;
+        }
+      },
+
+      modal: {
+        ondismiss: function () {
+          if (submitBtn) {
+            submitBtn.disabled  = false;
+            submitBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay Now`;
+          }
+        }
+      }
     };
-    db.insert('bookings', row).then(({ error }) => {
-      if (error) console.warn('Supabase save error:', error);
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (response) {
+      alert(`Payment failed: ${response.error.description}. Please try again.`);
+      if (submitBtn) {
+        submitBtn.disabled  = false;
+        submitBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay Now`;
+      }
     });
 
-    // ── Build WhatsApp message ──────────
-    const waMsg = [
-      `🏡 *New Booking Enquiry — Dabholkar Resort*`,
-      ``,
-      `👤 *Guest:* ${data.fname || ''} ${data.lname || ''}`,
-      `📧 *Email:* ${data.email || '—'}`,
-      `📞 *Phone:* ${data.phone || '—'}`,
-      ``,
-      `🏠 *Home:* ${data.home || '—'}`,
-      `📅 *Check-in:* ${fmtDate(data.checkin)}`,
-      `📅 *Check-out:* ${fmtDate(data.checkout)}`,
-      `🌙 *Duration:* ${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : '—'}`,
-      `👥 *Guests:* ${data.guests || '—'}`,
-      rate  ? `💰 *Rate:* ₹${rate.toLocaleString('en-IN')} / night` : '',
-      total ? `💳 *Est. Total:* ₹${total.toLocaleString('en-IN')}` : '',
-      data.requests ? `\n📝 *Requests:* ${data.requests}` : ''
-    ].filter(Boolean).join('\n');
-
-    const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`;
-
-    // ── Show confirmation screen ────────
-    document.getElementById('bcName').textContent  = `${data.fname || ''} ${data.lname || ''}`.trim();
-    document.getElementById('bcEmail').textContent = data.email || '';
-    document.getElementById('bcSummary').innerHTML = `
-      <h4>Reservation Summary</h4>
-      <div class="bc-row"><span class="bc-key">Home</span><span class="bc-val">${data.home || '—'}</span></div>
-      <div class="bc-row"><span class="bc-key">Check-in</span><span class="bc-val">${fmtDate(data.checkin)}</span></div>
-      <div class="bc-row"><span class="bc-key">Check-out</span><span class="bc-val">${fmtDate(data.checkout)}</span></div>
-      <div class="bc-row"><span class="bc-key">Duration</span><span class="bc-val">${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : '—'}</span></div>
-      <div class="bc-row"><span class="bc-key">Guests</span><span class="bc-val">${data.guests ? data.guests + ' Guest' + (data.guests !== '1' ? 's' : '') : '—'}</span></div>
-      ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
-      ${total ? `<div class="bc-row" style="border-top:1px solid rgba(45,74,62,.12);margin-top:.3rem;padding-top:.3rem;"><span class="bc-key" style="font-weight:600;color:var(--green)">Est. Total</span><span class="bc-val" style="font-weight:600;color:var(--green)">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
-      ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}
-      <div class="bc-row"><span style="font-size:.75rem;color:var(--text-mid);font-style:italic;">🍽 Lunch &amp; Dinner are available as extras — ₹1,000 per person each.</span></div>
-      <a href="${waUrl}" target="_blank" rel="noopener" class="bm-wa-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Send via WhatsApp
-      </a>`;
-
-    bmFormWrap.hidden = true;
-    bmConfirm.hidden  = false;
-    bookingModal.querySelector('.modal').scrollTop = 0;
-
-    // Auto-open WhatsApp after short delay
-    setTimeout(() => window.open(waUrl, '_blank', 'noopener'), 800);
-
-    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Enquiry'; }
+    rzp.open();
   });
 }
 
