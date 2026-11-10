@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
+Disallow: /admin
 
-Sitemap: https://webdevpankaj27.github.io/Dabholkar_resort/sitemap.xml
+Sitemap: https://www.dabholkarresort.com/sitemap.xml
