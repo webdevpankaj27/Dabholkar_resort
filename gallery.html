@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Dabholkar Resort</title>
+  <meta name="description" content="Browse photos of Dabholkar Resort — rooms, property, dining and the Konkan Coast." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.dabholkarresort.com/gallery" />
+  <link rel="icon" type="image/png" href="./assets/logo.png" />
+  <link rel="apple-touch-icon" href="./assets/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="gallery.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="gallery-page">
+
+  <!-- ── NAVBAR ─────────────────────────── -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <a href="index.html" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;">
+          <img src="./assets/logo.png" alt="Dabholkar Resort" class="logo-img" />
+          <span class="logo-text">DABHOLKAR</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html#rooms">Rooms</a></li>
+        <li><a href="index.html#dining">Dining</a></li>
+        <li><a href="index.html#cuisine">Cuisine</a></li>
+        <li><a href="index.html#nearby">Explore</a></li>
+        <li><a href="gallery.html" class="nav-active">Gallery</a></li>
+        <li><a href="index.html#about">About</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="index.html#book" class="btn btn-outline-light">Book Now</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html#rooms">Rooms</a></li>
+      <li><a href="index.html#dining">Dining</a></li>
+      <li><a href="index.html#cuisine">Cuisine</a></li>
+      <li><a href="index.html#nearby">Explore</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#book" class="btn btn-solid">Book Now</a></li>
+    </ul>
+  </div>
+
+  <!-- ── PAGE HERO ──────────────────────── -->
+  <header class="gl-hero">
+    <div class="gl-hero-bg">
+      <img src="./assets/property3.jpeg" alt="Dabholkar Resort Gallery" />
+      <div class="gl-hero-overlay"></div>
+    </div>
+    <div class="gl-hero-content">
+      <p class="hero-eyebrow">Dabholkar Resort</p>
+      <h1>A feeling in<br /><em>a few frames.</em></h1>
+      <p class="gl-hero-sub">Every corner of the resort tells a story. Browse our collection and picture yourself here.</p>
+    </div>
+  </header>
+
+  <!-- ── FILTER BAR ─────────────────────── -->
+  <div class="gl-filter-bar">
+    <div class="gl-filter-inner">
+      <button class="gl-filter-btn active" data-filter="all">All Photos</button>
+      <button class="gl-filter-btn" data-filter="property">Property</button>
+      <button class="gl-filter-btn" data-filter="rooms">Rooms</button>
+      <button class="gl-filter-btn" data-filter="resort">Resort Life</button>
+    </div>
+  </div>
+
+  <!-- ── GALLERY GRID ───────────────────── -->
+  <main class="gl-main">
+    <div class="gl-grid" id="glGrid">
+
+      <!-- Property -->
+      <div class="gl-item" data-category="property">
+        <img src="./assets/property1.jpeg" alt="Resort property" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="property">
+        <img src="./assets/property2.jpeg" alt="Resort grounds" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="property">
+        <img src="./assets/property3.jpeg" alt="Resort aerial view" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="property">
+        <img src="./assets/propertynight.jpeg" alt="Resort at night" loading="lazy" />
+      </div>
+
+      <!-- Rooms -->
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/roominterior.jpeg" alt="Room interior" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/roominterior1.jpeg" alt="Room interior" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/roominterior2.jpeg" alt="Room interior" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/room_inter3.jpeg" alt="Room interior" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/room_inter4.jpeg" alt="Room interior" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/room_inter5.jpeg" alt="Room interior" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="rooms">
+        <img src="./assets/rooms.jpeg" alt="Dining area" loading="lazy" />
+      </div>
+
+      <!-- Resort Life -->
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4096.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4099.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4100.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4101.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4102.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4103.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4105.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4106.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4107.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4109.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/IMG_4110.PNG" alt="Resort life" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (86).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (87).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (88).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (89).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (90).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (91).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (92).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (93).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (94).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (95).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (96).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (97).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (98).png" alt="Resort" loading="lazy" />
+      </div>
+      <div class="gl-item" data-category="resort">
+        <img src="./assets/Screenshot (99).png" alt="Resort" loading="lazy" />
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── LIGHTBOX ───────────────────────── -->
+  <div class="gl-lightbox" id="glLightbox" hidden>
+    <div class="gl-lb-backdrop" id="glLbBackdrop"></div>
+    <button class="gl-lb-close" id="glLbClose" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="gl-lb-nav gl-lb-prev" id="glLbPrev" aria-label="Previous">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="gl-lb-img-wrap">
+      <img src="" alt="" id="glLbImg" />
+    </div>
+    <button class="gl-lb-nav gl-lb-next" id="glLbNext" aria-label="Next">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="gl-lb-counter" id="glLbCounter"></div>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="./assets/logo.png" alt="Dabholkar Resort" />
+          <span>DABHOLKAR</span>
+        </div>
+        <p class="footer-tagline">Your best<br />getaway awaits<br />by the coast.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Stay</h4>
+          <ul>
+            <li><a href="index.html#rooms">Ekaant — Private Home</a></li>
+            <li><a href="index.html#rooms">Sushant — VIP Home</a></li>
+            <li><a href="index.html#rooms">Nishant — Couple Home</a></li>
+            <li><a href="index.html#rooms">Niwaant — Serenity Home</a></li>
+            <li><a href="index.html#rooms">Savali — Nature Home</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="index.html#experience">Experiences</a></li>
+            <li><a href="index.html#dining">Dining</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="nearby.html">Nearby Destinations</a></li>
+            <li><a href="index.html#about">Our Story</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@dabholkarresort.com">hello@dabholkarresort.com</a></li>
+            <li><a href="tel:+919764350333">+91 97643 50333</a></li>
+            <li>Vengurla, Maharashtra</li>
+            <li>India — 416 516</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dabholkar Resort. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="WhatsApp" href="https://wa.me/919764350333">WA</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="gallery.js"></script>
+</body>
+</html>

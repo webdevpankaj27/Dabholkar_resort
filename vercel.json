@@ -2,12 +2,14 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/nearby", "destination": "/nearby.html" }
+    { "source": "/admin",   "destination": "/admin.html" },
+    { "source": "/nearby",  "destination": "/nearby.html" },
+    { "source": "/gallery", "destination": "/gallery.html" }
   ],
   "redirects": [
-    { "source": "/admin/", "destination": "/admin.html", "permanent": true },
-    { "source": "/nearby/", "destination": "/nearby.html", "permanent": true }
+    { "source": "/admin/",   "destination": "/admin.html",   "permanent": true },
+    { "source": "/nearby/",  "destination": "/nearby.html",  "permanent": true },
+    { "source": "/gallery/", "destination": "/gallery.html", "permanent": true }
   ],
   "headers": [
     {
