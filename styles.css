@@ -3114,3 +3114,114 @@ ul { list-style: none; }
   background: #1ebe57;
   transform: translateY(-1px);
 }
+
+/* ═══════════════════════════════════════════
+   ROOMS — MEDIA OBJECT LAYOUT
+   Thumbnail left, details right
+═══════════════════════════════════════════ */
+.rooms-media-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.room-media {
+  background: #fff;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid rgba(45,74,62,0.08);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.room-media:hover {
+  box-shadow: 0 12px 40px rgba(45,74,62,0.13);
+  transform: translateY(-2px);
+}
+.room-media--featured {
+  border: 2px solid var(--gold);
+}
+
+/* ── Thumbnail (left) ─────────────────── */
+.room-media-thumb {
+  position: relative;
+  width: 260px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.room-media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.room-media:hover .room-media-thumb img {
+  transform: scale(1.05);
+}
+.room-media-thumb .room-card-badge {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+}
+
+/* ── Body (right) ─────────────────────── */
+.room-media-body {
+  flex: 1;
+  padding: 1.6rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.room-media-body h3 {
+  font-family: var(--ff-serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--text-dark);
+  line-height: 1.1;
+}
+
+.room-media-specs {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+.room-media-specs span {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--ff-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+.room-media-specs svg { color: var(--gold); flex-shrink: 0; }
+
+.room-media-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(45,74,62,0.08);
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ──────────────────────── */
+@media (max-width: 768px) {
+  .room-media {
+    flex-direction: column;
+  }
+  .room-media-thumb {
+    width: 100%;
+    height: 220px;
+  }
+  .room-media-body {
+    padding: 1.2rem 1.4rem;
+  }
+  .room-media-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
