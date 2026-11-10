@@ -963,6 +963,17 @@ ul { list-style: none; }
   gap: 1rem;
 }
 
+/* Masonry-style grid for full gallery */
+.gallery-grid--masonry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 0.6rem;
+}
+.gallery-grid--masonry .gallery-item {
+  height: 220px;
+}
+
 .gallery-item {
   overflow: hidden;
   cursor: pointer;
