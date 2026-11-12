@@ -274,6 +274,141 @@
       </div>
 
     </section>
+    <!-- ── TAB: BILLING ─────────────────────── -->
+    <section class="tab-panel" id="tab-billing">
+
+      <div class="panel-header">
+        <h2>Guest Invoice</h2>
+        <button class="btn-primary" id="printInvoiceBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print / PDF
+        </button>
+      </div>
+
+      <div class="invoice-wrapper">
+        <div class="invoice-card">
+
+          <div class="inv-header">
+            <div class="inv-brand">
+              <img src="./assets/logo.png" alt="Dabholkar Resort" />
+              <div>
+                <h2>DABHOLKAR RESORT</h2>
+                <p>Vengurla, Sindhudurg, Maharashtra</p>
+              </div>
+            </div>
+            <div class="inv-title">GUEST INVOICE / BILL</div>
+          </div>
+
+          <div class="inv-info-grid">
+            <div class="inv-info-field">
+              <label>Invoice No.</label>
+              <input type="text" id="invNumber" placeholder="DR-0001" />
+            </div>
+            <div class="inv-info-field">
+              <label>Invoice Date</label>
+              <input type="date" id="invDate" />
+            </div>
+            <div class="inv-info-field">
+              <label>Guest Name</label>
+              <input type="text" id="invGuestName" placeholder="Full Name" />
+            </div>
+            <div class="inv-info-field">
+              <label>Mobile</label>
+              <input type="tel" id="invPhone" placeholder="+91 00000 00000" />
+            </div>
+            <div class="inv-info-field">
+              <label>Cottage / Home</label>
+              <select id="invHome">
+                <option>Ekaant</option>
+                <option>Sushant</option>
+                <option>Nishant</option>
+                <option>Niwaant</option>
+                <option>Savali</option>
+              </select>
+            </div>
+            <div class="inv-info-field">
+              <label>No. of Guests</label>
+              <input type="number" id="invGuests" min="1" value="1" />
+            </div>
+            <div class="inv-info-field">
+              <label>Check-in</label>
+              <input type="date" id="invCheckIn" />
+            </div>
+            <div class="inv-info-field">
+              <label>Check-out</label>
+              <input type="date" id="invCheckOut" />
+            </div>
+            <div class="inv-info-field">
+              <label>Nights (auto)</label>
+              <input type="number" id="invNights" readonly placeholder="0" />
+            </div>
+          </div>
+
+          <table class="inv-charges-table">
+            <thead>
+              <tr>
+                <th style="width:40px">No.</th>
+                <th>Description</th>
+                <th style="width:80px">Qty</th>
+                <th style="width:120px">Rate (&#8377;)</th>
+                <th style="width:130px">Amount (&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody id="invChargesBody">
+              <tr><td>1</td><td><input type="text" class="inv-desc" placeholder="Room charges" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>2</td><td><input type="text" class="inv-desc" placeholder="Extra person charges" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>3</td><td><input type="text" class="inv-desc" placeholder="Breakfast" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>4</td><td><input type="text" class="inv-desc" placeholder="Lunch" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>5</td><td><input type="text" class="inv-desc" placeholder="Dinner" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>6</td><td><input type="text" class="inv-desc" placeholder="Snacks / Beverages" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>7</td><td><input type="text" class="inv-desc" placeholder="Tea / Coffee" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>8</td><td><input type="text" class="inv-desc" placeholder="Laundry" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>9</td><td><input type="text" class="inv-desc" placeholder="Transport" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>10</td><td><input type="text" class="inv-desc" placeholder="Activities / Experiences" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+              <tr><td>11</td><td><input type="text" class="inv-desc" placeholder="Other charges" /></td><td><input type="number" class="inv-qty" min="0" value="0" /></td><td><input type="number" class="inv-rate" min="0" value="0" /></td><td class="inv-amt">&#8377;0.00</td></tr>
+            </tbody>
+          </table>
+
+          <div class="inv-totals">
+            <div class="inv-total-row"><span>Subtotal</span><span id="invSubtotal">&#8377;0.00</span></div>
+            <div class="inv-total-row"><span>Discount (&#8377;)</span><span class="inv-input-cell"><input type="number" id="invDiscount" min="0" value="0" /></span></div>
+            <div class="inv-total-row"><span>Taxable Amount</span><span id="invTaxable">&#8377;0.00</span></div>
+            <div class="inv-total-row"><span>GST Rate (%)</span><span class="inv-input-cell"><input type="number" id="invGSTRate" min="0" max="100" value="0" step="0.01" /></span></div>
+            <div class="inv-total-row"><span>GST Amount</span><span id="invGSTAmount">&#8377;0.00</span></div>
+            <div class="inv-total-row inv-grand-total"><span>GRAND TOTAL</span><span id="invGrandTotal">&#8377;0.00</span></div>
+            <div class="inv-total-row"><span>Advance Paid (&#8377;)</span><span class="inv-input-cell"><input type="number" id="invAdvancePaid" min="0" value="0" /></span></div>
+            <div class="inv-total-row inv-balance-due"><span>BALANCE DUE</span><span id="invBalanceDue">&#8377;0.00</span></div>
+          </div>
+
+          <div class="inv-payment-details">
+            <h4>PAYMENT DETAILS</h4>
+            <div class="inv-pd-grid">
+              <div class="inv-pd-field">
+                <label>Payment Mode</label>
+                <input type="text" id="invPaymentMode" placeholder="Cash / Card / UPI / Bank Transfer" />
+              </div>
+              <div class="inv-pd-field">
+                <label>Transaction / UPI Ref.</label>
+                <input type="text" id="invTransactionRef" placeholder="Reference ID" />
+              </div>
+            </div>
+            <div class="inv-pd-field inv-pd-full">
+              <label>Amount in Words</label>
+              <input type="text" id="invAmountWords" placeholder="Rupees ..." readonly />
+            </div>
+          </div>
+
+          <div class="inv-footer">
+            <p>Thank you for staying with Dabholkar Resort. We hope to welcome you again!</p>
+            <div class="inv-signatures">
+              <div class="inv-sig"><p>Guest Signature: __________________________</p></div>
+              <div class="inv-sig"><p>Authorized Signature: __________________________</p></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
     <!-- ── TAB: SETTINGS ─────────────────────── -->
     <section class="tab-panel" id="tab-settings">

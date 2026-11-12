@@ -798,84 +798,70 @@ document.getElementById('passwordForm').addEventListener('submit', e => {
   showToast('Password updated.');
 });
 
-/* -----------------------------------------
+/* ─────────────────────────────────────────
    BILLING / INVOICE
--------------------------------------------*/
-const invoiceInputs = document.querySelectorAll('#tab-billing input, #tab-billing select');
-const invChargesBody = document.getElementById('invChargesBody');
+───────────────────────────────────────────*/
+(function () {
+  var invChargesBody = document.getElementById('invChargesBody');
+  var invCheckIn     = document.getElementById('invCheckIn');
+  var invCheckOut    = document.getElementById('invCheckOut');
+  var invNights      = document.getElementById('invNights');
 
-// Auto-calculate nights
-const invCheckIn  = document.getElementById('invCheckIn');
-const invCheckOut = document.getElementById('invCheckOut');
-const invNights   = document.getElementById('invNights');
+  if (!invChargesBody) return; // billing tab not on this page
 
-if (invCheckIn && invCheckOut && invNights) {
-  function calcInvNights() {
+  // Set today as default invoice date
+  var invDate = document.getElementById('invDate');
+  if (invDate) invDate.valueAsDate = new Date();
+
+  // Auto nights
+  function calcNights() {
     if (!invCheckIn.value || !invCheckOut.value) { invNights.value = ''; return; }
-    const nights = Math.max(0, (new Date(invCheckOut.value) - new Date(invCheckIn.value)) / 86400000);
-    invNights.value = Math.round(nights);
+    var n = Math.max(0, (new Date(invCheckOut.value) - new Date(invCheckIn.value)) / 86400000);
+    invNights.value = Math.round(n);
   }
-  invCheckIn.addEventListener('change', calcInvNights);
-  invCheckOut.addEventListener('change', calcInvNights);
-}
+  if (invCheckIn)  invCheckIn.addEventListener('change', calcNights);
+  if (invCheckOut) invCheckOut.addEventListener('change', calcNights);
 
-// Auto-calculate line items, totals, and balance
-function recalcInvoice() {
-  const rows = invChargesBody.querySelectorAll('tr');
-  let subtotal = 0;
-
-  rows.forEach(row => {
-    const qtyInput  = row.querySelector('.inv-qty');
-    const rateInput = row.querySelector('.inv-rate');
-    const amtCell   = row.querySelector('.inv-amt');
-
-    if (qtyInput && rateInput && amtCell) {
-      const qty   = parseFloat(qtyInput.value) || 0;
-      const rate  = parseFloat(rateInput.value) || 0;
-      const amt   = qty * rate;
-      amtCell.textContent = '?' + amt.toFixed(2);
+  // Recalculate all totals
+  function recalc() {
+    var rows = invChargesBody.querySelectorAll('tr');
+    var subtotal = 0;
+    rows.forEach(function (row) {
+      var qty  = parseFloat(row.querySelector('.inv-qty')  ? row.querySelector('.inv-qty').value  : 0) || 0;
+      var rate = parseFloat(row.querySelector('.inv-rate') ? row.querySelector('.inv-rate').value : 0) || 0;
+      var amt  = qty * rate;
+      var cell = row.querySelector('.inv-amt');
+      if (cell) cell.textContent = '\u20B9' + amt.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
       subtotal += amt;
-    }
-  });
+    });
 
-  const discount       = parseFloat(document.getElementById('invDiscount').value) || 0;
-  const taxable        = subtotal - discount;
-  const gstRate        = parseFloat(document.getElementById('invGSTRate').value) || 0;
-  const gstAmount      = (taxable * gstRate) / 100;
-  const grandTotal     = taxable + gstAmount;
-  const advancePaid    = parseFloat(document.getElementById('invAdvancePaid').value) || 0;
-  const balanceDue     = grandTotal - advancePaid;
+    var discount   = parseFloat(document.getElementById('invDiscount').value)   || 0;
+    var taxable    = subtotal - discount;
+    var gstRate    = parseFloat(document.getElementById('invGSTRate').value)     || 0;
+    var gstAmount  = (taxable * gstRate) / 100;
+    var grand      = taxable + gstAmount;
+    var advance    = parseFloat(document.getElementById('invAdvancePaid').value) || 0;
+    var balance    = grand - advance;
 
-  document.getElementById('invSubtotal').textContent = '?' + subtotal.toFixed(2);
-  document.getElementById('invTaxable').textContent  = '?' + taxable.toFixed(2);
-  document.getElementById('invGSTAmount').textContent = '?' + gstAmount.toFixed(2);
-  document.getElementById('invGrandTotal').textContent = '?' + grandTotal.toFixed(2);
-  document.getElementById('invBalanceDue').textContent = '?' + balanceDue.toFixed(2);
+    function fmt(v) { return '\u20B9' + v.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
-  // Amount in words (simple)
-  document.getElementById('invAmountWords').value = `Rupees ${Math.round(grandTotal)}`;
-}
+    document.getElementById('invSubtotal').textContent   = fmt(subtotal);
+    document.getElementById('invTaxable').textContent    = fmt(taxable);
+    document.getElementById('invGSTAmount').textContent  = fmt(gstAmount);
+    document.getElementById('invGrandTotal').textContent = fmt(grand);
+    document.getElementById('invBalanceDue').textContent = fmt(balance);
 
-// Attach recalc to all inputs
-invoiceInputs.forEach(input => {
-  input.addEventListener('change', recalcInvoice);
-  input.addEventListener('input', recalcInvoice);
-});
+    var words = document.getElementById('invAmountWords');
+    if (words) words.value = 'Rupees ' + Math.round(grand).toLocaleString('en-IN') + ' only';
+  }
 
-if (invChargesBody) {
-  invChargesBody.addEventListener('change', recalcInvoice);
-  invChargesBody.addEventListener('input', recalcInvoice);
-}
+  // Attach to all inputs inside billing tab
+  document.getElementById('tab-billing').addEventListener('change', recalc);
+  document.getElementById('tab-billing').addEventListener('input',  recalc);
 
-// Set today's date as default
-if (document.getElementById('invDate')) {
-  document.getElementById('invDate').valueAsDate = new Date();
-}
+  // Print button
+  var printBtn = document.getElementById('printInvoiceBtn');
+  if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
 
-// Print / PDF
-const printInvoiceBtn = document.getElementById('printInvoiceBtn');
-if (printInvoiceBtn) {
-  printInvoiceBtn.addEventListener('click', () => {
-    window.print();
-  });
-}
+  recalc(); // initial pass
+})();
