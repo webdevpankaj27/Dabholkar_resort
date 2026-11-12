@@ -797,3 +797,85 @@ document.getElementById('passwordForm').addEventListener('submit', e => {
   e.target.reset();
   showToast('Password updated.');
 });
+
+/* -----------------------------------------
+   BILLING / INVOICE
+-------------------------------------------*/
+const invoiceInputs = document.querySelectorAll('#tab-billing input, #tab-billing select');
+const invChargesBody = document.getElementById('invChargesBody');
+
+// Auto-calculate nights
+const invCheckIn  = document.getElementById('invCheckIn');
+const invCheckOut = document.getElementById('invCheckOut');
+const invNights   = document.getElementById('invNights');
+
+if (invCheckIn && invCheckOut && invNights) {
+  function calcInvNights() {
+    if (!invCheckIn.value || !invCheckOut.value) { invNights.value = ''; return; }
+    const nights = Math.max(0, (new Date(invCheckOut.value) - new Date(invCheckIn.value)) / 86400000);
+    invNights.value = Math.round(nights);
+  }
+  invCheckIn.addEventListener('change', calcInvNights);
+  invCheckOut.addEventListener('change', calcInvNights);
+}
+
+// Auto-calculate line items, totals, and balance
+function recalcInvoice() {
+  const rows = invChargesBody.querySelectorAll('tr');
+  let subtotal = 0;
+
+  rows.forEach(row => {
+    const qtyInput  = row.querySelector('.inv-qty');
+    const rateInput = row.querySelector('.inv-rate');
+    const amtCell   = row.querySelector('.inv-amt');
+
+    if (qtyInput && rateInput && amtCell) {
+      const qty   = parseFloat(qtyInput.value) || 0;
+      const rate  = parseFloat(rateInput.value) || 0;
+      const amt   = qty * rate;
+      amtCell.textContent = '?' + amt.toFixed(2);
+      subtotal += amt;
+    }
+  });
+
+  const discount       = parseFloat(document.getElementById('invDiscount').value) || 0;
+  const taxable        = subtotal - discount;
+  const gstRate        = parseFloat(document.getElementById('invGSTRate').value) || 0;
+  const gstAmount      = (taxable * gstRate) / 100;
+  const grandTotal     = taxable + gstAmount;
+  const advancePaid    = parseFloat(document.getElementById('invAdvancePaid').value) || 0;
+  const balanceDue     = grandTotal - advancePaid;
+
+  document.getElementById('invSubtotal').textContent = '?' + subtotal.toFixed(2);
+  document.getElementById('invTaxable').textContent  = '?' + taxable.toFixed(2);
+  document.getElementById('invGSTAmount').textContent = '?' + gstAmount.toFixed(2);
+  document.getElementById('invGrandTotal').textContent = '?' + grandTotal.toFixed(2);
+  document.getElementById('invBalanceDue').textContent = '?' + balanceDue.toFixed(2);
+
+  // Amount in words (simple)
+  document.getElementById('invAmountWords').value = `Rupees ${Math.round(grandTotal)}`;
+}
+
+// Attach recalc to all inputs
+invoiceInputs.forEach(input => {
+  input.addEventListener('change', recalcInvoice);
+  input.addEventListener('input', recalcInvoice);
+});
+
+if (invChargesBody) {
+  invChargesBody.addEventListener('change', recalcInvoice);
+  invChargesBody.addEventListener('input', recalcInvoice);
+}
+
+// Set today's date as default
+if (document.getElementById('invDate')) {
+  document.getElementById('invDate').valueAsDate = new Date();
+}
+
+// Print / PDF
+const printInvoiceBtn = document.getElementById('printInvoiceBtn');
+if (printInvoiceBtn) {
+  printInvoiceBtn.addEventListener('click', () => {
+    window.print();
+  });
+}
