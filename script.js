@@ -33,6 +33,122 @@ const db = {
 };
 
 /* ─────────────────────────────────────────
+   SEASONAL PRICING
+   Each season applies a multiplier per home.
+   Dates are matched per night (check-in date
+   of that night), so a split stay is prorated.
+───────────────────────────────────────────*/
+const SEASONS = [
+  // ── New Year Super Peak (Dec 25 – Jan 5) ──
+  {
+    name:  'New Year Special',
+    label: '🎆 New Year Super Peak',
+    start: { month: 12, day: 25 },
+    end:   { month:  1, day:  5 },  // Jan 5 (crosses year)
+    multiplier: 1.6                  // 60% above base
+  },
+  // ── Christmas / Holiday Peak (Dec 15 – Dec 24) ──
+  {
+    name:  'Christmas Peak',
+    label: '🎄 Holiday Season',
+    start: { month: 12, day: 15 },
+    end:   { month: 12, day: 24 },
+    multiplier: 1.4                  // 40% above base
+  },
+  // ── Early December (Dec 1 – Dec 14) ──
+  {
+    name:  'Early December',
+    label: '❄️ Early Winter',
+    start: { month: 12, day:  1 },
+    end:   { month: 12, day: 14 },
+    multiplier: 1.2                  // 20% above base
+  },
+  // ── Nov 23 – Nov 30 (Pre-season) ──
+  {
+    name:  'Pre-season',
+    label: '🍂 Pre-season',
+    start: { month: 11, day: 23 },
+    end:   { month: 11, day: 30 },
+    multiplier: 1.0                  // base price
+  }
+  // All other dates also use base price (default)
+];
+
+/**
+ * Returns the season object that covers the given date,
+ * or null for base pricing. `date` is a JS Date at midnight.
+ */
+function getSeasonForDate(date) {
+  const m = date.getMonth() + 1; // 1–12
+  const d = date.getDate();
+
+  for (const season of SEASONS) {
+    const s = season.start;
+    const e = season.end;
+
+    // Handle year-crossing ranges (e.g. Dec 25 – Jan 5)
+    if (s.month > e.month) {
+      if ((m === s.month && d >= s.day) || (m === e.month && d <= e.day)) {
+        return season;
+      }
+    } else {
+      if (
+        (m === s.month && d >= s.day && (s.month !== e.month || d <= e.day)) ||
+        (m === e.month && d <= e.day && s.month !== e.month)
+      ) {
+        return season;
+      }
+    }
+  }
+  return null; // base price
+}
+
+/**
+ * Returns the per-night price for a home on a specific date.
+ * `homeKey` is the key in HOMES; `date` is a JS Date at midnight.
+ */
+function getNightlyRate(homeKey, date) {
+  const base   = HOMES[homeKey] ? HOMES[homeKey].price : 0;
+  const season = getSeasonForDate(date);
+  return season ? Math.round(base * season.multiplier) : base;
+}
+
+/**
+ * Calculates total cost broken down by season segment.
+ * Returns { total, nights, breakdown: [{label, nights, rate, subtotal}] }
+ */
+function calcSeasonalTotal(homeKey, checkin, checkout) {
+  if (!homeKey || !checkin || !checkout) return null;
+
+  const start = new Date(checkin  + 'T00:00:00');
+  const end   = new Date(checkout + 'T00:00:00');
+  const totalNights = Math.round((end - start) / 86400000);
+  if (totalNights <= 0) return null;
+
+  // Walk night-by-night, group consecutive same-rate nights
+  const segments = [];
+  let   total    = 0;
+
+  for (let i = 0; i < totalNights; i++) {
+    const nightDate = new Date(start.getTime() + i * 86400000);
+    const rate      = getNightlyRate(homeKey, nightDate);
+    const season    = getSeasonForDate(nightDate);
+    const label     = season ? season.label : '🌿 Regular Season';
+
+    total += rate;
+    const last = segments[segments.length - 1];
+    if (last && last.rate === rate && last.label === label) {
+      last.nights++;
+      last.subtotal += rate;
+    } else {
+      segments.push({ label, nights: 1, rate, subtotal: rate });
+    }
+  }
+
+  return { total, nights: totalNights, breakdown: segments };
+}
+
+/* ─────────────────────────────────────────
    HOME DATA
 ───────────────────────────────────────────*/
 const HOMES = {
@@ -362,7 +478,54 @@ if (bmCheckin) {
       bmCheckout.min = this.value;
       if (bmCheckout.value && bmCheckout.value <= this.value) bmCheckout.value = '';
     }
+    updatePricePreview();
   });
+}
+
+if (bmCheckout) {
+  bmCheckout.addEventListener('change', updatePricePreview);
+}
+
+if (bmHomeSelect) {
+  bmHomeSelect.addEventListener('change', updatePricePreview);
+}
+
+/* ─────────────────────────────────────────
+   LIVE PRICE PREVIEW
+───────────────────────────────────────────*/
+const bmPricePreview = document.getElementById('bmPricePreview');
+const bppRows        = document.getElementById('bppRows');
+const bppTotal       = document.getElementById('bppTotal');
+
+function updatePricePreview() {
+  if (!bmPricePreview || !bppRows || !bppTotal) return;
+
+  const homeName = bmHomeSelect ? bmHomeSelect.value : '';
+  const checkin  = bmCheckin  ? bmCheckin.value  : '';
+  const checkout = bmCheckout ? bmCheckout.value : '';
+
+  if (!homeName || !checkin || !checkout || checkout <= checkin) {
+    bmPricePreview.style.display = 'none';
+    return;
+  }
+
+  const homeKey = Object.keys(HOMES).find(k => HOMES[k].name === homeName);
+  if (!homeKey) { bmPricePreview.style.display = 'none'; return; }
+
+  const result = calcSeasonalTotal(homeKey, checkin, checkout);
+  if (!result) { bmPricePreview.style.display = 'none'; return; }
+
+  bppRows.innerHTML = result.breakdown.map(seg => `
+    <div class="bpp-row">
+      <span class="bpp-label">${seg.label} &nbsp;×&nbsp; ${seg.nights} night${seg.nights > 1 ? 's' : ''}</span>
+      <span class="bpp-val">₹${seg.rate.toLocaleString('en-IN')}/n &nbsp;=&nbsp; ₹${seg.subtotal.toLocaleString('en-IN')}</span>
+    </div>`).join('');
+
+  bppTotal.innerHTML = `
+    <span>Total (${result.nights} night${result.nights > 1 ? 's' : ''})</span>
+    <span class="bpp-total-val">₹${result.total.toLocaleString('en-IN')}</span>`;
+
+  bmPricePreview.style.display = 'block';
 }
 
 
@@ -412,8 +575,10 @@ if (bookingForm) {
     const submitBtn = bookingForm.querySelector('.bm-submit');
     const nights    = calcNights(data.checkin, data.checkout);
     const homeObj   = Object.values(HOMES).find(h => h.name === data.home);
+    const homeKey   = homeObj ? Object.keys(HOMES).find(k => HOMES[k].name === data.home) : null;
+    const seasonal  = homeKey ? calcSeasonalTotal(homeKey, data.checkin, data.checkout) : null;
     const rate      = homeObj ? homeObj.price : null;
-    const total     = rate && nights > 0 ? rate * nights : null;
+    const total     = seasonal ? seasonal.total : (rate && nights > 0 ? rate * nights : null);
 
     // Loading state
     if (submitBtn) {
@@ -477,7 +642,9 @@ if (bookingForm) {
           <div class="bc-row"><span class="bc-key">Check-out</span><span class="bc-val">${fmtDate(data.checkout)}</span></div>
           <div class="bc-row"><span class="bc-key">Duration</span><span class="bc-val">${nights > 0 ? nights + ' night' + (nights > 1 ? 's' : '') : '—'}</span></div>
           <div class="bc-row"><span class="bc-key">Guests</span><span class="bc-val">${data.guests ? data.guests + ' Guest' + (data.guests !== '1' ? 's' : '') : '—'}</span></div>
-          ${rate  ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${rate.toLocaleString('en-IN')}</span></div>` : ''}
+          ${seasonal && seasonal.breakdown.length > 1
+            ? seasonal.breakdown.map(seg => `<div class="bc-row"><span class="bc-key" style="font-size:.72rem">${seg.label} × ${seg.nights}n</span><span class="bc-val" style="font-size:.72rem">₹${seg.rate.toLocaleString('en-IN')}/n = ₹${seg.subtotal.toLocaleString('en-IN')}</span></div>`).join('')
+            : (rate ? `<div class="bc-row"><span class="bc-key">Nightly Rate</span><span class="bc-val">₹${(seasonal ? seasonal.breakdown[0].rate : rate).toLocaleString('en-IN')}</span></div>` : '')}
           ${total ? `<div class="bc-row" style="border-top:1px solid rgba(45,74,62,.12);margin-top:.3rem;padding-top:.3rem;"><span class="bc-key" style="font-weight:600;color:var(--green)">Amount Paid</span><span class="bc-val" style="font-weight:600;color:var(--green)">₹${total.toLocaleString('en-IN')}</span></div>` : ''}
           ${data.requests ? `<div class="bc-row"><span class="bc-key">Requests</span><span class="bc-val">${data.requests}</span></div>` : ''}
           <div class="bc-row"><span class="bc-key">Payment ID</span><span class="bc-val" style="font-size:.72rem;word-break:break-all">${response.razorpay_payment_id || '—'}</span></div>

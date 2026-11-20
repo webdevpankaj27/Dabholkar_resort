@@ -2436,6 +2436,59 @@ ul { list-style: none; }
 .bm-lunch-info svg { flex-shrink: 0; margin-top: 2px; color: var(--gold); }
 .bm-lunch-info strong { color: var(--text-dark); font-weight: 500; }
 
+/* ── Live Price Preview (booking form) ─── */
+.bm-price-preview {
+  background: rgba(45,74,62,0.06);
+  border: 1px solid rgba(45,74,62,0.18);
+  border-radius: 10px;
+  padding: 1.1rem 1.3rem;
+  margin-top: 1rem;
+}
+.bpp-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--ff-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 0.8rem;
+}
+.bpp-header svg { color: var(--gold); flex-shrink: 0; }
+.bpp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--ff-sans);
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  padding: 0.3rem 0;
+  border-bottom: 1px dashed rgba(45,74,62,0.1);
+}
+.bpp-row:last-child { border-bottom: none; }
+.bpp-label { flex: 1; }
+.bpp-val   { white-space: nowrap; color: var(--text-dark); }
+.bpp-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.6rem;
+  margin-top: 0.4rem;
+  border-top: 1.5px solid rgba(45,74,62,0.2);
+  font-family: var(--ff-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+.bpp-total-val {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--green);
+}
+
 /* ── Confirmation: total row ───────────── */
 .bc-row--total {
   background: rgba(45,74,62,0.05);
