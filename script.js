@@ -39,31 +39,39 @@ const db = {
    of that night), so a split stay is prorated.
 ───────────────────────────────────────────*/
 const SEASONS = [
-  // Dec 15 - Jan 5 (Peak)
+  // ── New Year Super Peak (Dec 25 – Jan 5) ──
   {
-    name:  'Peak Season',
-    label: '🎄 Peak Season',
-    start: { month: 12, day: 15 },
-    end:   { month:  1, day:  5 },
-    rates: { ekaant: 25000, niwaant: 25000, savali: 25000, sushant: 35000, nishant: 30000 }
+    name:  'New Year Special',
+    label: '🎆 New Year Super Peak',
+    start: { month: 12, day: 25 },
+    end:   { month:  1, day:  5 },  // Jan 5 (crosses year)
+    multiplier: 1.6                  // 60% above base
   },
-  // Dec 1 - Dec 14
+  // ── Christmas / Holiday Peak (Dec 15 – Dec 24) ──
+  {
+    name:  'Christmas Peak',
+    label: '🎄 Holiday Season',
+    start: { month: 12, day: 15 },
+    end:   { month: 12, day: 24 },
+    multiplier: 1.4                  // 40% above base
+  },
+  // ── Early December (Dec 1 – Dec 14) ──
   {
     name:  'Early December',
-    label: '❄️ Early December',
+    label: '❄️ Early Winter',
     start: { month: 12, day:  1 },
     end:   { month: 12, day: 14 },
-    rates: { ekaant: 9000, niwaant: 9000, savali: 9000, sushant: 15000, nishant: 12500 }
+    multiplier: 1.2                  // 20% above base
   },
-  // Nov 23 - Nov 30
+  // ── Nov 23 – Nov 30 (Pre-season) ──
   {
     name:  'Pre-season',
     label: '🍂 Pre-season',
     start: { month: 11, day: 23 },
     end:   { month: 11, day: 30 },
-    rates: { ekaant: 7500, niwaant: 7500, savali: 7500, sushant: 12500, nishant: 10500 }
+    multiplier: 1.0                  // base price
   }
-  // All other dates use HOMES[key].price as base
+  // All other dates also use base price (default)
 ];
 
 /**
@@ -102,8 +110,7 @@ function getSeasonForDate(date) {
 function getNightlyRate(homeKey, date) {
   const base   = HOMES[homeKey] ? HOMES[homeKey].price : 0;
   const season = getSeasonForDate(date);
-  if (!season) return base;
-  return (season.rates && season.rates[homeKey] != null) ? season.rates[homeKey] : base;
+  return season ? Math.round(base * season.multiplier) : base;
 }
 
 /**
@@ -147,7 +154,7 @@ function calcSeasonalTotal(homeKey, checkin, checkout) {
 const HOMES = {
   ekaant: {
     name:'Ekaant', type:'Private Villa', guests:'2 Guests',
-    bed:'King Bed', size:'1200 sq ft', price:7500,
+    bed:'King Bed', size:'1200 sq ft', price:12000,
     desc:'A sanctuary of solitude. Ekaant wraps you in the kind of stillness that is increasingly rare — where birdsong replaces notification chimes and time bends to your rhythm. The home opens onto a private garden where mango and coconut trees filter the morning light, and evenings are spent on your veranda watching fireflies emerge over the paddy fields.',
     images:['./assets/roominterior.jpeg','./assets/property1.jpeg','./assets/propertynight.jpeg','./assets/property3.jpeg'],
     facilities:['Private garden terrace','Outdoor rain shower','Living area with daybed','Personal safe','In-room wardrobe','Ceiling fan & AC','Writing desk','Bluetooth speaker'],
@@ -155,7 +162,7 @@ const HOMES = {
   },
   sushant: {
     name:'Sushant', type:'VIP Villa', guests:'2 Guests',
-    bed:'King Bed ', size:'1600 sq ft', price:12500,
+    bed:'King Bed ', size:'1600 sq ft', price:18000,
     desc:'Our most distinguished residence. Sushant is appointed with hand-carved Konkan furniture, heirloom textiles, and a private plunge pool that looks out over the Arabian Sea. Heritage architecture meets contemporary comfort in a space designed for those who understand that true luxury is space, light, and the freedom to do nothing beautifully.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Private plunge pool','Sea-view veranda','Separate living room','Walk-in wardrobe','Espresso machine','Personal safe','Outdoor shower garden','Bluetooth speaker'],
@@ -163,7 +170,7 @@ const HOMES = {
   },
   nishant: {
     name:'Nishant', type:'Couple Villa', guests:'4 Guests',
-    bed:'2 king Beds', size:'1800 sq ft', price:10500,
+    bed:'2 king Beds', size:'1800 sq ft', price:20000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
     facilities:['Two separate bedrooms','Shared living room','Large wraparound veranda','Outdoor dining area','Mini kitchen pantry','Personal safe','Two full bathrooms','Ceiling fans & AC'],
@@ -171,7 +178,7 @@ const HOMES = {
   },
   niwaant: {
     name:'Niwaant', type:'Serenity Villa', guests:'2 Guests',
-    bed:'King Bed', size:'1200 sq ft', price:7500,
+    bed:'King Bed', size:'1200 sq ft', price:12000,
     desc:'Niwaant is an ode to quietude. Positioned at the quietest corner of the estate, facing a grove of arecanut palms. There is nothing here designed to demand your attention — only things designed to earn it gently. An ideal retreat for couples or solo travellers seeking genuine stillness.',
     images:['./assets/property1.jpeg','./assets/roominterior.jpeg','./assets/propertynight.jpeg','./assets/property2.jpeg'],
     facilities:['Private garden view','Hammock terrace','Reading nook with bookshelves','Personal safe','Ceiling fan & AC','In-room wardrobe','Outdoor soaking tub','Writing desk'],
@@ -179,7 +186,7 @@ const HOMES = {
   },
   savali: {
     name:'Savali', type:'Nature Villa', guests:'2 Guests',
-    bed:'king Bed', size:'1200 sq ft', price:7500,
+    bed:'king Bed', size:'1200 sq ft', price:12000,
     desc:'Savali means "shade" in Marathi — and shade is precisely what this home delivers. Nestled under a dense canopy of jackfruit and cashew trees. Wake to the sounds of the forest, step outside onto a raised wooden deck, and feel the boundary between indoors and outdoors dissolve.',
     images:['./assets/property2.jpeg','./assets/property3.jpeg','./assets/roominterior2.jpeg','./assets/property1.jpeg'],
     facilities:['Raised forest-view deck','Hammock under canopy','Personal safe','Ceiling fan & AC','Nature trail access','Bird-watching kit','Writing desk'],
