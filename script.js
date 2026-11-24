@@ -971,3 +971,74 @@ async function loadSiteSettings() {
 
 // Run on page load
 loadSiteSettings();
+
+
+/* -----------------------------------------
+   BOOKING BAR
+-------------------------------------------*/
+(function () {
+  var bbCheckin  = document.getElementById('bb-checkin');
+  var bbCheckout = document.getElementById('bb-checkout');
+  var bbVilla    = document.getElementById('bb-villa');
+  var bbGCount   = document.getElementById('bb-g-count');
+  var bbGMinus   = document.getElementById('bb-g-minus');
+  var bbGPlus    = document.getElementById('bb-g-plus');
+  var bbSearchBtn = document.getElementById('bb-search-btn');
+  var bbStrip    = document.getElementById('bb-price-strip');
+  var bbResults  = document.getElementById('bb-price-results');
+
+  if (!bbCheckin) return;
+
+  // Set today as min
+  var today = new Date().toISOString().split('T')[0];
+  bbCheckin.min  = today;
+  bbCheckout.min = today;
+  bbCheckin.value  = today;
+  // Default checkout = tomorrow
+  var tom = new Date(); tom.setDate(tom.getDate() + 1);
+  bbCheckout.value = tom.toISOString().split('T')[0];
+
+  // Guest counter
+  var guests = 2;
+  bbGMinus.addEventListener('click', function () { if (guests > 1) { guests--; bbGCount.textContent = guests; } });
+  bbGPlus.addEventListener('click',  function () { if (guests < 10) { guests++; bbGCount.textContent = guests; } });
+
+  // Keep checkout min in sync
+  bbCheckin.addEventListener('change', function () {
+    bbCheckout.min = this.value;
+    if (bbCheckout.value && bbCheckout.value <= this.value) bbCheckout.value = '';
+    showPrices();
+  });
+  bbCheckout.addEventListener('change', showPrices);
+  bbVilla.addEventListener('change', showPrices);
+
+  // Search button ? scroll to rooms + filter
+  bbSearchBtn.addEventListener('click', function () {
+    showPrices();
+    var roomsSec = document.getElementById('rooms');
+    if (roomsSec) roomsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function showPrices() {
+    if (!bbCheckin.value || !bbCheckout.value || bbCheckout.value <= bbCheckin.value) {
+      bbStrip.style.display = 'none'; return;
+    }
+    var selectedKey = bbVilla.value;
+    var keys = selectedKey ? [selectedKey] : Object.keys(HOMES);
+    var html = '';
+    keys.forEach(function (key) {
+      if (!HOMES[key]) return;
+      var result = calcSeasonalTotal(key, bbCheckin.value, bbCheckout.value);
+      if (!result) return;
+      html += '<div class="bb-price-pill">' +
+        '<strong>' + HOMES[key].name + '</strong> — ' +
+        result.nights + ' night' + (result.nights > 1 ? 's' : '') + ': ' +
+        '<strong>&#8377;' + result.total.toLocaleString('en-IN') + '</strong>' +
+        '</div>';
+    });
+    bbResults.innerHTML = html || '<div class="bb-price-pill">No results</div>';
+    bbStrip.style.display = 'block';
+  }
+
+  showPrices();
+})();

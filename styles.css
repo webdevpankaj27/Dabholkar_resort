@@ -3168,3 +3168,232 @@ ul { list-style: none; }
   transform: translateY(-1px);
 }
 
+
+/* -----------------------------------------------
+   BOOKING BAR
+----------------------------------------------- */
+.booking-bar {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 10;
+}
+
+.bb-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.bb-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--green, #2d4a3e);
+  padding: 1rem 0 0.5rem;
+}
+
+.bb-form {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.bb-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-right: 1px solid #e0e0e0;
+  flex: 1;
+  min-width: 0;
+}
+
+.bb-field:last-of-type {
+  border-right: none;
+}
+
+.bb-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: #444;
+}
+
+.bb-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+
+.bb-field--dates { flex: 2; }
+
+.bb-dates-wrap { flex: 1; min-width: 0; }
+
+.bb-dates-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bb-date-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.bb-date-col label {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 0.1rem;
+}
+
+.bb-date-col input[type="date"] {
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+
+.bb-arrow {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.bb-field--villa select,
+.bb-field--villa div {
+  display: flex;
+  flex-direction: column;
+}
+
+.bb-field--villa select {
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 130px;
+}
+
+.bb-guests-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bb-guests-ctrl span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  min-width: 20px;
+  text-align: center;
+}
+
+.bb-g-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  transition: background 0.2s;
+}
+
+.bb-g-btn:hover { background: #f0f0f0; }
+
+.bb-search-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 2rem;
+  background: var(--green, #2d4a3e);
+  color: #fff;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.bb-search-btn:hover { background: #1e3328; }
+
+.bb-search-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+}
+
+/* Price strip */
+.bb-price-strip {
+  padding: 0.6rem 0 0.75rem;
+  border-top: 1px solid #f0f0f0;
+  overflow-x: auto;
+}
+
+#bb-price-results {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.bb-price-pill {
+  background: #f5f7f5;
+  border: 1px solid #dde8dd;
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.82rem;
+  color: #2d4a3e;
+  white-space: nowrap;
+}
+
+.bb-price-pill strong {
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .bb-form {
+    flex-direction: column;
+    border-radius: 8px;
+  }
+  .bb-field {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .bb-field:last-of-type { border-bottom: none; }
+  .bb-search-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem;
+    border-radius: 0 0 8px 8px;
+  }
+  .bb-field--dates { flex: unset; }
+}
