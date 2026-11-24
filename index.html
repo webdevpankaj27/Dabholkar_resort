@@ -195,12 +195,12 @@
             <div class="bb-dates-row">
               <div class="bb-date-col">
                 <label for="bb-checkin">Check In</label>
-                <input type="date" id="bb-checkin" />
+                <input type="date" id="bb-checkin" name="checkin" autocomplete="off" />
               </div>
               <svg class="bb-arrow" viewBox="0 0 10 10" fill="none"><path d="M7.58 5.4H0V4.42H7.58L4.02.69 4.69 0 9.38 4.91 4.69 9.82l-.67-.69L7.58 5.4Z" fill="#222"/></svg>
               <div class="bb-date-col">
                 <label for="bb-checkout">Check Out</label>
-                <input type="date" id="bb-checkout" />
+                <input type="date" id="bb-checkout" name="checkout" autocomplete="off" />
               </div>
             </div>
           </div>
@@ -211,7 +211,7 @@
           <svg class="bb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <div>
             <span class="bb-label">Villa</span>
-            <select id="bb-villa">
+            <select id="bb-villa" name="villa" autocomplete="off">
               <option value="">All Villas</option>
               <option value="ekaant">Ekaant</option>
               <option value="savali">Savali (VIP)</option>
@@ -646,11 +646,11 @@
           <div class="bm-row bm-row--3">
             <div class="bm-field">
               <label for="bm-checkin">Check-in</label>
-              <input type="date" id="bm-checkin" name="checkin" required />
+              <input type="date" id="bm-checkin" name="checkin" autocomplete="off" required />
             </div>
             <div class="bm-field">
               <label for="bm-checkout">Check-out</label>
-              <input type="date" id="bm-checkout" name="checkout" required />
+              <input type="date" id="bm-checkout" name="checkout" autocomplete="off" required />
             </div>
             <div class="bm-field">
               <label for="bm-guests">Guests</label>
@@ -681,21 +681,21 @@
           <div class="bm-row bm-row--2">
             <div class="bm-field">
               <label for="bm-fname">First Name</label>
-              <input type="text" id="bm-fname" name="fname" placeholder="Ananya" required />
+              <input type="text" id="bm-fname" name="fname" autocomplete="given-name" placeholder="Ananya" required />
             </div>
             <div class="bm-field">
               <label for="bm-lname">Last Name</label>
-              <input type="text" id="bm-lname" name="lname" placeholder="Dabholkar" required />
+              <input type="text" id="bm-lname" name="lname" autocomplete="family-name" placeholder="Dabholkar" required />
             </div>
           </div>
           <div class="bm-row bm-row--2">
             <div class="bm-field">
               <label for="bm-email">Email Address</label>
-              <input type="email" id="bm-email" name="email" placeholder="you@example.com" required />
+              <input type="email" id="bm-email" name="email" autocomplete="email" placeholder="you@example.com" required />
             </div>
             <div class="bm-field">
               <label for="bm-phone">Phone Number</label>
-              <input type="tel" id="bm-phone" name="phone" placeholder="+91 98765 43210" required />
+              <input type="tel" id="bm-phone" name="phone" autocomplete="tel" placeholder="+91 98765 43210" required />
             </div>
           </div>
           <div class="bm-field">
@@ -1184,8 +1184,8 @@
       </div>
       <div class="cta-form reveal">
         <form class="newsletter-form" onsubmit="handleSubscribe(event)">
-          <input type="text" placeholder="Your name" required />
-          <input type="email" placeholder="Your email address" required />
+          <input type="text" id="newsletter-name" name="name" placeholder="Your name" autocomplete="name" required />
+          <input type="email" id="newsletter-email" name="email" placeholder="Your email address" autocomplete="email" required />
           <button type="submit" class="btn btn-cream">Subscribe</button>
         </form>
         <p class="form-note">No spam. Just the coast.</p>
