@@ -255,7 +255,7 @@ const HOMES = {
     images:['./assets/villa_images/nitaant/nitaant.jpeg','./assets/villa_images/nitaant/room_interior11.jpeg'],
     facilities:['Private garden','Ceiling fan & AC','Personal safe','Writing desk','Bluetooth speaker'],
     amenities:{'In-Room':['24-hour in-room dining','Tea & coffee maker','Bottled water'],'Bathroom':['Four-fixture bathroom','Forest Essentials amenities','Hair dryer'],'Services':['Daily housekeeping','Basic Wi-Fi inclusive']}
-  } }
+  }
 };
 
 
@@ -1031,7 +1031,7 @@ loadSiteSettings();
       var result = calcSeasonalTotal(key, bbCheckin.value, bbCheckout.value);
       if (!result) return;
       html += '<div class="bb-price-pill">' +
-        '<strong>' + HOMES[key].name + '</strong> — ' +
+        '<strong>' + HOMES[key].name + '</strong> ï¿½ ' +
         result.nights + ' night' + (result.nights > 1 ? 's' : '') + ': ' +
         '<strong>&#8377;' + result.total.toLocaleString('en-IN') + '</strong>' +
         '</div>';
