@@ -148,9 +148,6 @@ ul { list-style: none; }
 @keyframes revealFallback {
   to { opacity: 1; transform: translateY(0); }
 }
-.reveal {
-  animation: revealFallback 0s 2s forwards;
-}
 
 /* ═══════════════════════════════════════════
    NAVIGATION
@@ -452,16 +449,6 @@ ul { list-style: none; }
   max-width: 520px;
 }
 
-/* 5-column grid — two rows: 3 + 2 centred */
-.rooms-grid--5 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.8rem;
-}
-/* Last two cards span adjusted to centre them */
-.rooms-grid--5 .room-card:nth-child(4) { grid-column: 1 / 2; margin-left: auto; width: 100%; }
-.rooms-grid--5 .room-card:nth-child(5) { grid-column: 2 / 3; margin-right: auto; width: 100%; }
-
 /* Centre-offset the bottom two cards via a wrapper trick */
 .rooms-grid--5 {
   display: grid;
@@ -570,16 +557,6 @@ ul { list-style: none; }
   line-height: 1.8;
   margin-bottom: 1.4rem;
   flex: 1;
-}
-
-/* ── Card actions row ──────────────────── */
-.room-card-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: auto;
-  flex-wrap: wrap;
 }
 
 /* ── Amenities toggle button ───────────── */
@@ -1799,10 +1776,6 @@ ul { list-style: none; }
   color: var(--text-mid);
   line-height: 1.6;
   max-width: 300px;
-}
-.bm-submit {
-  white-space: nowrap;
-  padding: 0.9rem 2.5rem;
 }
 
 /* ── Booking confirmation ───────────────── */
