@@ -212,7 +212,7 @@ const HOMES = {
     name:'Ekaant', type:'Private Villa', guests:'2 Guests',
     bed:'King Bed', size:'1200 sq ft', price:12000,
     desc:'A sanctuary of solitude. Ekaant wraps you in the kind of stillness that is increasingly rare — where birdsong replaces notification chimes and time bends to your rhythm. The home opens onto a private garden where mango and coconut trees filter the morning light, and evenings are spent on your veranda watching fireflies emerge over the paddy fields.',
-    images:['./assets/roominterior.jpeg','./assets/property1.jpeg','./assets/propertynight.jpeg','./assets/property3.jpeg'],
+    images:['./assets/villa_images/ekaant/ekaant.jpeg','./assets/villa_images/ekaant/ekaant_img.jpeg','./assets/villa_images/ekaant/house_fronts.jpeg','./assets/villa_images/ekaant/house_entry.jpeg','./assets/villa_images/ekaant/bathroom.jpeg','./assets/villa_images/ekaant/bathroom2.jpeg','./assets/villa_images/ekaant/bathroom4.jpeg'],
     facilities:['Private garden terrace','Outdoor rain shower','Living area with daybed','Personal safe','In-room wardrobe','Ceiling fan & AC','Writing desk','Bluetooth speaker'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
@@ -220,7 +220,7 @@ const HOMES = {
     name:'Savali', type:'VIP Villa', guests:'2 Guests',
     bed:'King Bed ', size:'1600 sq ft', price:18000,
     desc:'Our most distinguished residence. Sushant is appointed with hand-carved Konkan furniture, heirloom textiles, and a private plunge pool that looks out over the Arabian Sea. Heritage architecture meets contemporary comfort in a space designed for those who understand that true luxury is space, light, and the freedom to do nothing beautifully.',
-    images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
+    images:['./assets/villa_images/savali/niwaant.jpeg','./assets/villa_images/savali/niwaant2.jpeg','./assets/villa_images/savali/niwaant3.jpeg','./assets/villa_images/savali/niwaant4.jpeg','./assets/villa_images/savali/outdoor5.jpeg'],
     facilities:['Private plunge pool','Sea-view veranda','Separate living room','Walk-in wardrobe','Espresso machine','Personal safe','Outdoor shower garden','Bluetooth speaker'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
@@ -228,7 +228,7 @@ const HOMES = {
     name:'Nishant', type:'Couple Villa', guests:'4 Guests',
     bed:'2 king Beds', size:'1800 sq ft', price:20000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
-    images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
+    images:['./assets/villa_images/nishaant/roominterior1.jpeg','./assets/villa_images/nishaant/roominterior2.jpeg','./assets/villa_images/nishaant/varanda.jpeg'],
     facilities:['Two separate bedrooms','Shared living room','Large wraparound veranda','Outdoor dining area','Mini kitchen pantry','Personal safe','Two full bathrooms','Ceiling fans & AC'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request (up to age 2)','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
@@ -236,7 +236,7 @@ const HOMES = {
     name:'Niwaant', type:'Serenity Villa', guests:'2 Guests',
     bed:'King Bed', size:'1200 sq ft', price:12000,
     desc:'Niwaant is an ode to quietude. Positioned at the quietest corner of the estate, facing a grove of arecanut palms. There is nothing here designed to demand your attention — only things designed to earn it gently. An ideal retreat for couples or solo travellers seeking genuine stillness.',
-    images:['./assets/property1.jpeg','./assets/roominterior.jpeg','./assets/propertynight.jpeg','./assets/property2.jpeg'],
+    images:['./assets/villa_images/niwaant/nitaant.jpeg','./assets/villa_images/niwaant/room_interior11.jpeg'],
     facilities:['Private garden view','Hammock terrace','Reading nook with bookshelves','Personal safe','Ceiling fan & AC','In-room wardrobe','Outdoor soaking tub','Writing desk'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
@@ -244,15 +244,15 @@ const HOMES = {
     name:'Sushaant', type:'Nature Villa', guests:'2 Guests',
     bed:'king Bed', size:'1200 sq ft', price:12000,
     desc:'Savali means "shade" in Marathi — and shade is precisely what this home delivers. Nestled under a dense canopy of jackfruit and cashew trees. Wake to the sounds of the forest, step outside onto a raised wooden deck, and feel the boundary between indoors and outdoors dissolve.',
-    images:['./assets/property2.jpeg','./assets/property3.jpeg','./assets/roominterior2.jpeg','./assets/property1.jpeg'],
+    images:['./assets/villa_images/sushaant/sushant.jpeg','./assets/villa_images/sushaant/outdoor4.jpeg','./assets/villa_images/sushaant/room_interior11.jpeg'],
     facilities:['Raised forest-view deck','Hammock under canopy','Personal safe','Ceiling fan & AC','Nature trail access','Bird-watching kit','Writing desk'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
- ,
+  },
   nitaant: {
     name:'Nitaant', type:'Garden Villa', guests:'2 Guests',
     bed:'King Bed', size:'1200 sq ft', price:7500,
     desc:'Nitaant is a serene new private retreat at Dabholkar Resort on the Konkan Coast. Details and images coming soon.',
-    images:['./assets/property1.jpeg','./assets/property2.jpeg'],
+    images:['./assets/villa_images/nitaant/nitaant.jpeg','./assets/villa_images/nitaant/room_interior11.jpeg'],
     facilities:['Private garden','Ceiling fan & AC','Personal safe','Writing desk','Bluetooth speaker'],
     amenities:{'In-Room':['24-hour in-room dining','Tea & coffee maker','Bottled water'],'Bathroom':['Four-fixture bathroom','Forest Essentials amenities','Hair dryer'],'Services':['Daily housekeeping','Basic Wi-Fi inclusive']}
   } }
