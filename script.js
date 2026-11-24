@@ -39,6 +39,61 @@ const db = {
    of that night), so a split stay is prorated.
 ───────────────────────────────────────────*/
 const SEASONS = [
+  // Today - Dec 20 (current season)
+  {
+    name: 'Current Season', label: '🌿 Current Season',
+    start: { month: 11, day: 12 }, end: { month: 12, day: 20 },
+    rates: { ekaant:7500, niwaant:11700, nishant:7500, nitaant:7500, savali:18000, sushaant:11700 }
+  },
+  // Dec 20 - Jan 5 (peak - double price)
+  {
+    name: 'Peak Season', label: '🎄 Peak Season',
+    start: { month: 12, day: 20 }, end: { month: 1, day: 5 },
+    rates: { ekaant:15000, niwaant:23400, nishant:15000, nitaant:15000, savali:36000, sushaant:23400 }
+  }
+  // After Jan 5 falls back to base price in HOMES
+];
+ ═══════════════════════════════════════════
+   DABHOLKAR RESORT — script.js
+   Clean single-file, no duplicate declarations
+═══════════════════════════════════════════ */
+'use strict';
+
+/* ─────────────────────────────────────────
+   SUPABASE CLIENT
+───────────────────────────────────────────*/
+const SUPABASE_URL = 'https://keytnnyuqahejpvnnskw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ES-q90fufUBmRpXtCVcMWA_DoA8gqwN';
+
+// Lightweight Supabase REST helper (no npm needed)
+const db = {
+  async insert(table, row) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        'apikey':        SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type':  'application/json',
+        'Prefer':        'return=representation'
+      },
+      body: JSON.stringify(row)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.error('Supabase insert error:', err);
+      return { error: err };
+    }
+    return { data: await res.json() };
+  }
+};
+
+/* ─────────────────────────────────────────
+   SEASONAL PRICING
+   Each season applies a multiplier per home.
+   Dates are matched per night (check-in date
+   of that night), so a split stay is prorated.
+───────────────────────────────────────────*/
+const SEASONS = [
   // ── New Year Super Peak (Dec 25 – Jan 5) ──
   {
     name:  'New Year Special',
@@ -110,7 +165,8 @@ function getSeasonForDate(date) {
 function getNightlyRate(homeKey, date) {
   const base   = HOMES[homeKey] ? HOMES[homeKey].price : 0;
   const season = getSeasonForDate(date);
-  return season ? Math.round(base * season.multiplier) : base;
+  if (!season) return base;
+  return (season.rates && season.rates[homeKey] != null) ? season.rates[homeKey] : base;
 }
 
 /**
@@ -160,8 +216,8 @@ const HOMES = {
     facilities:['Private garden terrace','Outdoor rain shower','Living area with daybed','Personal safe','In-room wardrobe','Ceiling fan & AC','Writing desk','Bluetooth speaker'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
-  sushant: {
-    name:'Sushant', type:'VIP Villa', guests:'2 Guests',
+  savali: {
+    name:'Savali', type:'VIP Villa', guests:'2 Guests',
     bed:'King Bed ', size:'1600 sq ft', price:18000,
     desc:'Our most distinguished residence. Sushant is appointed with hand-carved Konkan furniture, heirloom textiles, and a private plunge pool that looks out over the Arabian Sea. Heritage architecture meets contemporary comfort in a space designed for those who understand that true luxury is space, light, and the freedom to do nothing beautifully.',
     images:['./assets/room_inter3.jpeg','./assets/room_inter4.jpeg','./assets/room_inter5.jpeg'],
@@ -184,14 +240,22 @@ const HOMES = {
     facilities:['Private garden view','Hammock terrace','Reading nook with bookshelves','Personal safe','Ceiling fan & AC','In-room wardrobe','Outdoor soaking tub','Writing desk'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
-  savali: {
-    name:'Savali', type:'Nature Villa', guests:'2 Guests',
+  sushaant: {
+    name:'Sushaant', type:'Nature Villa', guests:'2 Guests',
     bed:'king Bed', size:'1200 sq ft', price:12000,
     desc:'Savali means "shade" in Marathi — and shade is precisely what this home delivers. Nestled under a dense canopy of jackfruit and cashew trees. Wake to the sounds of the forest, step outside onto a raised wooden deck, and feel the boundary between indoors and outdoors dissolve.',
     images:['./assets/property2.jpeg','./assets/property3.jpeg','./assets/roominterior2.jpeg','./assets/property1.jpeg'],
     facilities:['Raised forest-view deck','Hammock under canopy','Personal safe','Ceiling fan & AC','Nature trail access','Bird-watching kit','Writing desk'],
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
-  }
+ ,
+  nitaant: {
+    name:'Nitaant', type:'Garden Villa', guests:'2 Guests',
+    bed:'King Bed', size:'1200 sq ft', price:7500,
+    desc:'Nitaant is a serene new private retreat at Dabholkar Resort on the Konkan Coast. Details and images coming soon.',
+    images:['./assets/property1.jpeg','./assets/property2.jpeg'],
+    facilities:['Private garden','Ceiling fan & AC','Personal safe','Writing desk','Bluetooth speaker'],
+    amenities:{'In-Room':['24-hour in-room dining','Tea & coffee maker','Bottled water'],'Bathroom':['Four-fixture bathroom','Forest Essentials amenities','Hair dryer'],'Services':['Daily housekeeping','Basic Wi-Fi inclusive']}
+  } }
 };
 
 
