@@ -111,6 +111,27 @@
   font-weight: 400;
 }
 
+/* ── Villa Results Section ──────────────── */
+.villa-results-section {
+  background: var(--cream);
+  padding: 2rem 2.5rem 7rem;
+}
+
+.villa-results-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.results-header {
+  background: var(--cream);
+  padding: 2rem 2.5rem 1rem;
+}
+
+.results-header-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
 /* ── Villa Cards Grid (Responsive) ──────── */
 .villas-grid {
   display: grid;
