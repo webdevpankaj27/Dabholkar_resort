@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results - parseSearchParams Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .test-case {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .test-case.pass {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+    .test-case.fail {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    .test-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .test-details {
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+    h1 {
+      color: #333;
+    }
+    .summary {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>parseSearchParams() Test Suite</h1>
+  <div id="test-results"></div>
+  <div class="summary" id="summary"></div>
+
+  <script src="search-results.js"></script>
+  <script>
+    // Test framework
+    const results = [];
+    const testContainer = document.getElementById('test-results');
+    const summaryContainer = document.getElementById('summary');
+
+    function runTest(description, urlParams, expectedResult) {
+      // Set up URL for testing
+      const testUrl = window.location.origin + window.location.pathname + '?' + urlParams;
+      window.history.replaceState({}, '', '?' + urlParams);
+      
+      // Run the function
+      const result = parseSearchParams();
+      
+      // Check result
+      const passed = JSON.stringify(result) === JSON.stringify(expectedResult);
+      
+      // Store result
+      results.push({ description, passed, result, expected: expectedResult });
+      
+      // Display result
+      const testDiv = document.createElement('div');
+      testDiv.className = `test-case ${passed ? 'pass' : 'fail'}`;
+      testDiv.innerHTML = `
+        <div class="test-title">${passed ? '✓' : '✗'} ${description}</div>
+        <div class="test-details">URL: ?${urlParams}
+Expected: ${JSON.stringify(expectedResult, null, 2)}
+Got: ${JSON.stringify(result, null, 2)}</div>
+      `;
+      testContainer.appendChild(testDiv);
+    }
+
+    // Run all tests
+    console.log('Starting test suite...');
+
+    // Get today and tomorrow in ISO format
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dayAfter = new Date(tomorrow);
+    dayAfter.setDate(dayAfter.getDate() + 1);
+    
+    const todayStr = today.toISOString().split('T')[0];
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    const dayAfterStr = dayAfter.toISOString().split('T')[0];
+
+    // Test 1: Valid parameters
+    runTest(
+      'Valid parameters (today check-in, tomorrow check-out, 2 guests)',
+      `checkin=${todayStr}&checkout=${tomorrowStr}&guests=2`,
+      { checkin: todayStr, checkout: tomorrowStr, guests: 2 }
+    );
+
+    // Test 2: Valid parameters with future dates
+    runTest(
+      'Valid parameters (future dates, 4 guests)',
+      `checkin=${tomorrowStr}&checkout=${dayAfterStr}&guests=4`,
+      { checkin: tomorrowStr, checkout: dayAfterStr, guests: 4 }
+    );
+
+    // Test 3: Missing checkin parameter
+    runTest(
+      'Missing checkin parameter',
+      `checkout=${tomorrowStr}&guests=2`,
+      null
+    );
+
+    // Test 4: Missing checkout parameter
+    runTest(
+      'Missing checkout parameter',
+      `checkin=${todayStr}&guests=2`,
+      null
+    );
+
+    // Test 5: Missing guests parameter
+    runTest(
+      'Missing guests parameter',
+      `checkin=${todayStr}&checkout=${tomorrowStr}`,
+      null
+    );
+
+    // Test 6: Invalid guest count (zero)
+    runTest(
+      'Invalid guest count (0)',
+      `checkin=${todayStr}&checkout=${tomorrowStr}&guests=0`,
+      null
+    );
+
+    // Test 7: Invalid guest count (negative)
+    runTest(
+      'Invalid guest count (-1)',
+      `checkin=${todayStr}&checkout=${tomorrowStr}&guests=-1`,
+      null
+    );
+
+    // Test 8: Invalid guest count (non-numeric)
+    runTest(
+      'Invalid guest count (abc)',
+      `checkin=${todayStr}&checkout=${tomorrowStr}&guests=abc`,
+      null
+    );
+
+    // Test 9: Invalid date format (checkin)
+    runTest(
+      'Invalid checkin date format (12/25/2024)',
+      `checkin=12/25/2024&checkout=${tomorrowStr}&guests=2`,
+      null
+    );
+
+    // Test 10: Invalid date format (checkout)
+    runTest(
+      'Invalid checkout date format (2024/12/26)',
+      `checkin=${todayStr}&checkout=2024/12/26&guests=2`,
+      null
+    );
+
+    // Test 11: Checkout before checkin
+    runTest(
+      'Checkout date before checkin date',
+      `checkin=${tomorrowStr}&checkout=${todayStr}&guests=2`,
+      null
+    );
+
+    // Test 12: Checkout equal to checkin
+    runTest(
+      'Checkout date equal to checkin date',
+      `checkin=${todayStr}&checkout=${todayStr}&guests=2`,
+      null
+    );
+
+    // Test 13: Checkin in the past
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    runTest(
+      'Checkin date in the past',
+      `checkin=${yesterdayStr}&checkout=${todayStr}&guests=2`,
+      null
+    );
+
+    // Test 14: Invalid date (February 30)
+    runTest(
+      'Invalid calendar date (2024-02-30)',
+      `checkin=2024-02-30&checkout=${tomorrowStr}&guests=2`,
+      null
+    );
+
+    // Test 15: Valid with large guest count
+    runTest(
+      'Valid with large guest count (10)',
+      `checkin=${todayStr}&checkout=${tomorrowStr}&guests=10`,
+      { checkin: todayStr, checkout: tomorrowStr, guests: 10 }
+    );
+
+    // Display summary
+    const passCount = results.filter(r => r.passed).length;
+    const failCount = results.length - passCount;
+    summaryContainer.innerHTML = `
+      <strong>Test Summary:</strong><br>
+      Total: ${results.length} tests<br>
+      Passed: ${passCount}<br>
+      Failed: ${failCount}
+    `;
+
+    console.log('Test suite complete:', { passCount, failCount, total: results.length });
+  </script>
+</body>
+</html>

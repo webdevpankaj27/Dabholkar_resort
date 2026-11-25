@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5.3 Integration Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+        .pass {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .fail {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .result {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task 5.3: Seasonal Segment Grouping - Integration Test</h1>
+    <div id="results"></div>
+
+    <script src="script.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('results');
+
+        function logTest(title, content) {
+            const section = document.createElement('div');
+            section.className = 'test-section';
+            section.innerHTML = `<h2>${title}</h2>${content}`;
+            resultsDiv.appendChild(section);
+        }
+
+        function formatResult(result) {
+            return `<div class="result">
+                <strong>Total:</strong> ₹${result.total.toLocaleString()}<br>
+                <strong>Nights:</strong> ${result.nights}<br>
+                <strong>Segments:</strong> ${result.breakdown.length}<br><br>
+                <table>
+                    <tr>
+                        <th>Season Label</th>
+                        <th>Nights</th>
+                        <th>Rate/Night</th>
+                        <th>Subtotal</th>
+                    </tr>
+                    ${result.breakdown.map(seg => `
+                        <tr>
+                            <td>${seg.label}</td>
+                            <td>${seg.nights}</td>
+                            <td>₹${seg.rate.toLocaleString()}</td>
+                            <td>₹${seg.subtotal.toLocaleString()}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            </div>`;
+        }
+
+        function validateSegment(segment) {
+            const hasLabel = segment.hasOwnProperty('label') && typeof segment.label === 'string';
+            const hasNights = segment.hasOwnProperty('nights') && typeof segment.nights === 'number';
+            const hasRate = segment.hasOwnProperty('rate') && typeof segment.rate === 'number';
+            const hasSubtotal = segment.hasOwnProperty('subtotal') && typeof segment.subtotal === 'number';
+            const subtotalCorrect = segment.subtotal === segment.nights * segment.rate;
+            
+            return hasLabel && hasNights && hasRate && hasSubtotal && subtotalCorrect;
+        }
+
+        // Test 1: Single Season Stay
+        console.log('Running Test 1...');
+        const test1 = calcSeasonalTotal('ekaant', '2024-12-15', '2024-12-18');
+        const test1Pass = test1.breakdown.length === 1 && test1.breakdown[0].nights === 3;
+        logTest(
+            `Test 1: Single Season Stay ${test1Pass ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✗ FAIL</span>'}`,
+            `<p><strong>Scenario:</strong> 3 consecutive nights in same season should create 1 segment</p>
+            <p><strong>Date Range:</strong> 2024-12-15 to 2024-12-18 (Current Season)</p>
+            ${formatResult(test1)}
+            <p><strong>Validation:</strong></p>
+            <ul>
+                <li>Expected 1 segment: ${test1.breakdown.length === 1 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Expected 3 nights: ${test1.breakdown[0].nights === 3 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Segment structure valid: ${validateSegment(test1.breakdown[0]) ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+            </ul>`
+        );
+
+        // Test 2: Cross-Season Stay
+        console.log('Running Test 2...');
+        const test2 = calcSeasonalTotal('ekaant', '2024-12-18', '2024-12-23');
+        const test2Pass = test2.breakdown.length === 2;
+        logTest(
+            `Test 2: Cross-Season Stay ${test2Pass ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✗ FAIL</span>'}`,
+            `<p><strong>Scenario:</strong> Stay crossing from Current Season to Peak Season should create 2 segments</p>
+            <p><strong>Date Range:</strong> 2024-12-18 to 2024-12-23 (2 nights Current + 3 nights Peak)</p>
+            ${formatResult(test2)}
+            <p><strong>Validation:</strong></p>
+            <ul>
+                <li>Expected 2 segments: ${test2.breakdown.length === 2 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Different season labels: ${test2.breakdown[0].label !== test2.breakdown[1].label ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Segment 1 valid: ${validateSegment(test2.breakdown[0]) ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Segment 2 valid: ${validateSegment(test2.breakdown[1]) ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Total nights = sum of segments: ${test2.nights === test2.breakdown.reduce((s, seg) => s + seg.nights, 0) ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Total = sum of subtotals: ${test2.total === test2.breakdown.reduce((s, seg) => s + seg.subtotal, 0) ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+            </ul>`
+        );
+
+        // Test 3: Long Single Season Stay
+        console.log('Running Test 3...');
+        const test3 = calcSeasonalTotal('niwaant', '2024-12-20', '2024-12-27');
+        const test3Pass = test3.breakdown.length === 1 && test3.breakdown[0].nights === 7;
+        logTest(
+            `Test 3: Long Single Season Stay ${test3Pass ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✗ FAIL</span>'}`,
+            `<p><strong>Scenario:</strong> 7 consecutive nights in Peak Season should group into 1 segment</p>
+            <p><strong>Date Range:</strong> 2024-12-20 to 2024-12-27 (Peak Season)</p>
+            ${formatResult(test3)}
+            <p><strong>Validation:</strong></p>
+            <ul>
+                <li>Expected 1 segment: ${test3.breakdown.length === 1 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Expected 7 nights: ${test3.breakdown[0].nights === 7 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Consecutive grouping working: ${test3.breakdown[0].nights === 7 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+            </ul>`
+        );
+
+        // Test 4: Requirement 4.5 - Consecutive nights grouped
+        console.log('Running Test 4...');
+        const test4 = calcSeasonalTotal('ekaant', '2024-02-10', '2024-02-15');
+        const allSameRate = test4.breakdown.every(seg => seg.rate === test4.breakdown[0].rate);
+        const test4Pass = allSameRate && test4.breakdown.length === 1;
+        logTest(
+            `Test 4: Requirement 4.5 Validation ${test4Pass ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✗ FAIL</span>'}`,
+            `<p><strong>Requirement:</strong> Consecutive nights with same rate and season are grouped together</p>
+            <p><strong>Date Range:</strong> 2024-02-10 to 2024-02-15 (Regular season - base rate)</p>
+            ${formatResult(test4)}
+            <p><strong>Validation:</strong></p>
+            <ul>
+                <li>All nights have same rate: ${allSameRate ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Grouped into 1 segment: ${test4.breakdown.length === 1 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Requirement 4.5 satisfied: ${test4Pass ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+            </ul>`
+        );
+
+        // Test 5: Requirement 4.6 - New segment on change
+        console.log('Running Test 5...');
+        const test5 = calcSeasonalTotal('niwaant', '2024-12-18', '2024-12-23');
+        const hasDifferentRates = test5.breakdown.length > 1 && test5.breakdown[0].rate !== test5.breakdown[1].rate;
+        const test5Pass = test5.breakdown.length === 2 && hasDifferentRates;
+        logTest(
+            `Test 5: Requirement 4.6 Validation ${test5Pass ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✗ FAIL</span>'}`,
+            `<p><strong>Requirement:</strong> When rate or season changes, a new segment is created</p>
+            <p><strong>Date Range:</strong> 2024-12-18 to 2024-12-23 (Current → Peak transition)</p>
+            ${formatResult(test5)}
+            <p><strong>Validation:</strong></p>
+            <ul>
+                <li>Created 2 segments: ${test5.breakdown.length === 2 ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Segments have different rates: ${hasDifferentRates ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Segments have different labels: ${test5.breakdown[0].label !== test5.breakdown[1].label ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+                <li>Requirement 4.6 satisfied: ${test5Pass ? '<span class="pass">✓</span>' : '<span class="fail">✗</span>'}</li>
+            </ul>`
+        );
+
+        // Final Summary
+        const allTests = [test1Pass, test2Pass, test3Pass, test4Pass, test5Pass];
+        const passedCount = allTests.filter(t => t).length;
+        const totalCount = allTests.length;
+        const allPassed = passedCount === totalCount;
+
+        logTest(
+            `Final Summary ${allPassed ? '<span class="pass">✓ ALL TESTS PASSED</span>' : '<span class="fail">✗ SOME TESTS FAILED</span>'}`,
+            `<p><strong>Results:</strong> ${passedCount}/${totalCount} tests passed</p>
+            <p><strong>Task 5.3 Status:</strong> ${allPassed ? '<span class="pass">✅ VERIFIED - Implementation correct</span>' : '<span class="fail">❌ Issues found</span>'}</p>
+            <h3>Implementation Details Verified:</h3>
+            <ul>
+                <li>✓ Consecutive nights with same rate and season are grouped</li>
+                <li>✓ New segments created when rate or season changes</li>
+                <li>✓ Each segment has: label, nights, rate, subtotal</li>
+                <li>✓ Sum of segment nights equals total nights</li>
+                <li>✓ Sum of segment subtotals equals total</li>
+                <li>✓ Requirements 4.5 and 4.6 satisfied</li>
+            </ul>`
+        );
+
+        console.log(`\n=== Integration Test Complete ===`);
+        console.log(`Passed: ${passedCount}/${totalCount}`);
+        console.log(`Task 5.3: ${allPassed ? '✅ VERIFIED' : '❌ FAILED'}`);
+    </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seasonal Rate Determination Tests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .test-case {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+    .test-case.pass {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+    .test-case.fail {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    .test-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .test-details {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      color: #555;
+    }
+    .summary {
+      margin-top: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .summary strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .stat {
+      display: inline-block;
+      margin-right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🗓️ Seasonal Rate Determination Tests</h1>
+  <p style="text-align: center; color: #666;">
+    Testing getNightlyRate() function with SEASONS array
+  </p>
+
+  <div class="test-section">
+    <h2>Test Results</h2>
+    <div id="test-results"></div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+
+  <script src="script.js"></script>
+  <script>
+    // Test framework
+    const results = [];
+    const testContainer = document.getElementById('test-results');
+    const summaryContainer = document.getElementById('summary');
+
+    function runTest(description, homeKey, dateStr, expectedRate, expectedSeason) {
+      const testDate = new Date(dateStr + 'T00:00:00');
+      const actualRate = getNightlyRate(homeKey, testDate);
+      const actualSeason = getSeasonForDate(testDate);
+      
+      const passed = actualRate === expectedRate && 
+                     (expectedSeason === null ? actualSeason === null : actualSeason?.name === expectedSeason);
+      
+      results.push({ description, passed });
+      
+      const testDiv = document.createElement('div');
+      testDiv.className = `test-case ${passed ? 'pass' : 'fail'}`;
+      testDiv.innerHTML = `
+        <div class="test-title">${passed ? '✓' : '✗'} ${description}</div>
+        <div class="test-details">Villa: ${homeKey}
+Date: ${dateStr}
+Expected: ₹${expectedRate} (${expectedSeason || 'Regular Season'})
+Got: ₹${actualRate} (${actualSeason?.name || 'Regular Season'})</div>
+      `;
+      testContainer.appendChild(testDiv);
+    }
+
+    console.log('Starting Seasonal Rate Determination Tests...');
+
+    // Test Current Season (Nov 12 - Dec 20)
+    // Current Season: { ekaant:7500, niwaant:11700, nishant:7500, nitaant:7500, savali:18000, sushaant:11700 }
+    
+    runTest(
+      'Ekaant - Start of Current Season (Nov 12)',
+      'ekaant', '2024-11-12', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Ekaant - Middle of Current Season (Dec 1)',
+      'ekaant', '2024-12-01', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Ekaant - Last day of Current Season (Dec 20)',
+      'ekaant', '2024-12-20', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Savali - Start of Current Season (Nov 12)',
+      'savali', '2024-11-12', 18000, 'Current Season'
+    );
+
+    runTest(
+      'Savali - Middle of Current Season (Nov 25)',
+      'savali', '2024-11-25', 18000, 'Current Season'
+    );
+
+    runTest(
+      'Niwaant - Current Season (Dec 15)',
+      'niwaant', '2024-12-15', 11700, 'Current Season'
+    );
+
+    // Test Peak Season (Dec 20 - Jan 5)
+    // Peak Season: { ekaant:15000, niwaant:23400, nishant:15000, nitaant:15000, savali:36000, sushaant:23400 }
+    
+    runTest(
+      'Ekaant - Start of Peak Season (Dec 20)',
+      'ekaant', '2024-12-20', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Ekaant - Christmas during Peak Season (Dec 25)',
+      'ekaant', '2024-12-25', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Ekaant - New Year during Peak Season (Jan 1)',
+      'ekaant', '2025-01-01', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Ekaant - Last day of Peak Season (Jan 5)',
+      'ekaant', '2025-01-05', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Savali - Christmas during Peak Season (Dec 25)',
+      'savali', '2024-12-25', 36000, 'Peak Season'
+    );
+
+    runTest(
+      'Savali - New Year during Peak Season (Jan 1)',
+      'savali', '2025-01-01', 36000, 'Peak Season'
+    );
+
+    runTest(
+      'Niwaant - Peak Season (Dec 30)',
+      'niwaant', '2024-12-30', 23400, 'Peak Season'
+    );
+
+    // Test Regular Season (Outside defined seasons)
+    // Base prices: { ekaant:12000, savali:18000 }
+    
+    runTest(
+      'Ekaant - Before Current Season (Nov 11)',
+      'ekaant', '2024-11-11', 12000, null
+    );
+
+    runTest(
+      'Ekaant - After Peak Season (Jan 6)',
+      'ekaant', '2025-01-06', 12000, null
+    );
+
+    runTest(
+      'Ekaant - Regular Season in Summer (Jun 15)',
+      'ekaant', '2025-06-15', 12000, null
+    );
+
+    runTest(
+      'Savali - Before Current Season (Nov 1)',
+      'savali', '2024-11-01', 18000, null
+    );
+
+    runTest(
+      'Savali - After Peak Season (Feb 1)',
+      'savali', '2025-02-01', 18000, null
+    );
+
+    runTest(
+      'Savali - Regular Season in October (Oct 20)',
+      'savali', '2024-10-20', 18000, null
+    );
+
+    // Test Season Boundaries
+    
+    runTest(
+      'Ekaant - Day before Current Season (Nov 11)',
+      'ekaant', '2024-11-11', 12000, null
+    );
+
+    runTest(
+      'Ekaant - First day of Current Season (Nov 12)',
+      'ekaant', '2024-11-12', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Ekaant - Last day of Current Season (Dec 20)',
+      'ekaant', '2024-12-20', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Ekaant - First day of Peak Season (Dec 20) - overlaps with Current',
+      'ekaant', '2024-12-20', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Ekaant - Day after Current Season ends (Dec 21)',
+      'ekaant', '2024-12-21', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Ekaant - Last day of Peak Season (Jan 5)',
+      'ekaant', '2025-01-05', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Ekaant - Day after Peak Season (Jan 6)',
+      'ekaant', '2025-01-06', 12000, null
+    );
+
+    // Test Multiple Villas
+    
+    runTest(
+      'Niwaant - Peak Season (Dec 25)',
+      'niwaant', '2024-12-25', 23400, 'Peak Season'
+    );
+
+    runTest(
+      'Nishant - Current Season (Nov 20)',
+      'nishant', '2024-11-20', 7500, 'Current Season'
+    );
+
+    runTest(
+      'Nitaant - Peak Season (Jan 1)',
+      'nitaant', '2025-01-01', 15000, 'Peak Season'
+    );
+
+    runTest(
+      'Sushaant - Current Season (Dec 10)',
+      'sushaant', '2024-12-10', 11700, 'Current Season'
+    );
+
+    // Display summary
+    const passCount = results.filter(r => r.passed).length;
+    const failCount = results.length - passCount;
+    const passRate = ((passCount / results.length) * 100).toFixed(1);
+    
+    summaryContainer.innerHTML = `
+      <strong>📊 Test Summary</strong>
+      <div>
+        <span class="stat">Total: ${results.length} tests</span>
+        <span class="stat">✓ Passed: ${passCount}</span>
+        <span class="stat">✗ Failed: ${failCount}</span>
+        <span class="stat">Pass Rate: ${passRate}%</span>
+      </div>
+    `;
+
+    console.log('Test suite complete:', { 
+      passCount, 
+      failCount, 
+      total: results.length,
+      passRate: `${passRate}%` 
+    });
+
+    // Alert if any tests failed
+    if (failCount > 0) {
+      console.error(`⚠️ ${failCount} test(s) failed! Review the results above.`);
+    } else {
+      console.log('✅ All tests passed!');
+    }
+  </script>
+</body>
+</html>

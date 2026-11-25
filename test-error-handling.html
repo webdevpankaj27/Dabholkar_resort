@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Error Handling</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    h2 {
+      color: #2d4a3e;
+    }
+    a {
+      display: inline-block;
+      margin: 5px 10px 5px 0;
+      padding: 10px 20px;
+      background: #2d4a3e;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    a:hover {
+      background: #1a2e26;
+    }
+    .description {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Search Results Error Handling Tests</h1>
+  
+  <div class="test-section">
+    <h2>1. Test with Missing Parameters</h2>
+    <a href="search-results.html" target="_blank">No parameters at all</a>
+    <p class="description">Expected: Error message "Invalid search parameters. Please enter your dates again." and redirect after 2 seconds</p>
+  </div>
+  
+  <div class="test-section">
+    <h2>2. Test with Missing Check-in Date</h2>
+    <a href="search-results.html?checkout=2024-12-30&guests=2" target="_blank">Missing checkin</a>
+    <p class="description">Expected: Error message and redirect after 2 seconds</p>
+  </div>
+  
+  <div class="test-section">
+    <h2>3. Test with Invalid Date Format</h2>
+    <a href="search-results.html?checkin=invalid&checkout=2024-12-30&guests=2" target="_blank">Invalid date format</a>
+    <p class="description">Expected: Error message and redirect after 2 seconds</p>
+  </div>
+  
+  <div class="test-section">
+    <h2>4. Test with Past Check-in Date</h2>
+    <a href="search-results.html?checkin=2020-01-01&checkout=2020-01-05&guests=2" target="_blank">Past check-in date</a>
+    <p class="description">Expected: Error message and redirect after 2 seconds</p>
+  </div>
+  
+  <div class="test-section">
+    <h2>5. Test with Check-out Before Check-in</h2>
+    <a href="search-results.html?checkin=2025-12-30&checkout=2025-12-25&guests=2" target="_blank">Checkout before checkin</a>
+    <p class="description">Expected: Error message and redirect after 2 seconds</p>
+  </div>
+  
+  <div class="test-section">
+    <h2>6. Test with Invalid Guest Count</h2>
+    <a href="search-results.html?checkin=2025-12-25&checkout=2025-12-30&guests=0" target="_blank">Zero guests</a>
+    <a href="search-results.html?checkin=2025-12-25&checkout=2025-12-30&guests=abc" target="_blank">Non-numeric guests</a>
+    <p class="description">Expected: Error message and redirect after 2 seconds</p>
+  </div>
+  
+  <div class="test-section">
+    <h2>7. Test with Valid Parameters (Should Work)</h2>
+    <a href="search-results.html?checkin=2025-12-25&checkout=2025-12-30&guests=2" target="_blank">Valid parameters</a>
+    <p class="description">Expected: Page loads successfully, shows search criteria in the header</p>
+  </div>
+  
+  <hr style="margin: 40px 0;">
+  
+  <div>
+    <h3>How to Test:</h3>
+    <ol>
+      <li>Click on each test link above</li>
+      <li>Observe the browser console for log messages (F12 → Console tab)</li>
+      <li>For error cases, verify:
+        <ul>
+          <li>Error message displays: "Invalid search parameters. Please enter your dates again."</li>
+          <li>Villa results container is hidden</li>
+          <li>Search criteria bar is hidden</li>
+          <li>Page redirects to index.html#book-bar after 2 seconds</li>
+        </ul>
+      </li>
+      <li>For valid case, verify:
+        <ul>
+          <li>Search criteria displays correctly in the header</li>
+          <li>No error message appears</li>
+          <li>No redirect occurs</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</body>
+</html>

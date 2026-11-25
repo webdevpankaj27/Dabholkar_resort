@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integration Test - Task 6.2: Total Pricing with Extra Beds</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #2c5530;
+      border-bottom: 3px solid #2c5530;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #3d7044;
+      margin-top: 30px;
+    }
+    .test-case {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .test-title {
+      font-weight: bold;
+      color: #2c5530;
+      margin-bottom: 10px;
+    }
+    .test-result {
+      margin: 10px 0;
+      padding: 10px;
+      background: #f9f9f9;
+      border-left: 4px solid #4a9d5f;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+    }
+    .pass {
+      color: green;
+      font-weight: bold;
+    }
+    .fail {
+      color: red;
+      font-weight: bold;
+    }
+    .info {
+      color: #666;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Integration Test - Task 6.2: Integrate Extra Bed Charges with Total Pricing</h1>
+  
+  <div class="info">
+    <strong>Requirements:</strong> 5.1, 5.2, 5.3<br>
+    <strong>Acceptance Criteria:</strong>
+    <ul>
+      <li>Base accommodation price is calculated from seasonal pricing</li>
+      <li>Extra bed charge is calculated using calculateExtraBeds()</li>
+      <li>Grand total = base price + extra bed charge</li>
+      <li>Pricing result includes both base and extra bed breakdown</li>
+    </ul>
+  </div>
+
+  <div id="test-results"></div>
+
+  <script src="script.js"></script>
+  <script>
+    // Test suite for calculateTotalPricing integration
+    const resultsDiv = document.getElementById('test-results');
+    
+    function addTestCase(title, description) {
+      const div = document.createElement('div');
+      div.className = 'test-case';
+      div.innerHTML = `<div class="test-title">${title}</div><div class="info">${description}</div>`;
+      resultsDiv.appendChild(div);
+      return div;
+    }
+    
+    function addResult(testCase, result, pass) {
+      const div = document.createElement('div');
+      div.className = 'test-result';
+      div.innerHTML = `<span class="${pass ? 'pass' : 'fail'}">${pass ? '✓ PASS' : '✗ FAIL'}</span>: ${result}`;
+      testCase.appendChild(div);
+    }
+    
+    function addInfo(testCase, info) {
+      const div = document.createElement('div');
+      div.className = 'info';
+      div.innerHTML = info;
+      testCase.appendChild(div);
+    }
+
+    // Test 1: Function exists and returns correct structure
+    const test1 = addTestCase(
+      'Test 1: calculateTotalPricing Function Structure',
+      'Verify the function exists and returns a PricingResult with all required fields'
+    );
+    
+    try {
+      const result = calculateTotalPricing('ekaant', '2024-12-15', '2024-12-18', 2);
+      
+      addResult(test1, 'Function exists and can be called', true);
+      
+      const requiredFields = ['basePrice', 'extraBedCount', 'extraBedCharge', 'grandTotal', 'nights', 'breakdown'];
+      const hasAllFields = requiredFields.every(field => result.hasOwnProperty(field));
+      
+      addResult(test1, `Has all required fields: ${requiredFields.join(', ')}`, hasAllFields);
+      addResult(test1, 'breakdown is an array', Array.isArray(result.breakdown));
+      
+      addInfo(test1, '<pre>' + JSON.stringify(result, null, 2) + '</pre>');
+    } catch (e) {
+      addResult(test1, 'Error: ' + e.message, false);
+    }
+
+    // Test 2: Guests within capacity (no extra beds)
+    const test2 = addTestCase(
+      'Test 2: Guests Within Capacity',
+      'Ekaant villa (capacity 2) with 2 guests - should have no extra bed charges'
+    );
+    
+    try {
+      const result = calculateTotalPricing('ekaant', '2024-12-15', '2024-12-18', 2);
+      
+      addResult(test2, `extraBedCount = ${result.extraBedCount} (expected 0)`, result.extraBedCount === 0);
+      addResult(test2, `extraBedCharge = ₹${result.extraBedCharge} (expected ₹0)`, result.extraBedCharge === 0);
+      addResult(test2, 'grandTotal equals basePrice (no extra charges)', result.grandTotal === result.basePrice);
+      
+      addInfo(test2, `<strong>Base Price:</strong> ₹${result.basePrice.toLocaleString('en-IN')}<br>`);
+      addInfo(test2, `<strong>Grand Total:</strong> ₹${result.grandTotal.toLocaleString('en-IN')}`);
+    } catch (e) {
+      addResult(test2, 'Error: ' + e.message, false);
+    }
+
+    // Test 3: Guests exceeding capacity (extra beds needed)
+    const test3 = addTestCase(
+      'Test 3: Guests Exceeding Capacity',
+      'Ekaant villa (capacity 2) with 4 guests - should need 2 extra beds at ₹2,000 each'
+    );
+    
+    try {
+      const result = calculateTotalPricing('ekaant', '2024-12-15', '2024-12-18', 4);
+      
+      addResult(test3, `extraBedCount = ${result.extraBedCount} (expected 2)`, result.extraBedCount === 2);
+      addResult(test3, `extraBedCharge = ₹${result.extraBedCharge.toLocaleString('en-IN')} (expected ₹4,000)`, result.extraBedCharge === 4000);
+      
+      const expectedGrandTotal = result.basePrice + 4000;
+      addResult(test3, `grandTotal = basePrice + extraBedCharge`, result.grandTotal === expectedGrandTotal);
+      
+      addInfo(test3, `<strong>Base Price:</strong> ₹${result.basePrice.toLocaleString('en-IN')}<br>`);
+      addInfo(test3, `<strong>Extra Bed Charge:</strong> ₹${result.extraBedCharge.toLocaleString('en-IN')}<br>`);
+      addInfo(test3, `<strong>Grand Total:</strong> ₹${result.grandTotal.toLocaleString('en-IN')}`);
+    } catch (e) {
+      addResult(test3, 'Error: ' + e.message, false);
+    }
+
+    // Test 4: Different villa (Nishant with capacity 4)
+    const test4 = addTestCase(
+      'Test 4: Different Villa Capacity',
+      'Nishant villa (capacity 4) with 6 guests - should need 2 extra beds'
+    );
+    
+    try {
+      const result = calculateTotalPricing('nishant', '2024-12-10', '2024-12-15', 6);
+      
+      addResult(test4, `extraBedCount = ${result.extraBedCount} (expected 2)`, result.extraBedCount === 2);
+      addResult(test4, `extraBedCharge = ₹${result.extraBedCharge.toLocaleString('en-IN')} (expected ₹4,000)`, result.extraBedCharge === 4000);
+      
+      const isCorrect = result.grandTotal === (result.basePrice + result.extraBedCharge);
+      addResult(test4, 'Formula verification: grandTotal = basePrice + extraBedCharge', isCorrect);
+      
+      addInfo(test4, `<strong>Nights:</strong> ${result.nights}<br>`);
+      addInfo(test4, `<strong>Base Price:</strong> ₹${result.basePrice.toLocaleString('en-IN')}<br>`);
+      addInfo(test4, `<strong>Extra Bed Charge:</strong> ₹${result.extraBedCharge.toLocaleString('en-IN')}<br>`);
+      addInfo(test4, `<strong>Grand Total:</strong> ₹${result.grandTotal.toLocaleString('en-IN')}`);
+    } catch (e) {
+      addResult(test4, 'Error: ' + e.message, false);
+    }
+
+    // Test 5: Seasonal breakdown preservation
+    const test5 = addTestCase(
+      'Test 5: Seasonal Breakdown Preservation',
+      'Verify that seasonal breakdown is preserved in the PricingResult'
+    );
+    
+    try {
+      const result = calculateTotalPricing('ekaant', '2024-12-15', '2024-12-22', 2);
+      
+      addResult(test5, 'breakdown array is present', result.breakdown !== undefined);
+      addResult(test5, 'breakdown is an array', Array.isArray(result.breakdown));
+      addResult(test5, `breakdown has ${result.breakdown.length} segment(s)`, result.breakdown.length > 0);
+      
+      // Verify sum of nights equals total nights
+      const totalNightsInBreakdown = result.breakdown.reduce((sum, seg) => sum + seg.nights, 0);
+      addResult(test5, `Sum of segment nights (${totalNightsInBreakdown}) equals total nights (${result.nights})`, 
+        totalNightsInBreakdown === result.nights);
+      
+      // Verify sum of subtotals equals base price
+      const totalSubtotals = result.breakdown.reduce((sum, seg) => sum + seg.subtotal, 0);
+      addResult(test5, `Sum of subtotals (₹${totalSubtotals.toLocaleString('en-IN')}) equals basePrice (₹${result.basePrice.toLocaleString('en-IN')})`, 
+        totalSubtotals === result.basePrice);
+      
+      addInfo(test5, '<strong>Breakdown:</strong><pre>' + JSON.stringify(result.breakdown, null, 2) + '</pre>');
+    } catch (e) {
+      addResult(test5, 'Error: ' + e.message, false);
+    }
+
+    // Test 6: Edge case - single guest
+    const test6 = addTestCase(
+      'Test 6: Edge Case - Single Guest',
+      'Single guest in a 2-capacity villa should have no extra beds'
+    );
+    
+    try {
+      const result = calculateTotalPricing('ekaant', '2024-12-15', '2024-12-16', 1);
+      
+      addResult(test6, 'extraBedCount = 0', result.extraBedCount === 0);
+      addResult(test6, 'extraBedCharge = ₹0', result.extraBedCharge === 0);
+      addResult(test6, 'grandTotal equals basePrice', result.grandTotal === result.basePrice);
+    } catch (e) {
+      addResult(test6, 'Error: ' + e.message, false);
+    }
+
+    // Test 7: Null parameter handling
+    const test7 = addTestCase(
+      'Test 7: Error Handling - Null Parameters',
+      'Function should return null when required parameters are missing'
+    );
+    
+    try {
+      const result1 = calculateTotalPricing(null, '2024-12-15', '2024-12-18', 2);
+      const result2 = calculateTotalPricing('ekaant', null, '2024-12-18', 2);
+      const result3 = calculateTotalPricing('ekaant', '2024-12-15', null, 2);
+      const result4 = calculateTotalPricing('ekaant', '2024-12-15', '2024-12-18', null);
+      
+      addResult(test7, 'Null homeKey returns null', result1 === null);
+      addResult(test7, 'Null checkin returns null', result2 === null);
+      addResult(test7, 'Null checkout returns null', result3 === null);
+      addResult(test7, 'Null guests returns null', result4 === null);
+    } catch (e) {
+      addResult(test7, 'Error: ' + e.message, false);
+    }
+
+    // Summary
+    const summary = addTestCase(
+      '📊 Test Summary',
+      'All tests completed'
+    );
+    
+    const allTests = document.querySelectorAll('.test-result');
+    const passedTests = document.querySelectorAll('.pass').length;
+    const failedTests = document.querySelectorAll('.fail').length;
+    
+    addInfo(summary, `<strong>Total Tests:</strong> ${allTests.length}<br>`);
+    addInfo(summary, `<strong style="color: green;">Passed:</strong> ${passedTests}<br>`);
+    addInfo(summary, `<strong style="color: red;">Failed:</strong> ${failedTests}<br>`);
+    
+    if (failedTests === 0) {
+      addInfo(summary, '<h2 style="color: green;">✅ All tests passed!</h2>');
+    } else {
+      addInfo(summary, '<h2 style="color: red;">❌ Some tests failed</h2>');
+    }
+  </script>
+</body>
+</html>

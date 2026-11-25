@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Villa Card Rendering Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+    .test-section h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .pass { color: #22c55e; font-weight: bold; }
+    .fail { color: #ef4444; font-weight: bold; }
+    #villa-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .villa-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+    .villa-card-img img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .villa-card-body {
+      padding: 15px;
+    }
+    .villa-card h3 {
+      margin: 10px 0;
+      font-size: 1.25rem;
+    }
+    .villa-pricing {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 4px;
+    }
+    .total-amount {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #059669;
+    }
+    .seasonal-breakdown {
+      margin-top: 10px;
+      font-size: 0.875rem;
+    }
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+    .extra-bed-charge {
+      margin-top: 10px;
+      padding: 10px;
+      background: #fef3c7;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <h1>Villa Card Rendering Test - Task 8.1</h1>
+  
+  <div class="test-section">
+    <h2>Test Results</h2>
+    <div id="test-results"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Search Criteria</h2>
+    <p><strong>Check-in:</strong> <span id="sc-checkin"></span></p>
+    <p><strong>Check-out:</strong> <span id="sc-checkout"></span></p>
+    <p><strong>Guests:</strong> <span id="sc-guests"></span></p>
+  </div>
+
+  <div class="test-section">
+    <h2>Rendered Villa Cards</h2>
+    <div id="results-count"></div>
+    <div id="villa-results"></div>
+  </div>
+
+  <!-- Load dependencies -->
+  <script src="script.js"></script>
+  <script src="search-results.js"></script>
+  
+  <script>
+    // Test the renderVillaCards function
+    const testResults = document.getElementById('test-results');
+    const results = [];
+
+    // Test parameters
+    const testParams = {
+      checkin: '2024-12-25',
+      checkout: '2024-12-30',
+      guests: 4
+    };
+
+    // Simulate URL parameters
+    const testURL = `?checkin=${testParams.checkin}&checkout=${testParams.checkout}&guests=${testParams.guests}`;
+    history.replaceState(null, '', testURL);
+
+    // Test 1: Verify HOMES object has all 6 villas
+    const expectedVillas = ['ekaant', 'savali', 'nishant', 'niwaant', 'sushaant', 'nitaant'];
+    const actualVillas = Object.keys(HOMES);
+    const hasAllVillas = expectedVillas.every(v => actualVillas.includes(v));
+    results.push({
+      name: 'HOMES object contains all 6 villas',
+      pass: hasAllVillas,
+      details: `Expected: ${expectedVillas.length}, Found: ${actualVillas.length} (${actualVillas.join(', ')})`
+    });
+
+    // Test 2: Parse search parameters
+    const searchParams = parseSearchParams();
+    results.push({
+      name: 'parseSearchParams() returns valid params',
+      pass: searchParams !== null && searchParams.checkin === testParams.checkin,
+      details: searchParams ? JSON.stringify(searchParams) : 'null'
+    });
+
+    // Test 3: Display search criteria
+    if (searchParams) {
+      displaySearchCriteria(searchParams);
+      const displayedCheckin = document.getElementById('sc-checkin').textContent;
+      results.push({
+        name: 'displaySearchCriteria() shows dates',
+        pass: displayedCheckin.length > 0,
+        details: `Check-in displayed as: ${displayedCheckin}`
+      });
+    }
+
+    // Test 4: Render villa cards
+    if (searchParams) {
+      renderVillaCards(searchParams);
+      const villaCards = document.querySelectorAll('.villa-card');
+      const villaCount = villaCards.length;
+      
+      results.push({
+        name: 'renderVillaCards() renders all villas',
+        pass: villaCount === 6,
+        details: `Rendered ${villaCount} villa cards`
+      });
+
+      // Test 5: Check if each card has required properties
+      let allCardsValid = true;
+      villaCards.forEach((card, idx) => {
+        const hasName = card.querySelector('h3') !== null;
+        const hasType = card.querySelector('.villa-type') !== null;
+        const hasGuests = card.querySelector('.villa-guests') !== null;
+        const hasBed = card.querySelector('.villa-card-specs') !== null;
+        const hasPricing = card.querySelector('.villa-pricing') !== null;
+        
+        if (!hasName || !hasType || !hasGuests || !hasBed || !hasPricing) {
+          allCardsValid = false;
+        }
+      });
+
+      results.push({
+        name: 'All villa cards have required properties (name, type, guests, bed, pricing)',
+        pass: allCardsValid,
+        details: allCardsValid ? 'All cards valid' : 'Some cards missing properties'
+      });
+
+      // Test 6: Check if pricing uses calculateTotalPricing
+      const firstVillaKey = actualVillas[0];
+      const pricing = calculateTotalPricing(firstVillaKey, searchParams.checkin, searchParams.checkout, searchParams.guests);
+      results.push({
+        name: 'calculateTotalPricing() returns valid pricing',
+        pass: pricing !== null && pricing.grandTotal > 0,
+        details: pricing ? `Grand total for ${HOMES[firstVillaKey].name}: ₹${pricing.grandTotal.toLocaleString('en-IN')}` : 'null'
+      });
+
+      // Test 7: Verify extra bed calculation for guests > capacity
+      const ekaant = HOMES['ekaant'];
+      const ekaantCapacity = parseInt(ekaant.guests.match(/\d+/)[0]);
+      const extraBeds = calculateExtraBeds(testParams.guests, ekaantCapacity);
+      results.push({
+        name: 'Extra bed calculation works correctly',
+        pass: extraBeds.count === (testParams.guests - ekaantCapacity) && extraBeds.charge === extraBeds.count * 2000,
+        details: `Guests: ${testParams.guests}, Capacity: ${ekaantCapacity}, Extra beds: ${extraBeds.count}, Charge: ₹${extraBeds.charge.toLocaleString('en-IN')}`
+      });
+    }
+
+    // Display test results
+    testResults.innerHTML = results.map(r => `
+      <div style="margin: 10px 0; padding: 10px; background: ${r.pass ? '#d1fae5' : '#fee2e2'}; border-radius: 4px;">
+        <span class="${r.pass ? 'pass' : 'fail'}">${r.pass ? '✓ PASS' : '✗ FAIL'}</span>
+        <strong>${r.name}</strong><br>
+        <small>${r.details}</small>
+      </div>
+    `).join('');
+
+    const passCount = results.filter(r => r.pass).length;
+    const totalCount = results.length;
+    testResults.innerHTML = `
+      <h3>Summary: ${passCount}/${totalCount} tests passed</h3>
+      ${testResults.innerHTML}
+    `;
+  </script>
+</body>
+</html>
