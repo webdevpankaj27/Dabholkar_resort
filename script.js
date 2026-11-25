@@ -470,22 +470,25 @@ function refreshGalleryUI() {
   });
 }
 
-mdPrev.addEventListener('click', () => { mdCurrentIndex = (mdCurrentIndex - 1 + mdImages.length) % mdImages.length; refreshGalleryUI(); });
-mdNext.addEventListener('click', () => { mdCurrentIndex = (mdCurrentIndex + 1) % mdImages.length; refreshGalleryUI(); });
-mdCloseBtn.addEventListener('click', () => closeModal(detailsModal));
+// Only add event listeners if elements exist (not on search-results page)
+if (mdPrev && mdNext && mdCloseBtn && detailsModal) {
+  mdPrev.addEventListener('click', () => { mdCurrentIndex = (mdCurrentIndex - 1 + mdImages.length) % mdImages.length; refreshGalleryUI(); });
+  mdNext.addEventListener('click', () => { mdCurrentIndex = (mdCurrentIndex + 1) % mdImages.length; refreshGalleryUI(); });
+  mdCloseBtn.addEventListener('click', () => closeModal(detailsModal));
 
-detailsModal.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft')  { mdCurrentIndex = (mdCurrentIndex - 1 + mdImages.length) % mdImages.length; refreshGalleryUI(); }
-  if (e.key === 'ArrowRight') { mdCurrentIndex = (mdCurrentIndex + 1) % mdImages.length; refreshGalleryUI(); }
-});
+  detailsModal.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { mdCurrentIndex = (mdCurrentIndex - 1 + mdImages.length) % mdImages.length; refreshGalleryUI(); }
+    if (e.key === 'ArrowRight') { mdCurrentIndex = (mdCurrentIndex + 1) % mdImages.length; refreshGalleryUI(); }
+  });
 
-// "View Details" & "Photos" buttons on room cards
-document.querySelectorAll('.btn-details').forEach(btn => {
-  btn.addEventListener('click', () => { renderDetailsModal(btn.dataset.home); openModal(detailsModal); });
-});
-document.querySelectorAll('.room-card-gallery-btn').forEach(btn => {
-  btn.addEventListener('click', () => { renderDetailsModal(btn.dataset.home); openModal(detailsModal); });
-});
+  // "View Details" & "Photos" buttons on room cards
+  document.querySelectorAll('.btn-details').forEach(btn => {
+    btn.addEventListener('click', () => { renderDetailsModal(btn.dataset.home); openModal(detailsModal); });
+  });
+  document.querySelectorAll('.room-card-gallery-btn').forEach(btn => {
+    btn.addEventListener('click', () => { renderDetailsModal(btn.dataset.home); openModal(detailsModal); });
+  });
+}
 
 
 /* ─────────────────────────────────────────
@@ -519,13 +522,15 @@ function openBookingModal(homeKey) {
   openModal(bookingModal);
 }
 
-bmCloseBtn.addEventListener('click', () => closeModal(bookingModal));
-bmDoneBtn.addEventListener('click',  () => closeModal(bookingModal));
+if (bmCloseBtn) bmCloseBtn.addEventListener('click', () => closeModal(bookingModal));
+if (bmDoneBtn) bmDoneBtn.addEventListener('click', () => closeModal(bookingModal));
 
 // Room card "Book Now" buttons
-document.querySelectorAll('.btn-book').forEach(btn => {
-  btn.addEventListener('click', () => openBookingModal(btn.dataset.home));
-});
+if (document.querySelector('.btn-book')) {
+  document.querySelectorAll('.btn-book').forEach(btn => {
+    btn.addEventListener('click', () => openBookingModal(btn.dataset.home));
+  });
+}
 
 // Nav / footer "Book Now" links (#book)
 document.querySelectorAll('a[href="#book"]').forEach(link => {
