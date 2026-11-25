@@ -247,7 +247,7 @@ const HOMES = {
   },
   nitaant: {
     name:'Nitaant', type:'Garden Villa', guests:'2 Guests',
-    bed:'King Bed', size:'1200 sq ft', price:10,
+    bed:'King Bed', size:'1200 sq ft', price:7500,
     desc:'Nitaant is a serene new private retreat at Dabholkar Resort on the Konkan Coast. Details and images coming soon.',
     images:['./assets/villa_images/nitaant/nitaant.jpeg','./assets/villa_images/nitaant/room_interior11.jpeg','./assets/villa_images/nitaant/Screenshot (97).png'],
     facilities:['Private garden','Ceiling fan & AC','Personal safe','Writing desk','Bluetooth speaker'],
