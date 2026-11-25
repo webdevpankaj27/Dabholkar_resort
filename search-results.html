@@ -173,102 +173,100 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
-       BOOKING MODAL
-  ═══════════════════════════════════════════ -->
-  <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-label="Villa booking" hidden>
+  <!-- BOOKING MODAL -->
+  <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-label="Make a reservation" hidden>
     <div class="modal modal--booking">
       <button class="modal-close" id="bookingModalClose" aria-label="Close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-
-      <div class="bm-content">
+      <div class="bm-form-wrap" id="bmFormWrap">
         <div class="bm-header">
-          <h2 class="bm-title" id="bm-villa-name">Villa Name</h2>
-          <span class="bm-type" id="bm-villa-type">Villa Type</span>
+          <p class="section-label">Reserve Your Stay</p>
+          <h2>Plan Your Visit</h2>
         </div>
-
-        <div class="bm-booking-details">
-          <h3>Booking Details</h3>
-          <div class="bm-detail-row">
-            <span class="bm-detail-label">Check-in:</span>
-            <span class="bm-detail-value" id="bm-checkin">—</span>
-          </div>
-          <div class="bm-detail-row">
-            <span class="bm-detail-label">Check-out:</span>
-            <span class="bm-detail-value" id="bm-checkout">—</span>
-          </div>
-          <div class="bm-detail-row">
-            <span class="bm-detail-label">Guests:</span>
-            <span class="bm-detail-value" id="bm-guests">—</span>
-          </div>
-          <div class="bm-detail-row">
-            <span class="bm-detail-label">Nights:</span>
-            <span class="bm-detail-value" id="bm-nights">—</span>
-          </div>
-        </div>
-
-        <!-- Pricing Breakdown -->
-        <div class="bm-pricing" id="bm-pricing">
-          <h3>Pricing Breakdown</h3>
-          <div id="bm-seasonal-breakdown">
-            <!-- Seasonal breakdown will be inserted here -->
-          </div>
-          <div class="bm-price-row" id="bm-extra-beds-row" style="display: none;">
-            <span class="bm-price-label">Extra Beds (<span id="bm-extra-beds-count">0</span>):</span>
-            <span class="bm-price-value" id="bm-extra-beds-charge">₹0</span>
-          </div>
-          <div class="bm-price-row bm-total-row">
-            <span class="bm-price-label">Total Amount:</span>
-            <span class="bm-price-value" id="bm-total-amount">₹0</span>
-          </div>
-        </div>
-
-        <!-- Guest Information Form -->
-        <form class="bm-form" id="booking-form">
-          <h3>Guest Information</h3>
-          <div class="bm-form-row">
-            <div class="bm-form-field">
-              <label for="bm-guest-name">Full Name *</label>
-              <input type="text" id="bm-guest-name" name="guestName" required autocomplete="name" />
+        <form class="bm-form" id="bookingForm" novalidate>
+          <div class="bm-section-title">Stay Details</div>
+          <div class="bm-row bm-row--3">
+            <div class="bm-field">
+              <label for="bm-checkin">Check-in</label>
+              <input type="date" id="bm-checkin" name="checkin" autocomplete="off" required />
             </div>
-            <div class="bm-form-field">
-              <label for="bm-guest-email">Email Address *</label>
-              <input type="email" id="bm-guest-email" name="guestEmail" required autocomplete="email" />
+            <div class="bm-field">
+              <label for="bm-checkout">Check-out</label>
+              <input type="date" id="bm-checkout" name="checkout" autocomplete="off" required />
+            </div>
+            <div class="bm-field">
+              <label for="bm-guests">Guests</label>
+              <select id="bm-guests" name="guests" required>
+                <option value="">Select</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+              </select>
             </div>
           </div>
-          <div class="bm-form-row">
-            <div class="bm-form-field">
-              <label for="bm-guest-phone">Phone Number *</label>
-              <input type="tel" id="bm-guest-phone" name="guestPhone" required autocomplete="tel" />
+          <div class="bm-field">
+            <label for="bm-home">Select Villa</label>
+            <select id="bm-home" name="home" required>
+              <option value="">Choose your home</option>
+              <option value="Ekaant">Ekaant — Private Villa (2 Guests)</option>
+              <option value="Savali">Savali — VIP Villa (2 Guests)</option>
+              <option value="Nishant">Nishant — Couple Villa (2 Guests)</option>
+              <option value="Niwaant">Niwaant — Serenity Villa (2 Guests)</option>
+              <option value="Sushaant">Sushaant — Nature Villa (2 Guests)</option>
+              <option value="Nitaant">Nitaant — Garden Villa (2 Guests)</option>
+            </select>
+          </div>
+          <div class="bm-section-title">Guest Details</div>
+          <div class="bm-row bm-row--2">
+            <div class="bm-field">
+              <label for="bm-fname">First Name</label>
+              <input type="text" id="bm-fname" name="fname" autocomplete="given-name" placeholder="First name" required />
             </div>
-            <div class="bm-form-field">
-              <label for="bm-guest-country">Country *</label>
-              <input type="text" id="bm-guest-country" name="guestCountry" required autocomplete="country-name" />
+            <div class="bm-field">
+              <label for="bm-lname">Last Name</label>
+              <input type="text" id="bm-lname" name="lname" autocomplete="family-name" placeholder="Last name" required />
             </div>
           </div>
-          <div class="bm-form-field">
-            <label for="bm-special-requests">Special Requests (Optional)</label>
-            <textarea id="bm-special-requests" name="specialRequests" rows="3"></textarea>
+          <div class="bm-row bm-row--2">
+            <div class="bm-field">
+              <label for="bm-email">Email Address</label>
+              <input type="email" id="bm-email" name="email" autocomplete="email" placeholder="you@example.com" required />
+            </div>
+            <div class="bm-field">
+              <label for="bm-phone">Phone Number</label>
+              <input type="tel" id="bm-phone" name="phone" autocomplete="tel" placeholder="+91 98765 43210" required />
+            </div>
           </div>
-          <button type="submit" class="btn btn-solid bm-submit-btn">Proceed to Payment</button>
+          <div class="bm-field">
+            <label for="bm-requests">Special Requests <span class="bm-optional">(optional)</span></label>
+            <textarea id="bm-requests" name="requests" rows="3" placeholder="Early check-in, dietary preferences…"></textarea>
+          </div>
+          <div class="bm-price-preview" id="bmPricePreview" style="display:none">
+            <div class="bpp-header">Price Summary</div>
+            <div class="bpp-rows" id="bppRows"></div>
+            <div class="bpp-total" id="bppTotal"></div>
+          </div>
+          <div class="bm-actions">
+            <p class="bm-note">Full payment collected securely via Razorpay.</p>
+            <button type="submit" class="btn btn-solid bm-submit">Pay Now</button>
+          </div>
         </form>
+      </div>
+      <div class="bm-confirm" id="bmConfirm" hidden>
+        <div class="bm-confirm-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <p class="section-label">Booking Confirmed</p>
+        <h2>Thank you, <span id="bcName"></span>!</h2>
+        <p class="bm-confirm-msg">Confirmation will be sent to <strong id="bcEmail"></strong>.</p>
+        <div class="bm-confirm-summary" id="bcSummary"></div>
+        <button class="btn btn-solid bm-done-btn" id="bmDoneBtn">Close</button>
       </div>
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════
-       FOOTER
-  ═══════════════════════════════════════════ -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <img src="./assets/logo.png" alt="Dabholkar Resort" />
-          <span>DABHOLKAR</span>
-        </div>
         <p class="footer-tagline">Your best<br />getaway awaits<br />by the coast.</p>
       </div>
       <div class="footer-links">
