@@ -129,6 +129,78 @@ function calcSeasonalTotal(homeKey, checkin, checkout) {
   return { total, nights: totalNights, breakdown: segments };
 }
 
+/**
+ * Calculates extra bed requirements and charges.
+ * @param {number} guests - Number of guests
+ * @param {number} capacity - Villa capacity
+ * @returns {Object} { count: number, charge: number }
+ */
+function calculateExtraBeds(guests, capacity) {
+  const EXTRA_BED_RATE = 2000;
+  
+  // Calculate extra bed count: max(0, guests - capacity)
+  const count = Math.max(0, guests - capacity);
+  
+  // Calculate extra bed charge: count * 2000
+  const charge = count * EXTRA_BED_RATE;
+  
+  return { count, charge };
+}
+
+/**
+ * Calculates complete pricing including seasonal rates and extra bed charges.
+ * This is a wrapper function that combines base accommodation pricing with extra bed charges.
+ * 
+ * @param {string} homeKey - Villa key from HOMES object
+ * @param {string} checkin - Check-in date in ISO format (YYYY-MM-DD)
+ * @param {string} checkout - Check-out date in ISO format (YYYY-MM-DD)
+ * @param {number} guests - Number of guests
+ * @returns {Object} PricingResult with { basePrice, extraBedCount, extraBedCharge, grandTotal, nights, breakdown }
+ * 
+ * Requirements: 5.1, 5.2, 5.3
+ */
+function calculateTotalPricing(homeKey, checkin, checkout, guests) {
+  // Validate inputs
+  if (!homeKey || !checkin || !checkout || !guests) {
+    console.error('[calculateTotalPricing] Missing required parameters');
+    return null;
+  }
+  
+  // Calculate base accommodation price from seasonal pricing
+  const seasonalPricing = calcSeasonalTotal(homeKey, checkin, checkout);
+  if (!seasonalPricing) {
+    console.error('[calculateTotalPricing] Failed to calculate seasonal pricing');
+    return null;
+  }
+  
+  // Parse villa capacity from HOMES object
+  const villa = HOMES[homeKey];
+  if (!villa) {
+    console.error('[calculateTotalPricing] Villa not found:', homeKey);
+    return null;
+  }
+  
+  // Extract capacity from guests string (e.g., "2 Guests" -> 2)
+  const capacityMatch = villa.guests.match(/\d+/);
+  const capacity = capacityMatch ? parseInt(capacityMatch[0], 10) : 2;
+  
+  // Calculate extra bed charge using calculateExtraBeds()
+  const extraBeds = calculateExtraBeds(guests, capacity);
+  
+  // Calculate grand total = base price + extra bed charge
+  const grandTotal = seasonalPricing.total + extraBeds.charge;
+  
+  // Return pricing result with both base and extra bed breakdown
+  return {
+    basePrice: seasonalPricing.total,
+    extraBedCount: extraBeds.count,
+    extraBedCharge: extraBeds.charge,
+    grandTotal: grandTotal,
+    nights: seasonalPricing.nights,
+    breakdown: seasonalPricing.breakdown
+  };
+}
+
 /* ─────────────────────────────────────────
    HOME DATA
 ───────────────────────────────────────────*/

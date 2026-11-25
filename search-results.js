@@ -284,17 +284,19 @@ function renderVillaCards(searchParams) {
   for (const [villaKey, villa] of Object.entries(HOMES)) {
     console.log(`[renderVillaCards] Processing villa: ${villaKey}`);
     
-    const pricing = calcSeasonalTotal(villaKey, searchParams.checkin, searchParams.checkout);
+    // Use the new calculateTotalPricing wrapper function that includes extra bed charges
+    const pricing = calculateTotalPricing(villaKey, searchParams.checkin, searchParams.checkout, searchParams.guests);
     if (!pricing) {
       console.error(`[renderVillaCards] Failed to calculate pricing for ${villaKey}`);
       continue;
     }
     
-    const capacityMatch = villa.guests.match(/\d+/);
-    const capacity = capacityMatch ? parseInt(capacityMatch[0], 10) : 2;
-    
-    const extraBeds = calculateExtraBeds(searchParams.guests, capacity);
-    const grandTotal = pricing.total + extraBeds.charge;
+    // Extract values from the comprehensive pricing result
+    const grandTotal = pricing.grandTotal;
+    const extraBeds = {
+      count: pricing.extraBedCount,
+      charge: pricing.extraBedCharge
+    };
     
     const card = document.createElement('article');
     card.className = 'villa-card reveal';
