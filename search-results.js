@@ -281,6 +281,15 @@ function renderVillaCards(searchParams) {
   container.innerHTML = '';
   let villaCount = 0;
   
+  // DEBUG: Check if HOMES and functions are accessible
+  console.log('[renderVillaCards] HOMES available:', typeof HOMES !== 'undefined');
+  console.log('[renderVillaCards] calculateTotalPricing available:', typeof calculateTotalPricing === 'function');
+  if (typeof HOMES === 'undefined') {
+    console.error('[renderVillaCards] HOMES is not defined! script.js may not have loaded.');
+    return;
+  }
+  console.log('[renderVillaCards] HOMES keys:', Object.keys(HOMES));
+  
   for (const [villaKey, villa] of Object.entries(HOMES)) {
     console.log(`[renderVillaCards] Processing villa: ${villaKey}`);
     
