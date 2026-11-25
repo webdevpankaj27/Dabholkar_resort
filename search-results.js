@@ -1,12 +1,12 @@
-/* ═══════════════════════════════════════════
-   DABHOLKAR RESORT — search-results.js
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   DABHOLKAR RESORT â€” search-results.js
    Search results page functionality
-═══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 'use strict';
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    URL PARAMETER PARSING
-───────────────────────────────────────────*/
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
 
 /**
  * Parses and validates URL parameters for search criteria.
@@ -111,9 +111,9 @@ function parseSearchParams() {
   return searchParams;
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    ERROR HANDLING
-───────────────────────────────────────────*/
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
 
 /**
  * Displays error message and redirects to homepage after 2 seconds.
@@ -170,9 +170,9 @@ function handleInvalidParameters() {
   }, 2000);
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    SEARCH CRITERIA DISPLAY
-───────────────────────────────────────────*/
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
 
 /**
  * Formats a date string (YYYY-MM-DD) into a readable format.
@@ -242,9 +242,9 @@ function displaySearchCriteria(searchParams) {
   }
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    PAGE INITIALIZATION
-───────────────────────────────────────────*/
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
 
 /**
  * Initialize the search results page.
@@ -323,7 +323,7 @@ function renderVillaCards(searchParams) {
               ${name}
               <span class="breakdown-nights">(${seg.nights}n)</span>
             </span>
-            <span class="breakdown-subtotal">?${seg.subtotal.toLocaleString('en-IN')}</span>
+            <span class="breakdown-subtotal">₹${seg.subtotal.toLocaleString('en-IN')}</span>
           </div>
         `;
       }).join('');
@@ -343,17 +343,17 @@ function renderVillaCards(searchParams) {
       extraBedHTML = `
         <div class="extra-bed-charge">
           <span class="extra-bed-label">
-            <span class="extra-bed-icon">???</span>
+            <span class="extra-bed-icon">ðŸ›ï¸</span>
             ${extraBeds.count} Extra Bed${extraBeds.count > 1 ? 's' : ''}
           </span>
-          <span class="extra-bed-amount">?${extraBeds.charge.toLocaleString('en-IN')}</span>
+          <span class="extra-bed-amount">₹${extraBeds.charge.toLocaleString('en-IN')}</span>
         </div>
       `;
     }
     
     card.innerHTML = `
       <div class="villa-card-img">
-        <img src="${villa.images[0]}" alt="${villa.name} — ${villa.type}">
+        <img src="${villa.images[0]}" alt="${villa.name} â€” ${villa.type}">
         <div class="villa-card-badge">${villa.type}</div>
       </div>
       <div class="villa-card-body">
@@ -385,7 +385,7 @@ function renderVillaCards(searchParams) {
         <div class="villa-pricing">
           <div class="pricing-total">
             <span class="total-label">Total Price</span>
-            <span class="total-amount">?${grandTotal.toLocaleString('en-IN')}</span>
+            <span class="total-amount">₹${grandTotal.toLocaleString('en-IN')}</span>
           </div>
           <span class="nights-label">${pricing.nights} night${pricing.nights > 1 ? 's' : ''}</span>
           
@@ -403,7 +403,7 @@ function renderVillaCards(searchParams) {
     container.appendChild(card);
     villaCount++;
     
-    console.log(`[renderVillaCards] Added ${villa.name} with grand total: ?${grandTotal.toLocaleString('en-IN')}`);
+    console.log(`[renderVillaCards] Added ${villa.name} with grand total: ₹${grandTotal.toLocaleString('en-IN')}`);
   }
   
   const countEl = document.getElementById('results-count');
@@ -446,3 +446,4 @@ if (document.readyState === 'loading') {
 } else {
   initSearchResults();
 }
+
