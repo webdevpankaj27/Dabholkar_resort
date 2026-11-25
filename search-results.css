@@ -701,3 +701,9 @@
   margin-top: 0.5rem;
 }
 
+/* Debug CSS - Add to search-results.css temporarily */
+#villa-results {
+  min-height: 500px;
+  background: rgba(255, 0, 0, 0.1); /* Light red to see container */
+  border: 3px solid red;
+}
