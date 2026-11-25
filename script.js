@@ -909,8 +909,9 @@ loadSiteSettings();
   var bbGMinus   = document.getElementById('bb-g-minus');
   var bbGPlus    = document.getElementById('bb-g-plus');
   var bbSearchBtn = document.getElementById('bb-search-btn');
-  var bbStrip    = document.getElementById('bb-price-strip');
-  var bbResults  = document.getElementById('bb-price-results');
+  // bbStrip and bbResults removed - no longer used in search-first flow
+  var bbCheckinError = document.getElementById('bb-checkin-error');
+  var bbCheckoutError = document.getElementById('bb-checkout-error');
 
   if (!bbCheckin) return;
 
@@ -928,42 +929,107 @@ loadSiteSettings();
   bbGMinus.addEventListener('click', function () { if (guests > 1) { guests--; bbGCount.textContent = guests; } });
   bbGPlus.addEventListener('click',  function () { if (guests < 10) { guests++; bbGCount.textContent = guests; } });
 
+  /**
+   * Validates that check-in date is not in the past
+   * @returns {boolean} true if valid, false if invalid
+   */
+  function validateCheckinDate() {
+    var checkinValue = bbCheckin.value;
+    if (!checkinValue) {
+      bbCheckinError.textContent = '';
+      bbCheckin.classList.remove('has-error');
+      return false;
+    }
+
+    var checkinDate = new Date(checkinValue + 'T00:00:00');
+    var todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+
+    if (checkinDate < todayDate) {
+      bbCheckinError.textContent = 'Check-in date must be today or later';
+      bbCheckin.classList.add('has-error');
+      return false;
+    }
+
+    bbCheckinError.textContent = '';
+    bbCheckin.classList.remove('has-error');
+    return true;
+  }
+
+  /**
+   * Validates that check-out date is after check-in date
+   * @returns {boolean} true if valid, false if invalid
+   */
+  function validateCheckoutDate() {
+    var checkinValue = bbCheckin.value;
+    var checkoutValue = bbCheckout.value;
+
+    if (!checkoutValue) {
+      bbCheckoutError.textContent = '';
+      bbCheckout.classList.remove('has-error');
+      return false;
+    }
+
+    if (!checkinValue) {
+      bbCheckoutError.textContent = '';
+      bbCheckout.classList.remove('has-error');
+      return false;
+    }
+
+    var checkinDate = new Date(checkinValue + 'T00:00:00');
+    var checkoutDate = new Date(checkoutValue + 'T00:00:00');
+
+    if (checkoutDate <= checkinDate) {
+      bbCheckoutError.textContent = 'Check-out must be after check-in date';
+      bbCheckout.classList.add('has-error');
+      return false;
+    }
+
+    bbCheckoutError.textContent = '';
+    bbCheckout.classList.remove('has-error');
+    return true;
+  }
+
+  /**
+   * Validates all booking bar dates
+   * @returns {boolean} true if all validations pass
+   */
+  function validateBookingDates() {
+    var checkinValid = validateCheckinDate();
+    var checkoutValid = validateCheckoutDate();
+    return checkinValid && checkoutValid;
+  }
+
   // Keep checkout min in sync
   bbCheckin.addEventListener('change', function () {
     bbCheckout.min = this.value;
     if (bbCheckout.value && bbCheckout.value <= this.value) bbCheckout.value = '';
-    showPrices();
+    validateCheckinDate();
+    validateCheckoutDate();
   });
-  bbCheckout.addEventListener('change', showPrices);
-  bbVilla.addEventListener('change', showPrices);
+  
+  bbCheckout.addEventListener('change', function() {
+    validateCheckoutDate();
+  });
 
-  // Search button ? scroll to rooms + filter
+  // Search button - navigate to search results page with URL parameters
   bbSearchBtn.addEventListener('click', function () {
-    showPrices();
-    var roomsSec = document.getElementById('rooms');
-    if (roomsSec) roomsSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Validate dates before allowing search
+    if (!validateBookingDates()) {
+      return; // Prevent search submission when validation fails
+    }
+    
+    // Build URL parameters from validated inputs
+    var checkin = bbCheckin.value;   // Already in YYYY-MM-DD format
+    var checkout = bbCheckout.value; // Already in YYYY-MM-DD format
+    var guestCount = guests;         // Current guest count value
+    
+    // Construct search results URL with parameters
+    var searchUrl = 'search-results.html?checkin=' + checkin + 
+                    '&checkout=' + checkout + 
+                    '&guests=' + guestCount;
+    
+    // Navigate to search results page
+    window.location.href = searchUrl;
   });
 
-  function showPrices() {
-    if (!bbCheckin.value || !bbCheckout.value || bbCheckout.value <= bbCheckin.value) {
-      bbStrip.style.display = 'none'; return;
-    }
-    var selectedKey = bbVilla.value;
-    var keys = selectedKey ? [selectedKey] : Object.keys(HOMES);
-    var html = '';
-    keys.forEach(function (key) {
-      if (!HOMES[key]) return;
-      var result = calcSeasonalTotal(key, bbCheckin.value, bbCheckout.value);
-      if (!result) return;
-      html += '<div class="bb-price-pill">' +
-        '<strong>' + HOMES[key].name + '</strong> � ' +
-        result.nights + ' night' + (result.nights > 1 ? 's' : '') + ': ' +
-        '<strong>&#8377;' + result.total.toLocaleString('en-IN') + '</strong>' +
-        '</div>';
-    });
-    bbResults.innerHTML = html || '<div class="bb-price-pill">No results</div>';
-    bbStrip.style.display = 'block';
-  }
-
-  showPrices();
-})();
