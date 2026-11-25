@@ -252,6 +252,159 @@ function displaySearchCriteria(searchParams) {
  * 
  * Requirements: 2.1, 2.2, 3.7, 3.8, 3.9
  */
+
+/* -----------------------------------------
+   EXTRA BED CALCULATION
+-------------------------------------------*/
+
+function calculateExtraBeds(guests, capacity) {
+  const extraCount = Math.max(0, guests - capacity);
+  return {
+    count: extraCount,
+    charge: extraCount * 2000
+  };
+}
+
+/* -----------------------------------------
+   VILLA CARD RENDERING
+-------------------------------------------*/
+
+function renderVillaCards(searchParams) {
+  console.log('[renderVillaCards] Starting villa rendering...');
+  
+  const container = document.getElementById('villa-results');
+  if (!container) {
+    console.error('[renderVillaCards] Villa results container not found');
+    return;
+  }
+  
+  container.innerHTML = '';
+  let villaCount = 0;
+  
+  for (const [villaKey, villa] of Object.entries(HOMES)) {
+    console.log(`[renderVillaCards] Processing villa: ${villaKey}`);
+    
+    const pricing = calcSeasonalTotal(villaKey, searchParams.checkin, searchParams.checkout);
+    if (!pricing) {
+      console.error(`[renderVillaCards] Failed to calculate pricing for ${villaKey}`);
+      continue;
+    }
+    
+    const capacityMatch = villa.guests.match(/\d+/);
+    const capacity = capacityMatch ? parseInt(capacityMatch[0], 10) : 2;
+    
+    const extraBeds = calculateExtraBeds(searchParams.guests, capacity);
+    const grandTotal = pricing.total + extraBeds.charge;
+    
+    const card = document.createElement('article');
+    card.className = 'villa-card reveal';
+    card.dataset.home = villaKey;
+    
+    let breakdownHTML = '';
+    if (pricing.breakdown.length > 1) {
+      let segmentsHTML = pricing.breakdown.map(seg => {
+        const icon = seg.label.split(' ')[0];
+        const name = seg.label.substring(2);
+        return `
+          <div class="breakdown-item">
+            <span class="breakdown-label">
+              <span class="season-icon">${icon}</span>
+              ${name}
+              <span class="breakdown-nights">(${seg.nights}n)</span>
+            </span>
+            <span class="breakdown-subtotal">?${seg.subtotal.toLocaleString('en-IN')}</span>
+          </div>
+        `;
+      }).join('');
+      
+      breakdownHTML = `
+        <div class="seasonal-breakdown">
+          <div class="breakdown-title">Price Breakdown</div>
+          <div class="breakdown-items">
+            ${segmentsHTML}
+          </div>
+        </div>
+      `;
+    }
+    
+    let extraBedHTML = '';
+    if (extraBeds.count > 0) {
+      extraBedHTML = `
+        <div class="extra-bed-charge">
+          <span class="extra-bed-label">
+            <span class="extra-bed-icon">???</span>
+            ${extraBeds.count} Extra Bed${extraBeds.count > 1 ? 's' : ''}
+          </span>
+          <span class="extra-bed-amount">?${extraBeds.charge.toLocaleString('en-IN')}</span>
+        </div>
+      `;
+    }
+    
+    card.innerHTML = `
+      <div class="villa-card-img">
+        <img src="${villa.images[0]}" alt="${villa.name} — ${villa.type}">
+        <div class="villa-card-badge">${villa.type}</div>
+      </div>
+      <div class="villa-card-body">
+        <div class="villa-card-meta">
+          <span class="villa-type">${villa.type}</span>
+          <span class="villa-guests">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            ${villa.guests}
+          </span>
+        </div>
+        <h3>${villa.name}</h3>
+        <div class="villa-card-specs">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M2 4v16M22 4v16M2 8h20M2 16h20M6 8v8M10 8v8M14 8v8M18 8v8"/>
+            </svg>
+            ${villa.bed}
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </svg>
+            ${villa.size}
+          </span>
+        </div>
+        
+        <div class="villa-pricing">
+          <div class="pricing-total">
+            <span class="total-label">Total Price</span>
+            <span class="total-amount">?${grandTotal.toLocaleString('en-IN')}</span>
+          </div>
+          <span class="nights-label">${pricing.nights} night${pricing.nights > 1 ? 's' : ''}</span>
+          
+          ${breakdownHTML}
+          ${extraBedHTML}
+        </div>
+        
+        <div class="villa-card-actions">
+          <button class="btn btn-view-details" onclick="alert('View details coming soon')">View Details</button>
+          <button class="btn btn-book-now" onclick="alert('Booking modal integration coming soon')">Book Now</button>
+        </div>
+      </div>
+    `;
+    
+    container.appendChild(card);
+    villaCount++;
+    
+    console.log(`[renderVillaCards] Added ${villa.name} with grand total: ?${grandTotal.toLocaleString('en-IN')}`);
+  }
+  
+  const countEl = document.getElementById('results-count');
+  if (countEl) {
+    countEl.textContent = `Showing ${villaCount} ${villaCount === 1 ? 'villa' : 'villas'}`;
+    console.log(`[renderVillaCards] Updated results count: ${villaCount} villas`);
+  }
+  
+  console.log(`[renderVillaCards] Successfully rendered ${villaCount} villas`);
+}
+
+
 function initSearchResults() {
   console.log('[initSearchResults] Initializing search results page...');
   
@@ -272,7 +425,8 @@ function initSearchResults() {
   
   console.log('[initSearchResults] Search results page initialized successfully');
   
-  // TODO: Continue with villa display logic (implemented in other tasks)
+  // Render villa cards with pricing
+  renderVillaCards(searchParams);
 }
 
 // Run initialization when DOM is ready
