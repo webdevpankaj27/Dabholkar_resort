@@ -1,360 +1,115 @@
-﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   DABHOLKAR RESORT â€” search-results.js
-   Search results page functionality
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════
+   DABHOLKAR RESORT — search-results.js
+═══════════════════════════════════════════ */
 'use strict';
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   URL PARAMETER PARSING
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
-
-/**
- * Parses and validates URL parameters for search criteria.
- * 
- * @returns {SearchParams|null} Object with {checkin, checkout, guests} or null if invalid
- * 
- * Validates:
- * - checkin is a valid ISO date string (YYYY-MM-DD)
- * - checkout is a valid ISO date string (YYYY-MM-DD)
- * - guests is a positive integer >= 1
- * - checkin is today or in the future
- * - checkout is strictly after checkin
- * 
- * Requirements: 2.1, 3.4, 3.5, 3.6
- */
+/* ── URL Parameter Parsing ──────────────── */
 function parseSearchParams() {
-  console.log('[parseSearchParams] Starting URL parameter parsing...');
-  
-  // Extract parameters from URL query string
-  const params = new URLSearchParams(window.location.search);
-  const checkin = params.get('checkin');
+  const params   = new URLSearchParams(window.location.search);
+  const checkin  = params.get('checkin');
   const checkout = params.get('checkout');
   const guestsStr = params.get('guests');
-  
-  console.log('[parseSearchParams] Raw parameters:', {
-    checkin,
-    checkout,
-    guests: guestsStr
-  });
-  
-  // Validate presence of all required parameters
-  if (!checkin || !checkout || !guestsStr) {
-    console.error('[parseSearchParams] Missing required parameters');
-    return null;
-  }
-  
-  // Parse guest count as integer
+
+  if (!checkin || !checkout || !guestsStr) return null;
+
   const guests = parseInt(guestsStr, 10);
-  
-  // Validate guest count is a positive integer >= 1
-  if (isNaN(guests) || guests < 1) {
-    console.error('[parseSearchParams] Invalid guest count:', guestsStr);
-    return null;
-  }
-  
-  // Validate date format using ISO date string format (YYYY-MM-DD)
-  // This regex ensures the format is correct before parsing
-  const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
-  
-  if (!isoDatePattern.test(checkin)) {
-    console.error('[parseSearchParams] Invalid checkin date format:', checkin);
-    return null;
-  }
-  
-  if (!isoDatePattern.test(checkout)) {
-    console.error('[parseSearchParams] Invalid checkout date format:', checkout);
-    return null;
-  }
-  
-  // Parse dates and validate they are valid calendar dates
-  const checkinDate = new Date(checkin + 'T00:00:00');
-  const checkoutDate = new Date(checkout + 'T00:00:00');
-  
-  // Check if dates are valid (not NaN)
-  if (isNaN(checkinDate.getTime())) {
-    console.error('[parseSearchParams] Invalid checkin date:', checkin);
-    return null;
-  }
-  
-  if (isNaN(checkoutDate.getTime())) {
-    console.error('[parseSearchParams] Invalid checkout date:', checkout);
-    return null;
-  }
-  
-  // Validate checkin is today or in the future
+  if (isNaN(guests) || guests < 1) return null;
+
+  const iso = /^\d{4}-\d{2}-\d{2}$/;
+  if (!iso.test(checkin) || !iso.test(checkout)) return null;
+
+  const ci = new Date(checkin  + 'T00:00:00');
+  const co = new Date(checkout + 'T00:00:00');
+  if (isNaN(ci) || isNaN(co)) return null;
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
-  if (checkinDate < today) {
-    console.error('[parseSearchParams] Check-in date is in the past:', checkin);
-    return null;
-  }
-  
-  // Validate checkout is strictly after checkin
-  if (checkoutDate <= checkinDate) {
-    console.error('[parseSearchParams] Check-out date must be after check-in:', {
-      checkin,
-      checkout
-    });
-    return null;
-  }
-  
-  // All validations passed - return SearchParams object
-  const searchParams = {
-    checkin,
-    checkout,
-    guests
-  };
-  
-  console.log('[parseSearchParams] Successfully parsed and validated parameters:', searchParams);
-  
-  return searchParams;
+  if (ci < today) return null;
+  if (co <= ci)   return null;
+
+  return { checkin, checkout, guests };
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   ERROR HANDLING
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
-
-/**
- * Displays error message and redirects to homepage after 2 seconds.
- * 
- * Requirements: 2.2, 3.7, 3.8
- */
+/* ── Error Handling ─────────────────────── */
 function handleInvalidParameters() {
-  console.log('[handleInvalidParameters] Handling invalid search parameters...');
-  
-  // Get DOM elements
+  const villaResults   = document.getElementById('villa-results');
+  const resultsCount   = document.getElementById('results-count');
   const errorContainer = document.getElementById('error-container');
-  const villaResults = document.getElementById('villa-results');
-  const resultsCount = document.getElementById('results-count');
-  const searchCriteriaBar = document.querySelector('.search-criteria-bar');
-  
-  // Hide villa results container
-  if (villaResults) {
-    villaResults.style.display = 'none';
-  }
-  
-  // Hide results count
-  if (resultsCount) {
-    resultsCount.style.display = 'none';
-  }
-  
-  // Hide search criteria display
-  if (searchCriteriaBar) {
-    searchCriteriaBar.style.display = 'none';
-  }
-  
-  // Update error message content
-  const errorTitle = document.getElementById('error-title');
-  const errorMessage = document.getElementById('error-message');
-  
-  if (errorTitle) {
-    errorTitle.textContent = 'Invalid Search Parameters';
-  }
-  
-  if (errorMessage) {
-    errorMessage.textContent = 'Invalid search parameters. Please enter your dates again.';
-  }
-  
-  // Show error container
-  if (errorContainer) {
-    errorContainer.style.display = 'block';
-  }
-  
-  console.log('[handleInvalidParameters] Error message displayed. Redirecting in 2 seconds...');
-  
-  // Redirect to homepage after 2 seconds
-  setTimeout(() => {
-    console.log('[handleInvalidParameters] Redirecting to homepage...');
-    window.location.href = 'index.html#book-bar';
-  }, 2000);
+
+  if (villaResults)   villaResults.style.display   = 'none';
+  if (resultsCount)   resultsCount.style.display   = 'none';
+  if (errorContainer) errorContainer.style.display = 'block';
+
+  setTimeout(() => { window.location.href = 'index.html'; }, 3000);
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   SEARCH CRITERIA DISPLAY
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
-
-/**
- * Formats a date string (YYYY-MM-DD) into a readable format.
- * Example: "2024-12-25" => "Dec 25, 2024"
- * 
- * @param {string} dateStr - ISO date string in YYYY-MM-DD format
- * @returns {string} Formatted date string
- */
-function formatDisplayDate(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
-  const options = { month: 'short', day: 'numeric', year: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+/* ── Display Search Criteria ────────────── */
+function displaySearchCriteria(p) {
+  const fmt = ds => new Date(ds + 'T00:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  const ci  = document.getElementById('sc-checkin');
+  const co  = document.getElementById('sc-checkout');
+  const gu  = document.getElementById('sc-guests');
+  if (ci) ci.textContent = fmt(p.checkin);
+  if (co) co.textContent = fmt(p.checkout);
+  if (gu) gu.textContent = `${p.guests} ${p.guests === 1 ? 'Guest' : 'Guests'}`;
 }
 
-/**
- * Formats guest count for display.
- * Example: 1 => "1 Guest", 2 => "2 Guests"
- * 
- * @param {number} count - Number of guests
- * @returns {string} Formatted guest count string
- */
-function formatGuestCount(count) {
-  return `${count} ${count === 1 ? 'Guest' : 'Guests'}`;
-}
-
-/**
- * Displays search criteria in the search criteria bar section.
- * Updates the check-in, check-out, and guest count displays.
- * 
- * @param {SearchParams} searchParams - Object with {checkin, checkout, guests}
- * 
- * Requirements: 2.1, 3.9
- */
-function displaySearchCriteria(searchParams) {
-  console.log('[displaySearchCriteria] Displaying search criteria:', searchParams);
-  
-  // Get DOM elements for display
-  const checkinEl = document.getElementById('sc-checkin');
-  const checkoutEl = document.getElementById('sc-checkout');
-  const guestsEl = document.getElementById('sc-guests');
-  
-  // Format and display check-in date
-  if (checkinEl) {
-    const formattedCheckin = formatDisplayDate(searchParams.checkin);
-    checkinEl.textContent = formattedCheckin;
-    console.log('[displaySearchCriteria] Check-in displayed:', formattedCheckin);
-  } else {
-    console.error('[displaySearchCriteria] Check-in element #sc-checkin not found');
-  }
-  
-  // Format and display check-out date
-  if (checkoutEl) {
-    const formattedCheckout = formatDisplayDate(searchParams.checkout);
-    checkoutEl.textContent = formattedCheckout;
-    console.log('[displaySearchCriteria] Check-out displayed:', formattedCheckout);
-  } else {
-    console.error('[displaySearchCriteria] Check-out element #sc-checkout not found');
-  }
-  
-  // Format and display guest count
-  if (guestsEl) {
-    const formattedGuests = formatGuestCount(searchParams.guests);
-    guestsEl.textContent = formattedGuests;
-    console.log('[displaySearchCriteria] Guests displayed:', formattedGuests);
-  } else {
-    console.error('[displaySearchCriteria] Guests element #sc-guests not found');
-  }
-}
-
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   PAGE INITIALIZATION
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€*/
-
-/**
- * Initialize the search results page.
- * Parse URL parameters, display search criteria, and handle errors if validation fails.
- * 
- * Requirements: 2.1, 2.2, 3.7, 3.8, 3.9
- */
-
-/* -----------------------------------------
-   EXTRA BED CALCULATION
--------------------------------------------*/
-
+/* ── Extra Bed Calculation ──────────────── */
 function calculateExtraBeds(guests, capacity) {
-  const extraCount = Math.max(0, guests - capacity);
-  return {
-    count: extraCount,
-    charge: extraCount * 2000
-  };
+  const count = Math.max(0, guests - capacity);
+  return { count, charge: count * 2000 };
 }
 
-/* -----------------------------------------
-   VILLA CARD RENDERING
--------------------------------------------*/
-
-function renderVillaCards(searchParams) {
-  console.log('[renderVillaCards] Starting villa rendering...');
-  
+/* ── Villa Card Rendering ───────────────── */
+function renderVillaCards(p) {
   const container = document.getElementById('villa-results');
-  if (!container) {
-    console.error('[renderVillaCards] Villa results container not found');
-    return;
-  }
-  
+  if (!container) return;
+
   container.innerHTML = '';
-  let villaCount = 0;
-  
-  // DEBUG: Check if HOMES and functions are accessible
-  console.log('[renderVillaCards] HOMES available:', typeof HOMES !== 'undefined');
-  console.log('[renderVillaCards] calculateTotalPricing available:', typeof calculateTotalPricing === 'function');
+
   if (typeof HOMES === 'undefined') {
-    console.error('[renderVillaCards] HOMES is not defined! script.js may not have loaded.');
+    console.error('HOMES not defined — script.js may not have loaded');
     return;
   }
-  console.log('[renderVillaCards] HOMES keys:', Object.keys(HOMES));
-  
-  for (const [villaKey, villa] of Object.entries(HOMES)) {
-    console.log(`[renderVillaCards] Processing villa: ${villaKey}`);
-    
-    // Use the new calculateTotalPricing wrapper function that includes extra bed charges
-    const pricing = calculateTotalPricing(villaKey, searchParams.checkin, searchParams.checkout, searchParams.guests);
-    if (!pricing) {
-      console.error(`[renderVillaCards] Failed to calculate pricing for ${villaKey}`);
-      continue;
-    }
-    
-    // Extract values from the comprehensive pricing result
-    const grandTotal = pricing.grandTotal;
-    const extraBeds = {
-      count: pricing.extraBedCount,
-      charge: pricing.extraBedCharge
-    };
-    
-    const card = document.createElement('article');
-    card.className = 'villa-card reveal';
-    card.dataset.home = villaKey;
-    
+
+  let count = 0;
+
+  for (const [key, villa] of Object.entries(HOMES)) {
+    const pricing = calculateTotalPricing(key, p.checkin, p.checkout, p.guests);
+    if (!pricing) continue;
+
+    const { grandTotal, extraBedCount, extraBedCharge, nights, breakdown } = pricing;
+
+    /* Seasonal breakdown rows */
     let breakdownHTML = '';
-    if (pricing.breakdown.length > 1) {
-      let segmentsHTML = pricing.breakdown.map(seg => {
-        const icon = seg.label.split(' ')[0];
-        const name = seg.label.substring(2);
-        return `
-          <div class="breakdown-item">
-            <span class="breakdown-label">
-              <span class="season-icon">${icon}</span>
-              ${name}
-              <span class="breakdown-nights">(${seg.nights}n)</span>
-            </span>
-            <span class="breakdown-subtotal">₹${seg.subtotal.toLocaleString('en-IN')}</span>
-          </div>
-        `;
-      }).join('');
-      
+    if (breakdown.length > 1) {
+      const rows = breakdown.map(seg => `
+        <div class="breakdown-item">
+          <span class="breakdown-label">${seg.label} <span class="breakdown-nights">(${seg.nights}n)</span></span>
+          <span class="breakdown-subtotal">&#8377;${seg.subtotal.toLocaleString('en-IN')}</span>
+        </div>`).join('');
       breakdownHTML = `
         <div class="seasonal-breakdown">
           <div class="breakdown-title">Price Breakdown</div>
-          <div class="breakdown-items">
-            ${segmentsHTML}
-          </div>
-        </div>
-      `;
+          <div class="breakdown-items">${rows}</div>
+        </div>`;
     }
-    
-    let extraBedHTML = '';
-    if (extraBeds.count > 0) {
-      extraBedHTML = `
-        <div class="extra-bed-charge">
-          <span class="extra-bed-label">
-            <span class="extra-bed-icon">ðŸ›ï¸</span>
-            ${extraBeds.count} Extra Bed${extraBeds.count > 1 ? 's' : ''}
-          </span>
-          <span class="extra-bed-amount">₹${extraBeds.charge.toLocaleString('en-IN')}</span>
-        </div>
-      `;
-    }
-    
+
+    /* Extra bed row */
+    const extraBedHTML = extraBedCount > 0 ? `
+      <div class="extra-bed-charge">
+        <span class="extra-bed-label">&#x1F6CF; ${extraBedCount} Extra Bed${extraBedCount > 1 ? 's' : ''}</span>
+        <span class="extra-bed-amount">&#8377;${extraBedCharge.toLocaleString('en-IN')}</span>
+      </div>` : '';
+
+    const card = document.createElement('article');
+    card.className = 'villa-card';        /* NO 'reveal' — avoids IntersectionObserver hiding */
+    card.dataset.home = key;
+
     card.innerHTML = `
       <div class="villa-card-img">
-        <img src="${villa.images[0]}" alt="${villa.name} â€” ${villa.type}">
-        <div class="villa-card-badge">${villa.type}</div>
+        <img src="${villa.images[0]}" alt="${villa.name}" loading="lazy">
+        <span class="villa-card-badge">${villa.type}</span>
       </div>
       <div class="villa-card-body">
         <div class="villa-card-meta">
@@ -381,82 +136,39 @@ function renderVillaCards(searchParams) {
             ${villa.size}
           </span>
         </div>
-        
         <div class="villa-pricing">
           <div class="pricing-total">
             <span class="total-label">Total Price</span>
-            <span class="total-amount">₹${grandTotal.toLocaleString('en-IN')}</span>
+            <span class="total-amount">&#8377;${grandTotal.toLocaleString('en-IN')}</span>
           </div>
-          <span class="nights-label">${pricing.nights} night${pricing.nights > 1 ? 's' : ''}</span>
-          
+          <span class="nights-label">${nights} night${nights > 1 ? 's' : ''}</span>
           ${breakdownHTML}
           ${extraBedHTML}
         </div>
-        
         <div class="villa-card-actions">
-          <button class="btn btn-view-details" onclick="alert('View details coming soon')">View Details</button>
-          <button class="btn btn-book-now" onclick="alert('Booking modal integration coming soon')">Book Now</button>
+          <button class="btn-view-details" onclick="alert('Details coming soon')">View Details</button>
+          <button class="btn-book-now"     data-home="${key}">Book Now</button>
         </div>
-      </div>
-    `;
-    
+      </div>`;
+
     container.appendChild(card);
-    villaCount++;
-    
-    console.log(`[renderVillaCards] Added ${villa.name} with grand total: ₹${grandTotal.toLocaleString('en-IN')}`);
+    count++;
   }
-  
+
   const countEl = document.getElementById('results-count');
-  if (countEl) {
-    countEl.textContent = `Showing ${villaCount} ${villaCount === 1 ? 'villa' : 'villas'}`;
-    console.log(`[renderVillaCards] Updated results count: ${villaCount} villas`);
-  }
-  
-  console.log(`[renderVillaCards] Successfully rendered ${villaCount} villas`);
+  if (countEl) countEl.textContent = `Showing ${count} ${count === 1 ? 'villa' : 'villas'}`;
 }
 
-
+/* ── Init ───────────────────────────────── */
 function initSearchResults() {
-  console.log('[initSearchResults] Initializing search results page...');
-  
-  // Parse and validate URL parameters
-  const searchParams = parseSearchParams();
-  
-  // If parameters are invalid, show error and redirect
-  if (!searchParams) {
-    console.error('[initSearchResults] Invalid search parameters. Showing error message.');
-    handleInvalidParameters();
-    return;
-  }
-  
-  console.log('[initSearchResults] Search parameters validated successfully:', searchParams);
-  
-  // Display search criteria in the search bar
-  displaySearchCriteria(searchParams);
-  
-  console.log('[initSearchResults] Search results page initialized successfully');
-  
-  // Render villa cards with pricing
-  renderVillaCards(searchParams);
+  const params = parseSearchParams();
+  if (!params) { handleInvalidParameters(); return; }
+  displaySearchCriteria(params);
+  renderVillaCards(params);
 }
 
-// Run initialization when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initSearchResults);
 } else {
   initSearchResults();
-}
-
-/* Add this at the end of search-results.js to force display */
-console.log('[DEBUG] Forcing villa display...');
-const container = document.getElementById('villa-results');
-if (container) {
-    console.log('[DEBUG] Container found:', container);
-    console.log('[DEBUG] Container children:', container.children.length);
-    console.log('[DEBUG] Container innerHTML length:', container.innerHTML.length);
-    console.log('[DEBUG] Container display:', window.getComputedStyle(container).display);
-    console.log('[DEBUG] Container visibility:', window.getComputedStyle(container).visibility);
-    console.log('[DEBUG] Container height:', window.getComputedStyle(container).height);
-} else {
-    console.error('[DEBUG] Container NOT FOUND!');
 }
