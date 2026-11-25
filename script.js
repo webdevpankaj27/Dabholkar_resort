@@ -222,7 +222,7 @@ const HOMES = {
     amenities:{'In-Room':['24-hour in-room dining','Minibar','Tea & coffee maker','Large flat-screen TV','Bottled water','Newspapers on request','Iron & board','Yoga kit on request'],'Bathroom':['Four-fixture bathroom','Bathtub','Bath menu & salts on request','Forest Essentials amenities','Hair dryer','Welspun robes & slippers'],'Comfort':['Private balcony or veranda','Suit, skirt & padded hangers','Rollaway beds (extra charge)','Infant cribs on request','Full-length mirror'],'Services':['Daily housekeeping','Turndown service','24-hour laundry','Basic Wi-Fi inclusive','Premium Wi-Fi (nominal charge)']}
   },
   nishant: {
-    name:'Nishant', type:'Couple Villa', guests:'4 Guests',
+    name:'Nishant', type:'Couple Villa', guests:'2 Guests',
     bed:'2 king Beds', size:'1800 sq ft', price:20000,
     desc:'Nishant is built for the joy of being together. Generous communal spaces flow into two private bedrooms, making it ideal for families, close friends or multi-generational groups. The wraparound veranda becomes a natural gathering point for meals, card games, and the unhurried art of conversation.',
     images:['./assets/villa_images/nishaant/roominterior1.jpeg','./assets/villa_images/nishaant/roominterior2.jpeg','./assets/villa_images/nishaant/varanda.jpeg'],
