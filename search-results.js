@@ -159,12 +159,34 @@ function renderVillaCards(p) {
   if (countEl) countEl.textContent = `Showing ${count} ${count === 1 ? 'villa' : 'villas'}`;
 }
 
+/* ── Book Now Button Handler ────────────── */
+function setupBookNowButtons(params) {
+  document.querySelectorAll('.btn-book-now').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const homeKey = btn.dataset.home;
+
+      // Open the booking modal (defined in script.js)
+      openBookingModal(homeKey);
+
+      // Pre-fill check-in and check-out from search params
+      const bmCheckinEl  = document.getElementById('bm-checkin');
+      const bmCheckoutEl = document.getElementById('bm-checkout');
+      if (bmCheckinEl  && params.checkin)  bmCheckinEl.value  = params.checkin;
+      if (bmCheckoutEl && params.checkout) bmCheckoutEl.value = params.checkout;
+
+      // Trigger price preview update
+      if (typeof updatePricePreview === 'function') updatePricePreview();
+    });
+  });
+}
+
 /* ── Init ───────────────────────────────── */
 function initSearchResults() {
   const params = parseSearchParams();
   if (!params) { handleInvalidParameters(); return; }
   displaySearchCriteria(params);
   renderVillaCards(params);
+  setupBookNowButtons(params);
 }
 
 if (document.readyState === 'loading') {
