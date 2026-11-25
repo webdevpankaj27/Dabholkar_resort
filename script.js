@@ -1032,4 +1032,6 @@ loadSiteSettings();
     // Navigate to search results page
     window.location.href = searchUrl;
   });
+})();
+
 
