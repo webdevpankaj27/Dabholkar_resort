@@ -447,3 +447,16 @@ if (document.readyState === 'loading') {
   initSearchResults();
 }
 
+/* Add this at the end of search-results.js to force display */
+console.log('[DEBUG] Forcing villa display...');
+const container = document.getElementById('villa-results');
+if (container) {
+    console.log('[DEBUG] Container found:', container);
+    console.log('[DEBUG] Container children:', container.children.length);
+    console.log('[DEBUG] Container innerHTML length:', container.innerHTML.length);
+    console.log('[DEBUG] Container display:', window.getComputedStyle(container).display);
+    console.log('[DEBUG] Container visibility:', window.getComputedStyle(container).visibility);
+    console.log('[DEBUG] Container height:', window.getComputedStyle(container).height);
+} else {
+    console.error('[DEBUG] Container NOT FOUND!');
+}
